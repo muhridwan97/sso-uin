@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Class Logout
+ * @property AuthModel $auth
  * @property UserModel $user
  * @property UserTokenModel $userToken
  */
@@ -14,6 +15,7 @@ class Logout extends App_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('AuthModel', 'auth');
         $this->load->model('UserModel', 'user');
         $this->load->model('UserTokenModel', 'userToken');
     }
@@ -23,7 +25,7 @@ class Logout extends App_Controller
      */
     public function index()
     {
-        if ($this->user->logout()) {
+        if ($this->auth->logout()) {
             $rememberToken = get_cookie('remember_token');
             if (!empty($rememberToken)) {
                 delete_cookie('remember_token');
@@ -31,7 +33,7 @@ class Logout extends App_Controller
             }
             redirect('auth/login');
         }
-        redirect('dashboard');
+        redirect('app');
     }
 
 }

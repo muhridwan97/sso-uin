@@ -18,7 +18,7 @@ $hook['post_controller_constructor'] = [
         'function' => 'isGuest',
         'filename' => 'middleware/RedirectIfAuthenticated.php',
         'filepath' => 'hooks',
-        'params' => 'dashboard'
+        'params' => 'app'
     ],
     [
         'class' => 'MustAuthenticated',

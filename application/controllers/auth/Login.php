@@ -39,7 +39,7 @@ class Login extends App_Controller
                     if ($authenticated) {
                         $intended = $this->input->get('redirect');
                         if(empty($intended)) {
-                            redirect("dashboard");
+                            redirect("app");
                         }
                         redirect(urldecode($intended));
                     } else {

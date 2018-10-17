@@ -10,7 +10,7 @@ if (!function_exists('flash')) {
      * @param null $redirectTo
      * @param string $fallback
      */
-    function flash($status, $message, $redirectTo = null, $fallback = 'dashboard')
+    function flash($status, $message, $redirectTo = null, $fallback = 'app')
     {
         get_instance()->session->set_flashdata([
             'status' => $status, 'message' => $message,

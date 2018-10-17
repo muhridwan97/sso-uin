@@ -4,11 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class UserModel extends App_Model
 {
     protected $table = 'prv_users';
-    protected $filteredFields = [
-        '*',
-        'ref_employees.no_employee',
-        'prv_roles.role'
-    ];
 
     const STATUS_PENDING = 'PENDING';
     const STATUS_ACTIVATED = 'ACTIVATED';
@@ -23,15 +18,8 @@ class UserModel extends App_Model
     {
         return $this->db->select([
             'prv_users.*',
-            'GROUP_CONCAT(DISTINCT prv_roles.role) AS roles',
-            'ref_employees.id AS id_employee',
-            'ref_employees.no_employee',
         ])
             ->from($this->table)
-            ->join('prv_user_roles', 'prv_user_roles.id_user = prv_users.id', 'left')
-            ->join('prv_roles', 'prv_roles.id = prv_user_roles.id_role', 'left')
-            ->join('ref_employees', 'ref_employees.id_user = prv_users.id', 'left')
-            ->group_by('prv_users.id')
             ->order_by($this->id, 'desc');
     }
 
@@ -85,10 +73,6 @@ class UserModel extends App_Model
                 if ($this->db->field_exists('id_user', $this->table)) {
                     $baseQuery->where_in($this->table . '.id_user', $filters['users']);
                 }
-            }
-
-            if (key_exists('role', $filters) && !empty($filters['role'])) {
-                $baseQuery->where('prv_roles.id', $filters['role']);
             }
 
             if (key_exists('page', $filters) && !empty($filters['page'])) {
@@ -175,35 +159,5 @@ class UserModel extends App_Model
             return false;
         }
         return true;
-    }
-
-    /**
-     * Check given username is exist or not.
-     * @param $username
-     * @return bool
-     */
-    public function username_exists($username)
-    {
-        if ($this->isUniqueUsername($username, AuthModel::loginData('id', 0))) {
-            return true;
-        } else {
-            $this->form_validation->set_message('username_exists', 'The %s has been registered before, try another');
-            return false;
-        }
-    }
-
-    /**
-     * Check given email is exist or not.
-     * @param $email
-     * @return bool
-     */
-    public function email_exists($email)
-    {
-        if ($this->isUniqueEmail($email, AuthModel::loginData('id', 0))) {
-            return true;
-        } else {
-            $this->form_validation->set_message('email_exists', 'The %s has been registered before, try another');
-            return false;
-        }
     }
 }

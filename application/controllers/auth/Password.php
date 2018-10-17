@@ -33,7 +33,7 @@ class Password extends App_Controller
     public function forgot_password()
     {
         if (_is_method('post')) {
-            $isValid = $this->validate([
+            $rules = [
                 'email' => [
                     'trim', 'required', 'valid_email', 'max_length[50]', [
                         'email_exist', function ($email) {
@@ -42,9 +42,8 @@ class Password extends App_Controller
                         }
                     ]
                 ]
-            ]);
-
-            if ($isValid) {
+            ];
+            if ($this->validate($rules)) {
                 $email = $this->input->post('email');
 
                 $token = $this->userToken->create($email, UserTokenModel::TOKEN_PASSWORD);
