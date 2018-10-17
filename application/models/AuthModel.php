@@ -75,7 +75,6 @@ class AuthModel extends App_Model
             $this->session->unset_userdata([
                 'auth.id', 'auth.is_logged_in', 'auth.remember_me', 'auth.remember_token'
             ]);
-            $this->session->sess_destroy();
             return true;
         }
         return false;

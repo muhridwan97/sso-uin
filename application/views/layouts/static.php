@@ -17,7 +17,7 @@
 
 <body class="auth-layout">
 
-<div class="container">
+<div class="container py-4">
     <?php $this->load->view($page, $data) ?>
 </div>
 

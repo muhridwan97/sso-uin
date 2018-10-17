@@ -17,6 +17,6 @@ class App extends App_Controller
      */
     public function index()
     {
-        echo 'application select';
+        $this->render('app/index');
     }
 }

@@ -1,4 +1,4 @@
-<div class="form-auth">
+<div class="form-auth mt-0 mt-sm-4">
     <h3 class="mb-1">Reset Password</h3>
     <p class="text-muted">
         Enter your email address that you used to register. We'll send you an email with your username and a

@@ -21,7 +21,7 @@ class MustAuthenticated
     private $mustLogin = ['*'];
 
     private $allowGuest = [
-        Login::class, Register::class, Password::class, Page::class, Error404::class,
+        Login::class, Logout::class, Register::class, Password::class, Page::class, Error404::class,
         Migrate::class, Automate::class
     ];
 

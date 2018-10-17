@@ -31,7 +31,7 @@ class Logout extends App_Controller
                 delete_cookie('remember_token');
                 $this->userToken->delete($rememberToken);
             }
-            redirect('auth/login');
+            flash('warning', 'You are logged out', 'auth/login');
         }
         redirect('app');
     }

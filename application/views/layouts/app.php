@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="<?= $this->security->get_csrf_hash() ?>">
     <meta name="base-url" content="<?= site_url() ?>">
-    <meta name="user-id" content="">
-    <meta name="theme-color" content="#5983e8">
+    <meta name="user-id" content="<?= AuthModel::loginData('id') ?>">
+    <meta name="theme-color" content="#ffffff">
     <title><?= $this->config->item('app_name') ?> | <?= isset($title) ? $title : 'Home' ?></title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -15,60 +15,28 @@
     <link rel="stylesheet" href="<?= base_url('assets/dist/app.css') ?>">
 </head>
 
-<body style="position: relative" data-spy="scroll" data-target="#main-navbar" data-offset="100">
-<nav id="main-navbar" class="navbar navbar-expand-lg navbar-light border-bottom shadow-sm sticky-top py-3" style="background: white">
+<body>
+<nav id="main-navbar" class="navbar navbar-expand-lg navbar-light shadow-sm sticky-top py-3" style="background: white">
     <div class="container">
         <span class="navbar-brand font-weight-bold"><?= $this->config->item('app_name') ?></span>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto mr-2">
-                <li class="nav-item">
-                    <a class="nav-link" href="#warehouse">Warehouse</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#purchasing">Purchasing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#absent">Absent</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#hr">HR</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#crm">CRM</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#vms">VMS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#ticket">Ticket</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#training">Training</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#evaluation">Evaluation</a>
-                </li>
-            </ul>
-            <form class="form-inline d-none d-lg-inline">
-                <a class="btn btn-sm btn-outline-primary" href="http://transcon-indonesia.com">HOME</a>
+            <form class="form-inline d-none d-lg-inline ml-auto">
+                <a class="btn btn-sm btn-outline-danger" href="<?= site_url('auth/logout') ?>">
+                    Sign Out
+                </a>
             </form>
         </div>
     </div>
 </nav>
 
-<div class="container py-3 mt-3">
-    <?php $this->load->view('components/_alert') ?>
+<div class="container">
     <?php $this->load->view($page, $data) ?>
-
-    <footer class="mt-4 mt-md-5 pt-md-3 border-top">
-        <small class="d-block mb-3 text-muted">
-            &copy; Copyright <?= date('Y') ?> <strong><?= $this->config->item('app_author') ?></strong> all rights reserved.
-        </small>
-    </footer>
 </div>
+
+<?php $this->load->view('components/_footer') ?>
 
 <script
         src="https://code.jquery.com/jquery-3.3.1.min.js"
