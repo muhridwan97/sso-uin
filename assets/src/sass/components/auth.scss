@@ -1,0 +1,26 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.auth-layout {
+  margin-bottom: 80px; /* Margin bottom by footer height */
+}
+
+.form-auth {
+  width: 100%;
+  max-width: 330px;
+  padding: 30px 5px;
+  margin: auto;
+}
+
+.auth-control {
+  font-size: 0.9rem;
+}
+
+.auth-footer {
+  background-color: #f5f5f5;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
