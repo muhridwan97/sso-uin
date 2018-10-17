@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-block btn-primary mb-2">Sign In</button>
+        <button type="submit" class="btn btn-block btn-primary mb-3">Sign In</button>
         <div class="text-center small">
             Not a member ?
             <a href="<?= site_url('auth/password/forgot_password') ?>">

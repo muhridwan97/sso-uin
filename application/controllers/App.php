@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class Application
  */
-class Application extends App_Controller
+class App extends App_Controller
 {
 
     public function __construct()
