@@ -9,7 +9,8 @@
         </p>
         <div class="btn-section-wrapper">
             <a href="#" class="btn btn-section active">Application</a>
-            <a href="#" class="btn btn-section">Setting</a>
+            <a href="#" class="btn btn-section">Manage</a>
+            <a href="#" class="btn btn-section">Notification</a>
         </div>
     </div>
 </div>

@@ -149,7 +149,7 @@ class App_Controller extends CI_Controller
         }
 
         if ($this->form_validation->run() == FALSE) {
-            flash('warning', __('validation_error') . validation_errors());
+            flash('warning', __('validation_error') /*. validation_errors()*/);
             return false;
         }
         return true;

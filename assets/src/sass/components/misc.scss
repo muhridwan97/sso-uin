@@ -4,4 +4,13 @@
 
 .alert {
   font-size: 14px;
+  border-radius: 0;
+}
+
+.breadcrumb {
+  background: transparent;
+  padding: 5px 0;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }

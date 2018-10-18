@@ -42,7 +42,7 @@
                 <label class="custom-control-label" for="terms">I agree to the terms and condition.</label>
             </div>
         </div>
-        <button type="submit" class="btn btn-block btn-primary mb-3">Sign Up</button>
+        <button type="submit" class="btn btn-block btn-primary mb-3">Register</button>
         <div class="text-center small">
             Already have and account ?
             <a href="<?= site_url('auth/login') ?>">

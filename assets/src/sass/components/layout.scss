@@ -20,16 +20,6 @@ table tr td, table tr th {
   vertical-align: middle !important;
 }
 
-@media (max-width: 575px) {
-  .content-wrapper {
-    padding: 0;
-  }
-}
-
-#main-navbar {
-  z-index: 2;
-}
-
 .has-sticky-footer {
   margin-bottom: 80px; /* Margin bottom by footer height */
 }
@@ -39,4 +29,13 @@ table tr td, table tr th {
   position: absolute;
   width: 100%;
   bottom: 0;
+}
+
+.content-wrapper {
+  padding-top: 15px;
+  padding-bottom: 20px;
+
+  @media (min-width: 576px) {
+    padding-top: 30px;
+  }
 }

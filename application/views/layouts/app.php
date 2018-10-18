@@ -33,6 +33,8 @@
     </div>
 </nav>
 
+<?php $this->load->view('components/_alert_block') ?>
+
 <?php $this->load->view($page, $data) ?>
 
 <?php $this->load->view('components/_footer') ?>
@@ -47,28 +49,8 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-<script>
-    $(document).ready( function () {
-        $("#main-navbar ul li a[href^='#']").on('click', function(e) {
-            // prevent default anchor click behavior
-            e.preventDefault();
+<script src="<?= base_url('assets/dist/app.bundle.js') ?>"></script>
 
-            // store hash
-            var hash = this.hash;
-
-            // animate
-            $('html, body').animate({
-                scrollTop: $(hash).offset().top - 100
-            }, 1000, function(){
-
-                // when done, add hash to url
-                // (default click behaviour)
-                // window.location.hash = hash;
-            });
-
-        });
-    } );
-</script>
 </body>
 
 </html>
