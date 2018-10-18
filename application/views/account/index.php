@@ -47,22 +47,24 @@
                 </div>
 
                 <p class="form-section-title">Avatar</p>
-                <div class="d-flex flex-column flex-sm-row align-items-center">
-                    <div class="rounded mb-4" style="height:140px; width: 140px; background: url('<?= if_empty($user['avatar'], '/assets/dist/img/no-avatar.png', '/uploads/') ?>') center center / cover"></div>
+                <div class="form-group">
+                    <div class="d-flex flex-column flex-sm-row align-items-center">
+                        <div class="rounded mb-4" style="height:140px; width: 140px; background: url('<?= if_empty($user['avatar'], '/assets/dist/img/no-avatar.png', '/uploads/') ?>') center center / cover"></div>
 
-                    <div class="form-group mr-lg-3 ml-sm-4">
-                        <label for="avatar">Photo</label>
-                        <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png" class="file-upload-default" data-max-size="3000000">
-                        <div class="input-group">
-                            <input type="text" class="form-control file-upload-info" disabled placeholder="Upload photo">
-                            <span class="input-group-append">
+                        <div class="mr-lg-3 ml-sm-4">
+                            <label for="avatar">Photo</label>
+                            <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png" class="file-upload-default" data-max-size="3000000">
+                            <div class="input-group">
+                                <input type="text" class="form-control file-upload-info" disabled placeholder="Upload photo">
+                                <span class="input-group-append">
                                 <button class="file-upload-browse btn btn-default btn-simple-upload" type="button">
                                     Select Photo
                                 </button>
                             </span>
+                            </div>
+                            <span class="form-text">Leave it unselected if you don't change avatar.</span>
+                            <?= form_error('avatar') ?>
                         </div>
-                        <span class="form-text">Leave it unselected if you don't change avatar.</span>
-                        <?= form_error('avatar') ?>
                     </div>
                 </div>
 
