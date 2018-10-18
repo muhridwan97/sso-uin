@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Class Application
+ * @property ApplicationModel $application
  */
 class App extends App_Controller
 {
@@ -10,6 +11,8 @@ class App extends App_Controller
     public function __construct()
     {
         parent::__construct();
+
+        $this->load->model('ApplicationModel', 'application');
     }
 
     /**
@@ -17,6 +20,8 @@ class App extends App_Controller
      */
     public function index()
     {
-        $this->render('app/index');
+        $applications = $this->application->getAll();
+
+        $this->render('app/index', compact('applications'));
     }
 }

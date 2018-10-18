@@ -1,4 +1,4 @@
-<footer class="auth-footer mt-4 mt-md-5 py-4 small">
+<footer class="sticky-footer mt-4 mt-md-5 py-4 small">
     <div class="container d-sm-flex justify-content-between">
         <p class="text-muted mb-1 mb-sm-0">
             Copyright &copy; <?= date('Y') ?> <strong><?= $this->config->item('app_author') ?></strong>

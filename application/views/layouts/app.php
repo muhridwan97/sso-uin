@@ -12,10 +12,11 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.8.94/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="<?= base_url('assets/dist/app.css') ?>">
 </head>
 
-<body>
+<body class="has-sticky-footer">
 <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light shadow-sm sticky-top py-3" style="background: white">
     <div class="container">
         <span class="navbar-brand font-weight-bold"><?= $this->config->item('app_name') ?></span>
@@ -23,7 +24,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <form class="form-inline d-none d-lg-inline ml-auto">
+            <form class="form-inline ml-auto">
                 <a class="btn btn-sm btn-outline-danger" href="<?= site_url('auth/logout') ?>">
                     Sign Out
                 </a>
@@ -32,9 +33,7 @@
     </div>
 </nav>
 
-<div class="container">
-    <?php $this->load->view($page, $data) ?>
-</div>
+<?php $this->load->view($page, $data) ?>
 
 <?php $this->load->view('components/_footer') ?>
 
@@ -50,12 +49,6 @@
         crossorigin="anonymous"></script>
 <script>
     $(document).ready( function () {
-        $.ajaxSetup({
-            headers: {
-                "X-CSRFToken": variables.csrfToken
-            }
-        });
-
         $("#main-navbar ul li a[href^='#']").on('click', function(e) {
             // prevent default anchor click behavior
             e.preventDefault();

@@ -1,0 +1,119 @@
+.app-banner {
+  background: #3e3d4d;
+  padding-top: 25px;
+  color: $light;
+
+  .btn-section-wrapper {
+    margin-top: 30px;
+  }
+
+  .btn-section {
+    background: $light;
+    border-radius: 0;
+    color: $dark;
+    padding: .375rem 1.5rem;
+
+    &.active {
+      background: $primary;
+      color: $light;
+    }
+  }
+}
+
+.app-banner-description {
+  padding: 1rem 0;
+  background: $primary;
+  color: $light;
+}
+
+.app-wrapper {
+  padding: 30px 0;
+
+  @media (min-width: 576px) {
+    padding: 50px 0;
+  }
+}
+
+.card-app {
+  padding-right: 30px;
+  padding-left: 30px;
+  margin-bottom: 40px;
+
+  a {
+    color: $dark;
+
+    &:hover {
+      text-decoration: none;
+
+      .card:after {
+        background: rgba(0, 0, 0, .1);
+        bottom: -10px;
+      }
+
+      .app-title {
+        color: darken($dark, 20%);
+      }
+      .app-subtitle {
+        color: darken($light-gray, 30%);
+      }
+      .app-icon {
+        font-size: 7rem;
+      }
+    }
+  }
+
+  .app-icon {
+    transition: all 100ms;
+    font-size: 6.6rem;
+    line-height: 1;
+  }
+
+  .card {
+    position: relative;
+    border: none;
+    box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.15);
+    min-height: 200px;
+    overflow: hidden;
+
+    &:after {
+      transition: all 100ms;
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      height: 35px;
+      width: 100%;
+      background: rgba(0, 0, 0, .05);
+      transform: rotate(-5deg);
+    }
+  }
+
+  .card-title {
+    margin-top: 20px;
+    margin-bottom: 0;
+
+    .app-title {
+      transition: all 100ms;
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+
+    .app-subtitle {
+      transition: all 100ms;
+      font-size: 0.9rem;
+      color: $light-gray;
+    }
+  }
+
+  .app-version {
+    font-size: 0.75rem;
+    color: lighten($dark, 40%);
+
+    a:hover {
+      color: $primary;
+    }
+  }
+}
+
+.bg-blue {
+  background-color: #5096ff;
+}

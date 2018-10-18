@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/dist/app.css') ?>">
 </head>
 
-<body class="auth-layout">
+<body class="has-sticky-footer">
 
 <div class="container py-4">
     <?php $this->load->view($page, $data) ?>
