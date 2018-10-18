@@ -9,7 +9,7 @@
     <meta name="user-id" content="<?= AuthModel::loginData('id') ?>">
     <meta name="theme-color" content="#ffffff">
     <title><?= $this->config->item('app_name') ?> | <?= isset($title) ? $title : 'Home' ?></title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.8.94/css/materialdesignicons.min.css">
@@ -19,7 +19,7 @@
 <body class="has-sticky-footer">
 <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light shadow-sm sticky-top py-3" style="background: white">
     <div class="container">
-        <span class="navbar-brand font-weight-bold"><?= $this->config->item('app_name') ?></span>
+        <span class="navbar-brand"><?= $this->config->item('app_name') ?></span>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

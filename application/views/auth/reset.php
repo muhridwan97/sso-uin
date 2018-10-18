@@ -25,7 +25,7 @@
             <?= form_error('confirm_password') ?>
         </div>
         <button type="submit" class="btn btn-block btn-primary mb-3">Reset My Password</button>
-        <div class="text-center small">
+        <div class="text-center">
             Remember password ?
             <a href="<?= site_url('auth/login') ?>">
                 Sign In

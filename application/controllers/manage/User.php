@@ -24,11 +24,11 @@ class User extends App_Controller
     /**
      * Set validation rules.
      *
+     * @param int $userId
      * @return array
      */
-    protected function _validation_rules()
+    protected function _validation_rules($userId = 0)
     {
-        $userId = AuthModel::loginData('id');
         return [
             'name' => 'trim|required|max_length[50]',
             'username' => [
@@ -43,18 +43,9 @@ class User extends App_Controller
                     return $this->user->isUniqueEmail($username, $userId);
                 }]
             ],
-            'password' => [
-                'trim', 'required', ['match_password', function ($password) use ($userId) {
-                    $user = $this->user->getById($userId);
-                    if (password_verify($password, $user['password'])) {
-                        return true;
-                    }
-                    $this->form_validation->set_message('match_password', 'The %s mismatch with your password');
-                    return false;
-                }]
-            ],
-            'new_password' => 'min_length[6]|max_length[50]',
-            'confirm_password' => 'matches[new_password]'
+            'status' => 'trim|required|in_list[' . UserModel::STATUS_ACTIVATED . ',' . UserModel::STATUS_PENDING . ',' . UserModel::STATUS_SUSPENDED . ']',
+            'password' => 'min_length[6]' . ($userId > 0 ? '' : '|required'),
+            'confirm_password' => 'matches[password]',
         ];
     }
 
@@ -75,7 +66,133 @@ class User extends App_Controller
         }
 
         $this->render('user/index', compact('users'));
+    }
 
+    /**
+     * Show data user.
+     *
+     * @param $id
+     */
+    public function view($id)
+    {
+        $user = $this->user->getById($id);
+
+        $this->render('user/view', compact('user'));
+    }
+
+    /**
+     * Show form create user.
+     */
+    public function create()
+    {
+        $this->render('user/create');
+    }
+
+    /**
+     * Save user data.
+     */
+    public function save()
+    {
+        if ($this->validate()) {
+            $name = $this->input->post('name');
+            $username = $this->input->post('username');
+            $email = $this->input->post('email');
+            $status = $this->input->post('status');
+            $password = $this->input->post('password');
+
+            $this->db->trans_start();
+
+            $avatar = null;
+            if (!empty($_FILES['avatar']['name'])) {
+                if ($this->uploader->uploadTo('avatar', ['destination' => 'avatars/' . date('Y/m')])) {
+                    $uploadedData = $this->uploader->getUploadedData();
+                    $avatar = $uploadedData['uploaded_path'];
+                } else {
+                    flash('danger', $this->uploader->getDisplayErrors(), '_back');
+                }
+            }
+
+            $this->user->create([
+                'name' => $name,
+                'username' => $username,
+                'email' => $email,
+                'status' => $status,
+                'avatar' => $avatar,
+                'password' => password_hash($password, CRYPT_BLOWFISH),
+            ]);
+
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status()) {
+                flash('success', __('entity_created', ['title' => $name]), 'manage/user');
+            } else {
+                flash('danger', __('entity_error'));
+            }
+        }
+        $this->create();
+    }
+
+    /**
+     * Show form edit user.
+     *
+     * @param $id
+     */
+    public function edit($id)
+    {
+        $user = $this->user->getById($id);
+
+        $this->render('user/edit', compact('user'));
+    }
+
+    /**
+     * Save updated user data.
+     *
+     * @param $id
+     */
+    public function update($id)
+    {
+        if ($this->validate($this->_validation_rules($id))) {
+            $name = $this->input->post('name');
+            $username = $this->input->post('username');
+            $email = $this->input->post('email');
+            $status = $this->input->post('status');
+            $password = $this->input->post('password');
+
+            $user = $this->user->getById($id);
+
+            $this->db->trans_start();
+
+            $avatar = if_empty($user['avatar'], null);
+            if (!empty($_FILES['avatar']['name'])) {
+                if ($this->uploader->uploadTo('avatar', ['destination' => 'avatars/' . date('Y/m')])) {
+                    $uploadedData = $this->uploader->getUploadedData();
+                    $avatar = $uploadedData['uploaded_path'];
+                    if(!empty($user['avatar'])) {
+                        $this->uploader->delete($user['avatar']);
+                    }
+                } else {
+                    flash('danger', $this->uploader->getDisplayErrors(), '_back');
+                }
+            }
+
+            $this->user->update([
+                'name' => $name,
+                'username' => $username,
+                'email' => $email,
+                'status' => $status,
+                'avatar' => $avatar,
+                'password' => password_hash($password, CRYPT_BLOWFISH),
+            ], $id);
+
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status()) {
+                flash('success', __('entity_updated', ['title' => $name]), 'manage/user');
+            } else {
+                flash('danger', __('entity_error'));
+            }
+        }
+        $this->edit($id);
     }
 
     /**

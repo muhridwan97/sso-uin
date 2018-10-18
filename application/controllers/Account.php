@@ -80,7 +80,9 @@ class Account extends App_Controller
                     if ($this->uploader->uploadTo('avatar', ['destination' => 'avatars/' . date('Y/m')])) {
                         $uploadedData = $this->uploader->getUploadedData();
                         $dataAccount['avatar'] = $uploadedData['uploaded_path'];
-                        $this->uploader->delete($user['avatar']);
+                        if(!empty($user['avatar'])) {
+                            $this->uploader->delete($user['avatar']);
+                        }
                     } else {
                         flash('danger', $this->uploader->getDisplayErrors(), 'account');
                     }

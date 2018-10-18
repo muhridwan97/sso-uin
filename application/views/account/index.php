@@ -49,7 +49,7 @@
                 <p class="form-section-title">Avatar</p>
                 <div class="form-group">
                     <div class="d-flex flex-column flex-sm-row align-items-center">
-                        <div class="rounded mb-4" style="height:140px; width: 140px; background: url('<?= if_empty($user['avatar'], '/assets/dist/img/no-avatar.png', '/uploads/') ?>') center center / cover"></div>
+                        <div class="rounded mb-4" style="height:140px; width: 140px; background: url('<?= base_url(if_empty($user['avatar'], 'assets/dist/img/no-avatar.png', '/uploads/')) ?>') center center / cover"></div>
 
                         <div class="mr-lg-3 ml-sm-4">
                             <label for="avatar">Photo</label>

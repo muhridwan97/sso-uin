@@ -2,16 +2,16 @@
 
 <div class="container content-wrapper">
     <div class="row">
-        <div class="col-sm-3 col-md-2">
+        <div class="col-md-3 col-lg-2">
             <p class="form-section-title">Main Menu</p>
-            <div class="nav flex-column nav-pills mr-md-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <div class="nav flex-column nav-pills mr-md-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" href="<?= site_url('manage/user') ?>">Users</a>
                 <a class="nav-link" href="<?= site_url('manage/application') ?>">Applications</a>
                 <a class="nav-link" href="<?= site_url('manage/changelog') ?>">Release</a>
                 <a class="nav-link" href="<?= site_url('manage/setting') ?>">Settings</a>
             </div>
         </div>
-        <div class="col-sm-9 col-md-10">
+        <div class="col-md-9 col-lg-10">
             <div class="d-flex justify-content-between">
                 <h4 class="card-title pt-2">Users</h4>
                 <div>
@@ -21,7 +21,7 @@
                     <a href="<?= base_url(uri_string()) ?>?<?= $_SERVER['QUERY_STRING'] ?>&export=true" class="btn btn-primary btn-sm pr-2 pl-2">
                         <i class="mdi mdi-file-download-outline"></i>
                     </a>
-                    <a href="<?= site_url('employee/create') ?>" class="btn btn-sm btn-primary">
+                    <a href="<?= site_url('manage/user/create') ?>" class="btn btn-sm btn-primary">
                         <i class="mdi mdi-plus-box-outline mr-2"></i>Create
                     </a>
                 </div>
@@ -52,7 +52,7 @@
                             <td class="text-center"><?= ++$no ?></td>
                             <td>
                                 <div class="d-flex flex-row align-items-center">
-                                    <div class="rounded mr-2" style="height:40px; width: 40px; background: url('<?= if_empty($user['avatar'], '/assets/dist/img/no-avatar.png', '/uploads/') ?>') center center / cover"></div>
+                                    <div class="rounded mr-2" style="height:40px; width: 40px; background: url('<?= base_url(if_empty($user['avatar'], 'assets/dist/img/no-avatar.png', 'uploads/')) ?>') center center / cover"></div>
                                     <?= $user['name'] ?>
                                 </div>
                             </td>
@@ -65,17 +65,17 @@
                             </td>
                             <td class="text-right">
                                 <div class="dropdown">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                    <button class="btn btn-light btn-sm dropdown-toggle" type="button"
                                             data-toggle="dropdown">
                                         Action
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right row-employee"
                                          data-id="<?= $user['id'] ?>"
                                          data-label="<?= $user['name'] ?>">
-                                        <a class="dropdown-item" href="<?= site_url('employee/view/' . $user['id']) ?>">
+                                        <a class="dropdown-item" href="<?= site_url('manage/user/view/' . $user['id']) ?>">
                                             <i class="mdi mdi-eye-outline mr-2"></i> View
                                         </a>
-                                        <a class="dropdown-item" href="<?= site_url('employee/edit/' . $user['id']) ?>">
+                                        <a class="dropdown-item" href="<?= site_url('manage/user/edit/' . $user['id']) ?>">
                                             <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
                                         </a>
                                         <div class="dropdown-divider"></div>

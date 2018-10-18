@@ -18,6 +18,6 @@
 </div>
 <div class="app-banner-description">
     <div class="container">
-
+        &nbsp;
     </div>
 </div>

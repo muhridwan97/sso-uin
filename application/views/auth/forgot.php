@@ -15,7 +15,7 @@
             <?= form_error('email') ?>
         </div>
         <button type="submit" class="btn btn-block btn-primary mb-3">Request Reset Password</button>
-        <div class="text-center small">
+        <div class="text-center">
             Remember password ?
             <a href="<?= site_url('auth/login') ?>">
                 Sign In
