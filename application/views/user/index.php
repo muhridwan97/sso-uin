@@ -3,26 +3,20 @@
 <div class="container content-wrapper">
     <div class="row">
         <div class="col-md-3 col-lg-2">
-            <p class="form-section-title">Main Menu</p>
-            <div class="nav flex-column nav-pills mr-md-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a class="nav-link active" href="<?= site_url('manage/user') ?>">Users</a>
-                <a class="nav-link" href="<?= site_url('manage/application') ?>">Applications</a>
-                <a class="nav-link" href="<?= site_url('manage/changelog') ?>">Release</a>
-                <a class="nav-link" href="<?= site_url('manage/setting') ?>">Settings</a>
-            </div>
+            <?php $this->load->view('components/_sidebar_nav') ?>
         </div>
         <div class="col-md-9 col-lg-10">
             <div class="d-flex justify-content-between">
                 <h4 class="card-title pt-2">Users</h4>
                 <div>
-                    <a href="#modal-filter" data-toggle="modal" class="btn btn-primary btn-sm pr-2 pl-2">
+                    <a href="#modal-filter" data-toggle="modal" class="btn btn-outline-primary btn-sm pr-2 pl-2">
                         <i class="mdi mdi-filter-variant"></i>
                     </a>
-                    <a href="<?= base_url(uri_string()) ?>?<?= $_SERVER['QUERY_STRING'] ?>&export=true" class="btn btn-primary btn-sm pr-2 pl-2">
+                    <a href="<?= base_url(uri_string()) ?>?<?= $_SERVER['QUERY_STRING'] ?>&export=true" class="btn btn-outline-primary btn-sm pr-2 pl-2">
                         <i class="mdi mdi-file-download-outline"></i>
                     </a>
                     <a href="<?= site_url('manage/user/create') ?>" class="btn btn-sm btn-primary">
-                        <i class="mdi mdi-plus-box-outline mr-2"></i>Create
+                        <i class="mdi mdi-plus-box-outline mr-1"></i>Create
                     </a>
                 </div>
             </div>

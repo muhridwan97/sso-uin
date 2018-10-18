@@ -3,13 +3,7 @@
     <div class="container content-wrapper">
         <div class="row">
             <div class="col-md-3 col-lg-2">
-                <p class="form-section-title">Main Menu</p>
-                <div class="nav flex-column nav-pills mr-md-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active" href="<?= site_url('manage/user') ?>">Users</a>
-                    <a class="nav-link" href="<?= site_url('manage/application') ?>">Applications</a>
-                    <a class="nav-link" href="<?= site_url('manage/changelog') ?>">Release</a>
-                    <a class="nav-link" href="<?= site_url('manage/setting') ?>">Settings</a>
-                </div>
+                <?php $this->load->view('components/_sidebar_nav') ?>
             </div>
             <div class="col-md-9 col-lg-10">
                 <h4 class="card-title pt-2"><?= $title ?></h4>

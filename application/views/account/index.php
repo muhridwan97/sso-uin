@@ -68,7 +68,6 @@
                     </div>
                 </div>
 
-
                 <p class="form-section-title">Change Password</p>
                 <div class="form-group">
                     <label for="password">Current Password</label>
@@ -89,7 +88,7 @@
                            placeholder="Repeat your password" minlength="6" maxlength="50">
                     <?= form_error('confirm_password') ?>
                 </div>
-                <button type="submit" class="btn btn-lg btn-block btn-primary my-4">Update Account</button>
+                <button type="submit" class="btn btn-primary my-4">Update Account</button>
             </form>
         </div>
     </div>
