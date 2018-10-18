@@ -1,24 +1,5 @@
-<?php $this->load->view('components/_alert') ?>
+<?php $this->load->view('components/_banner_control') ?>
 
-<div class="app-banner">
-    <div class="container">
-        <h3>Active Application Directory</h3>
-        <p>
-            Single sign-on (SSO) a gate for user authentication service that permits to access Transcon Indonesia<br>
-            management system use one set of login credentials
-        </p>
-        <div class="btn-section-wrapper">
-            <a href="#" class="btn btn-section active">Application</a>
-            <a href="#" class="btn btn-section">Manage</a>
-            <a href="#" class="btn btn-section">Notification</a>
-        </div>
-    </div>
-</div>
-<div class="app-banner-description">
-    <div class="container">
-        Applications supporting single sign on and full user management
-    </div>
-</div>
 <div class="container app-wrapper">
     <div class="row">
         <?php foreach ($applications as $application): ?>

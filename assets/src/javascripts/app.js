@@ -22,4 +22,40 @@ $(document).on('click', '.btn-simple-upload', function () {
     $(this).closest('.form-group').find('[type=file]').click();
 });
 
+// One touch on submit
+function checkOnTouchSubmit(form) {
+    let buttonSubmit = $(form).find('[data-toggle=one-touch]');
+    if (buttonSubmit.length) {
+        let message = buttonSubmit.data('touch-message');
+        if (message === undefined) {
+            message = 'Submitted...';
+        }
+        buttonSubmit.attr('disabled', true).html(message);
+    }
+}
+
+$('form').on('submit', function (e) {
+    if ($(this).attr('novalidate') !== undefined) {
+        if ($(this).valid()) {
+            checkOnTouchSubmit($(this));
+        }
+    }
+    return true;
+});
+
+$('.btn-section').on('mouseover', function () {
+    let sectionTitle = $(this).data('title');
+    $('.app-banner-description').find('.container').text(sectionTitle);
+});
+$('.btn-section').on('mouseleave', setBannerDescription);
+
+function setBannerDescription() {
+    let sectionTitle = $('.btn-section.active').data('title');
+    $('.app-banner-description').find('.container').text(sectionTitle);
+}
+
+setBannerDescription();
+
+require('./components/delete');
+
 import '../sass/app.scss';

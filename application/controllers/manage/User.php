@@ -2,11 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Class Account
+ * Class User
  * @property UserModel $user
  * @property Uploader $uploader
+ * @property Exporter $exporter
  */
-class Account extends App_Controller
+class User extends App_Controller
 {
     /**
      * Account constructor.
@@ -17,6 +18,7 @@ class Account extends App_Controller
 
         $this->load->model('UserModel', 'user');
         $this->load->model('modules/Uploader', 'uploader');
+        $this->load->model('modules/Exporter', 'exporter');
     }
 
     /**
@@ -57,51 +59,45 @@ class Account extends App_Controller
     }
 
     /**
-     * Show account preferences.
+     * Show user data.
      */
     public function index()
     {
-        $user = $this->user->getById(AuthModel::loginData('id'));
+        $filters = array_merge($_GET, ['page' => get_url_param('page', 1)]);
 
-        if (_is_method('put')) {
-            if($this->validate()) {
-                $name = $this->input->post('name');
-                $username = $this->input->post('username');
-                $email = $this->input->post('email');
-                $newPassword = $this->input->post('new_password');
+        $export = $this->input->get('export');
+        if ($export) unset($filters['page']);
 
-                $dataAccount = [
-                    'name' => $name,
-                    'username' => $username,
-                    'email' => $email
-                ];
+        $users = $this->user->getAll($filters);
 
-                if (!empty($_FILES['avatar']['name'])) {
-                    if ($this->uploader->uploadTo('avatar', ['destination' => 'avatars/' . date('Y/m')])) {
-                        $uploadedData = $this->uploader->getUploadedData();
-                        $dataAccount['avatar'] = $uploadedData['uploaded_path'];
-                        $this->uploader->delete($user['avatar']);
-                    } else {
-                        flash('danger', $this->uploader->getDisplayErrors(), 'account');
-                    }
-                }
+        if ($export) {
+            $this->exporter->exportFromArray('Users', $users);
+        }
 
-                if (!empty($newPassword)) {
-                    $dataAccount['password'] = password_hash($newPassword, CRYPT_BLOWFISH);
-                }
+        $this->render('user/index', compact('users'));
 
-                $userId = AuthModel::loginData('id');
-                $update = $this->user->update($dataAccount, $userId);
+    }
 
-                if ($update) {
-                    flash('success', 'Your account was successfully updated', 'account');
-                } else {
-                    flash('danger', 'Update account failed, try again or contact administrator');
-                }
+    /**
+     * Perform deleting user data.
+     *
+     * @param $id
+     */
+    public function delete($id)
+    {
+        $user = $this->user->getById($id);
+
+        if ($user['username'] == 'admin') {
+            flash('danger', 'Administrator is reserved user.');
+        } else {
+            if ($this->user->delete($id)) {
+                flash('success', __('entity_deleted', ['title' => $user['name']]));
+            } else {
+                flash('danger', __('entity_error'));
             }
         }
 
-        $this->render('account/index', compact('user'));
+        redirect('manage/user');
     }
 
 }

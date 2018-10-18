@@ -17,6 +17,11 @@
       background: $primary;
       color: $light;
     }
+
+    &:hover:not(.active) {
+      background: lighten($primary, 10%);
+      color: $light;
+    }
   }
 }
 
