@@ -44,6 +44,11 @@ label {
 
 ::placeholder {
   font-size: 0.9rem;
+  color: darken($light-gray, 5%) !important;
+}
+
+.form-control:disabled, .form-control[readonly] {
+  background-color: lighten($light-gray, 33%);
 }
 
 .form-section-title {
@@ -65,6 +70,7 @@ label {
 .form-group .file-upload-default {
   visibility: hidden;
   position: absolute;
+  left: -9999px;
 }
 
 .form-group .file-upload-info {

@@ -24,8 +24,8 @@
                         <div class="form-group">
                             <label for="version">Version</label>
                             <input type="text" class="form-control" id="version" name="version"
-                                   placeholder="Put app version eg. v2.1-RC" required maxlength="20"
-                                   value="<?= set_value('version') ?>">
+                                   placeholder="Put app initial version eg. v2.1-RC" required maxlength="20"
+                                   value="<?= set_value('version', 'v0.1') ?>">
                             <?= form_error('version') ?>
                         </div>
                     </div>

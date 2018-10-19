@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label" for="email">URL</label>
+                                <label class="col-sm-3 col-form-label" for="url">URL</label>
                                 <div class="col-sm-9">
                                     <p class="form-control-plaintext" id="url">
                                         <a href="<?= $application['url'] ?>"><?= $application['url'] ?></a>
@@ -55,9 +55,9 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label" for="email">Icon</label>
+                                <label class="col-sm-3 col-form-label" for="icon">Icon</label>
                                 <div class="col-sm-9">
-                                    <p class="form-control-plaintext" id="url">
+                                    <p class="form-control-plaintext" id="icon">
                                         <span class="mdi <?= $application['icon'] ?> mr-2"></span>
                                         <?= $application['icon'] ?>
                                     </p>
@@ -78,9 +78,9 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label" for="color">Order</label>
+                                <label class="col-sm-3 col-form-label" for="order">Order</label>
                                 <div class="col-sm-9">
-                                    <p class="form-control-plaintext" id="color">
+                                    <p class="form-control-plaintext" id="order">
                                         <?= $application['order'] ?>
                                     </p>
                                 </div>

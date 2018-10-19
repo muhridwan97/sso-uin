@@ -59,8 +59,7 @@
                             </td>
                             <td class="text-right">
                                 <div class="dropdown">
-                                    <button class="btn btn-light btn-sm dropdown-toggle" type="button"
-                                            data-toggle="dropdown">
+                                    <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                                         Action
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right">
@@ -72,7 +71,7 @@
                                         </a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
-                                           data-id="<?= $user['id'] ?>" data-label="<?= $user['name'] ?>" data-title="Employee"
+                                           data-id="<?= $user['id'] ?>" data-label="<?= $user['name'] ?>" data-title="User"
                                            data-url="<?= site_url('manage/user/delete/' . $user['id']) ?>">
                                             <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
                                         </a>

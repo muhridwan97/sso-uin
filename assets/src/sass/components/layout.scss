@@ -39,6 +39,14 @@ b, strong {
   bottom: 0;
 }
 
+.wrapper {
+  padding-top: 56px;
+
+  @media (min-width: 576px) {
+    padding-top: 72px;
+  }
+}
+
 .content-wrapper {
   padding-top: 15px;
   padding-bottom: 20px;

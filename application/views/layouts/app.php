@@ -17,7 +17,7 @@
 </head>
 
 <body class="has-sticky-footer">
-<nav id="main-navbar" class="navbar navbar-expand-lg navbar-light shadow-sm sticky-top py-2 py-sm-3" style="background: white">
+<nav id="main-navbar" class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top py-2 py-sm-3" style="background: white">
     <div class="container">
         <span class="navbar-brand"><?= $this->config->item('app_name') ?></span>
         <ul class="navbar-nav ml-auto">
@@ -39,9 +39,11 @@
     </div>
 </nav>
 
-<?php $this->load->view('components/_alert_block') ?>
+<div class="wrapper">
+    <?php $this->load->view('components/_alert_block') ?>
 
-<?php $this->load->view($page, $data) ?>
+    <?php $this->load->view($page, $data) ?>
+</div>
 
 <?php $this->load->view('components/_footer') ?>
 

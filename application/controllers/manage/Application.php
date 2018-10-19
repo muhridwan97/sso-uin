@@ -4,7 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class Application
  * @property ApplicationModel $application
- * @property Uploader $uploader
  * @property Exporter $exporter
  */
 class Application extends App_Controller
@@ -23,10 +22,9 @@ class Application extends App_Controller
     /**
      * Set validation rules.
      *
-     * @param int $applicationId
      * @return array
      */
-    protected function _validation_rules($applicationId = 0)
+    protected function _validation_rules()
     {
         return [
             'title' => 'trim|required|max_length[50]',
@@ -95,7 +93,6 @@ class Application extends App_Controller
             $icon = $this->input->post('icon');
 
             $this->db->trans_start();
-
 
             $this->application->create([
                 'title' => $title,
