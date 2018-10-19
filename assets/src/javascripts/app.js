@@ -63,6 +63,17 @@ $('#pick-icons').on('click', 'div', function () {
     $('input[name=icon]').val($.trim($(this).find('span').text()));
 });
 
+$('.pick-icon-search').on('keyup', function () {
+    let search = $(this).val();
+    $('#pick-icons').find('span').each(function (index, el) {
+        if(!$(el).text().includes(search)) {
+            $(el).parent().hide();
+        } else {
+            $(el).parent().show();
+        }
+    });
+});
+
 require('./components/delete');
 
 import '../sass/app.scss';

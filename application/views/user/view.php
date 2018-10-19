@@ -12,12 +12,12 @@
                         <div class="col-lg-2">
                             <div class="rounded my-3" style="height:100px; width: 100px; background: url('<?= base_url(if_empty($user['avatar'], 'assets/dist/img/no-avatar.png', '/uploads/')) ?>') center center / cover"></div>
                         </div>
-                        <div class="col-lg-10 pt-lg-3">
+                        <div class="col-lg-10">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label" for="name">Name</label>
-                                        <div class="col-sm-9">
+                                        <label class="col-sm-4 col-form-label" for="name">Name</label>
+                                        <div class="col-sm-8">
                                             <p class="form-control-plaintext" id="name">
                                                 <?= $user['name'] ?>
                                             </p>
@@ -26,8 +26,8 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label" for="username">Username</label>
-                                        <div class="col-sm-9">
+                                        <label class="col-sm-4 col-form-label" for="username">Username</label>
+                                        <div class="col-sm-8">
                                             <p class="form-control-plaintext" id="username">
                                                 <?= $user['username'] ?>
                                             </p>
@@ -38,8 +38,8 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label" for="email">Email</label>
-                                        <div class="col-sm-9">
+                                        <label class="col-sm-4 col-form-label" for="email">Email</label>
+                                        <div class="col-sm-8">
                                             <p class="form-control-plaintext" id="email">
                                                 <?= $user['email'] ?>
                                             </p>
@@ -48,10 +48,32 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label" for="status">Status</label>
-                                        <div class="col-sm-9">
+                                        <label class="col-sm-4 col-form-label" for="status">Status</label>
+                                        <div class="col-sm-8">
                                             <p class="form-control-plaintext" id="status">
                                                 <?= $user['status'] ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="created_at">Created At</label>
+                                        <div class="col-sm-8">
+                                            <p class="form-control-plaintext" id="created_at">
+                                                <?= format_date($user['created_at'], 'd F Y H:i') ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="updated_at">Updated At</label>
+                                        <div class="col-sm-8">
+                                            <p class="form-control-plaintext" id="updated_at">
+                                                <?= format_date($user['updated_at'], 'd F Y H:i') ?>
                                             </p>
                                         </div>
                                     </div>

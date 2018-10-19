@@ -1,3 +1,4 @@
+<input type="search" class="form-control pick-icon-search" placeholder="Search icon">
 <div class="icons-wrapper" id="pick-icons">
     <div><i class="mdi mdi-access-point"></i><span>mdi-access-point</span></div>
     <div><i class="mdi mdi-access-point-network"></i><span>mdi-access-point-network</span></div>
