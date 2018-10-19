@@ -43,7 +43,7 @@
             </div>
         </div>
         <button type="submit" class="btn btn-block btn-primary mb-3">Register</button>
-        <div class="text-center">
+        <div class="text-center auth-control">
             Already have and account ?
             <a href="<?= site_url('auth/login') ?>">
                 Sign In

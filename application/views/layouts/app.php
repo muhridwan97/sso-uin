@@ -20,16 +20,19 @@
 <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light shadow-sm sticky-top py-3" style="background: white">
     <div class="container">
         <span class="navbar-brand"><?= $this->config->item('app_name') ?></span>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <form class="form-inline ml-auto">
-                <a class="btn btn-sm btn-outline-danger" href="<?= site_url('auth/logout') ?>">
-                    Sign Out
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link p-0" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="rounded-circle" style="height: 40px; width: 40px; background: url('<?= base_url(if_empty(AuthModel::loginData('avatar'), 'assets/dist/img/no-avatar.png', 'uploads/')) ?>') center center / cover"></div>
                 </a>
-            </form>
-        </div>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="<?= site_url('account') ?>">My Account</a>
+                    <a class="dropdown-item" href="<?= site_url('notification') ?>">Notification</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?= site_url('auth/logout') ?>">Sign Out</a>
+                </div>
+            </li>
+        </ul>
     </div>
 </nav>
 

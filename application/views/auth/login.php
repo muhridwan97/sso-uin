@@ -34,7 +34,7 @@
             </div>
         </div>
         <button type="submit" class="btn btn-block btn-primary mb-3">Sign In</button>
-        <div class="text-center">
+        <div class="text-center auth-control">
             Not a member ?
             <a href="<?= site_url('auth/register') ?>">
                 Create new account

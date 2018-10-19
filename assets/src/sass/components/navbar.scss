@@ -1,0 +1,9 @@
+.navbar-light .navbar-brand {
+  font-weight: $weight-bold;
+  color: $dark;
+}
+
+// trick dropdown navbar bootstrap without collapse menu
+.navbar .navbar-nav .dropdown-menu {
+  position: absolute;
+}
