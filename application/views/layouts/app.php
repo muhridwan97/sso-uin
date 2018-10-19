@@ -17,13 +17,13 @@
 </head>
 
 <body class="has-sticky-footer">
-<nav id="main-navbar" class="navbar navbar-expand-lg navbar-light shadow-sm sticky-top py-3" style="background: white">
+<nav id="main-navbar" class="navbar navbar-expand-lg navbar-light shadow-sm sticky-top py-2 py-sm-3" style="background: white">
     <div class="container">
         <span class="navbar-brand"><?= $this->config->item('app_name') ?></span>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link p-0" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <div class="rounded-circle" style="height: 40px; width: 40px; background: url('<?= base_url(if_empty(AuthModel::loginData('avatar'), 'assets/dist/img/no-avatar.png', 'uploads/')) ?>') center center / cover"></div>
+                    <div class="rounded-circle" style="height: 37px; width: 37px; background: url('<?= base_url(if_empty(AuthModel::loginData('avatar'), 'assets/dist/img/no-avatar.png', 'uploads/')) ?>') center center / cover"></div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="<?= site_url('account') ?>">My Account</a>

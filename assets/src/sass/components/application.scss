@@ -7,11 +7,36 @@
     margin-top: 30px;
   }
 
+  .banner-title {
+    font-size: 2rem;
+
+    @media (max-width: 575px) {
+      font-size: 1.2rem;
+    }
+  }
+
   .btn-section {
     background: $light;
-    border-radius: 0;
     color: $dark;
+    border-radius: 0;
     padding: .375rem 1.5rem;
+
+    @media (max-width: 575px) {
+      font-size: 0.9rem;
+      padding: .3rem 1rem;
+      background: transparent;
+      color: $light;
+
+      &.active {
+        background: $light !important;
+        color: $dark !important;
+      }
+
+      &:hover:not(.active) {
+        background: $light;
+        color: lighten($primary, 10%);
+      }
+    }
 
     &.active {
       background: $primary;
@@ -32,17 +57,20 @@
 }
 
 .app-wrapper {
-  padding: 30px 0;
+  padding-top: 30px;
+  padding-bottom: 30px;
 
   @media (min-width: 576px) {
-    padding: 50px 0;
+    padding-top: 50px;
+    padding-bottom: 50px;
   }
 }
 
 .card-app {
-  padding-right: 30px;
-  padding-left: 30px;
-  margin-bottom: 40px;
+  @media (min-width: 576px) {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
 
   a {
     color: $dark;
@@ -61,24 +89,35 @@
       .app-subtitle {
         color: darken($light-gray, 30%);
       }
-      .app-icon {
-        font-size: 7rem;
+      @media (min-width: 576px) {
+        .app-icon {
+          font-size: 7rem;
+        }
       }
     }
   }
 
   .app-icon {
     transition: all 100ms;
-    font-size: 6.6rem;
+    font-size: 3rem;
     line-height: 1;
+
+    @media (min-width: 576px) {
+      font-size: 6.6rem;
+    }
   }
 
   .card {
     position: relative;
     border: none;
     box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.15);
-    min-height: 200px;
     overflow: hidden;
+    min-width: 92px;
+
+    @media (min-width: 576px) {
+      min-width: auto;
+      min-height: 200px;
+    }
 
     &:after {
       transition: all 100ms;
@@ -93,8 +132,11 @@
   }
 
   .card-title {
-    margin-top: 20px;
     margin-bottom: 0;
+
+    @media (min-width: 576px) {
+      margin-top: 20px;
+    }
 
     .app-title {
       transition: all 100ms;
@@ -117,8 +159,4 @@
       color: $primary;
     }
   }
-}
-
-.bg-blue {
-  background-color: #5096ff;
 }
