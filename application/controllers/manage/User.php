@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Class User
+ * @property ApplicationModel $application
+ * @property UserApplicationModel $userApplication
  * @property UserModel $user
  * @property Uploader $uploader
  * @property Exporter $exporter
@@ -16,6 +18,8 @@ class User extends App_Controller
     {
         parent::__construct();
 
+        $this->load->model('ApplicationModel', 'application');
+        $this->load->model('UserApplicationModel', 'userApplication');
         $this->load->model('UserModel', 'user');
         $this->load->model('modules/Uploader', 'uploader');
         $this->load->model('modules/Exporter', 'exporter');
@@ -85,7 +89,9 @@ class User extends App_Controller
      */
     public function create()
     {
-        $this->render('user/create');
+        $applications = $this->application->getAll();
+
+        $this->render('user/create', compact('applications'));
     }
 
     /**
@@ -99,6 +105,7 @@ class User extends App_Controller
             $email = $this->input->post('email');
             $status = $this->input->post('status');
             $password = $this->input->post('password');
+            $applications = $this->input->post('applications');
 
             $this->db->trans_start();
 
@@ -120,6 +127,16 @@ class User extends App_Controller
                 'avatar' => $avatar,
                 'password' => password_hash($password, CRYPT_BLOWFISH),
             ]);
+            $userId = $this->db->insert_id();
+
+            foreach ($applications as $application) {
+                if (!empty($application)) {
+                    $this->userApplication->create([
+                        'id_user' => $userId,
+                        'id_application' => $application
+                    ]);
+                }
+            }
 
             $this->db->trans_complete();
 
@@ -141,7 +158,20 @@ class User extends App_Controller
     {
         $user = $this->user->getById($id);
 
-        $this->render('user/edit', compact('user'));
+        $applications = $this->application->getAll();
+
+        $userApplications = $this->userApplication->getBy(['id_user' => $id]);
+        $selectedApps = array_column($userApplications, 'id_application');
+
+        foreach ($applications as &$application) {
+            if (in_array($application['id'], $selectedApps)) {
+                $application['_selected'] = true;
+            } else {
+                $application['_selected'] = false;
+            }
+        }
+
+        $this->render('user/edit', compact('user', 'applications'));
     }
 
     /**
@@ -157,6 +187,7 @@ class User extends App_Controller
             $email = $this->input->post('email');
             $status = $this->input->post('status');
             $password = $this->input->post('password');
+            $applications = $this->input->post('applications');
 
             $user = $this->user->getById($id);
 
@@ -167,7 +198,7 @@ class User extends App_Controller
                 if ($this->uploader->uploadTo('avatar', ['destination' => 'avatars/' . date('Y/m')])) {
                     $uploadedData = $this->uploader->getUploadedData();
                     $avatar = $uploadedData['uploaded_path'];
-                    if(!empty($user['avatar'])) {
+                    if (!empty($user['avatar'])) {
                         $this->uploader->delete($user['avatar']);
                     }
                 } else {
@@ -183,6 +214,16 @@ class User extends App_Controller
                 'avatar' => $avatar,
                 'password' => password_hash($password, CRYPT_BLOWFISH),
             ], $id);
+
+            $this->userApplication->delete(['id_user' => $id]);
+            foreach ($applications as $applicationId) {
+                if (!empty($applicationId)) {
+                    $this->userApplication->create([
+                        'id_user' => $id,
+                        'id_application' => $applicationId
+                    ]);
+                }
+            }
 
             $this->db->trans_complete();
 

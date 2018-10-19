@@ -57,6 +57,9 @@ label {
 .form-group + .form-section-title {
   margin-top: 35px;
 }
+.row + .form-section-title {
+  margin-top: 20px;
+}
 
 .form-group .file-upload-default {
   visibility: hidden;

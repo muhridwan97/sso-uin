@@ -10,6 +10,7 @@
                 <form action="<?= site_url('manage/user/update/' . $user['id']) ?>" method="post" enctype="multipart/form-data">
                     <?= _csrf() ?>
                     <?= _method('put') ?>
+                    <p class="form-section-title">Profile Info</p>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -88,6 +89,24 @@
                                 <?= form_error('confirm_password') ?>
                             </div>
                         </div>
+                    </div>
+
+                    <p class="form-section-title">Application Access</p>
+                    <div class="row">
+                        <?php foreach ($applications as $application): ?>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" class="custom-control-input"
+                                               id="application_<?= $application['id'] ?>" name="applications[]"
+                                               value="<?= $application['id'] ?>"<?= set_checkbox('applications[]', $application['id'], $application['_selected']) ?>>
+                                        <label class="custom-control-label" for="application_<?= $application['id'] ?>">
+                                            <?= $application['title'] ?>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                     <button type="submit" class="btn btn-success my-4">Update User</button>
                 </form>
