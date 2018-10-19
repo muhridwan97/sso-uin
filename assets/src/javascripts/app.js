@@ -56,6 +56,13 @@ function setBannerDescription() {
 
 setBannerDescription();
 
+
+$('#pick-icons').on('click', 'div', function () {
+    $('#pick-icons > div').removeClass('active');
+    $(this).addClass('active');
+    $('input[name=icon]').val($.trim($(this).find('span').text()));
+});
+
 require('./components/delete');
 
 import '../sass/app.scss';

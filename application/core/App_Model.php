@@ -209,11 +209,18 @@ class App_Model extends CI_Model
     /**
      * Get total model data.
      *
+     * @param bool $withTrashed
      * @return int
      */
-    public function getTotal()
+    public function getTotal($withTrashed = false)
     {
-        return $this->db->count_all_results($this->table);
+        $query = $this->db->from($this->table);
+
+        if (!$withTrashed && $this->db->field_exists('is_deleted', $this->table)) {
+            $query->where($this->table . '.is_deleted', false);
+        }
+
+        return $query->count_all_results();
     }
 
     /**

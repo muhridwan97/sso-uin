@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class User extends App_Controller
 {
     /**
-     * Account constructor.
+     * User constructor.
      */
     public function __construct()
     {

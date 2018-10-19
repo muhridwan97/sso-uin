@@ -23,17 +23,17 @@
                                     <option value="created_at"<?= set_select('sort_by', 'created_at', get_url_param('sort_by') == 'created_at') ?>>
                                         CREATED AT
                                     </option>
-                                    <option value="name"<?= set_select('sort_by', 'name', get_url_param('sort_by') == 'name') ?>>
-                                        NAME
+                                    <option value="name"<?= set_select('sort_by', 'title', get_url_param('sort_by') == 'title') ?>>
+                                        TITLE
                                     </option>
-                                    <option value="username"<?= set_select('sort_by', 'username', get_url_param('sort_by') == 'username') ?>>
-                                        USERNAME
+                                    <option value="description"<?= set_select('sort_by', 'description', get_url_param('sort_by') == 'description') ?>>
+                                        DESCRIPTION
                                     </option>
-                                    <option value="email"<?= set_select('sort_by', 'email', get_url_param('sort_by') == 'email') ?>>
-                                        EMAIL
+                                    <option value="version"<?= set_select('sort_by', 'version', get_url_param('sort_by') == 'version') ?>>
+                                        VERSION
                                     </option>
-                                    <option value="status"<?= set_select('sort_by', 'status', get_url_param('sort_by') == 'status') ?>>
-                                        STATUS
+                                    <option value="order"<?= set_select('sort_by', 'order', get_url_param('sort_by') == 'order') ?>>
+                                        ORDER
                                     </option>
                                 </select>
                                 <?= form_error('sort_by'); ?>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="<?= site_url('manage/user') ?>" class="btn btn-sm btn-light">
+                    <a href="<?= site_url('manage/application') ?>" class="btn btn-sm btn-light">
                         RESET
                     </a>
                     <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">
