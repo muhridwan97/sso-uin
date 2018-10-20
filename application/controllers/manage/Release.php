@@ -21,6 +21,10 @@ class Release extends App_Controller
         $this->load->model('ApplicationReleaseModel', 'applicationRelease');
         $this->load->model('modules/Uploader', 'uploader');
         $this->load->model('modules/Exporter', 'exporter');
+
+        $this->setFilterMethods([
+            'change_logs' => 'GET'
+        ]);
     }
 
     /**
@@ -73,6 +77,19 @@ class Release extends App_Controller
     }
 
     /**
+     * Show application logs release.
+     *
+     * @param $applicationId
+     */
+    public function change_logs($applicationId)
+    {
+        $application = $this->application->getById($applicationId);
+        $applicationReleases = $this->applicationRelease->getBy(['id_application' => $applicationId]);
+
+        $this->render('release/logs', compact('application', 'applicationReleases'));
+    }
+
+    /**
      * Show form create application release.
      */
     public function create()
@@ -119,6 +136,10 @@ class Release extends App_Controller
                 'description' => $description,
                 'release_date' => format_date($releaseDate),
             ]);
+
+            $this->application->update([
+                'version' => $version
+            ], $applicationId);
 
             $this->db->trans_complete();
 

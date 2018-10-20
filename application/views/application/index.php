@@ -6,8 +6,9 @@
             <?php $this->load->view('components/_sidebar_nav') ?>
         </div>
         <div class="col-md-9 col-lg-10">
-            <div class="d-flex justify-content-between">
-                <h4 class="card-title pt-2">Applications</h4>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="card-title mb-1">Applications</h4>
+                <span class="text-muted d-none d-sm-block ml-2 mr-auto text-light-gray">a list of system collection</span>
                 <div>
                     <a href="#modal-filter" data-toggle="modal" class="btn btn-outline-primary btn-sm pr-2 pl-2">
                         <i class="mdi mdi-filter-variant"></i>
@@ -21,23 +22,13 @@
                 </div>
             </div>
             <div class="<?= $applications['total_data'] > 3 ? 'table-responsive' : '' ?>">
-                <table class="table table-hover mt-3" id="table-users">
-                    <thead>
-                    <tr>
-                        <th class="text-center" style="width: 60px">No</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Version</th>
-                        <th>Release</th>
-                        <th style="width: 80px">Action</th>
-                    </tr>
-                    </thead>
+                <table class="table table-sm table-hover mt-3" id="table-application">
                     <tbody>
                     <?php $no = isset($applications) ? ($applications['current_page'] - 1) * $applications['per_page'] : 0 ?>
                     <?php foreach ($applications['data'] as $application): ?>
                         <tr>
                             <td class="text-center"><?= ++$no ?></td>
-                            <td>
+                            <td class="font-weight-bold">
                                 <a href="<?= $application['url'] ?>">
                                     <?= $application['title'] ?>
                                 </a>

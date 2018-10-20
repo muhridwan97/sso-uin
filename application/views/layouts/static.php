@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.8.94/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="<?= base_url('assets/dist/app.css') ?>">
 </head>
 

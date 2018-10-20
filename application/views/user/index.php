@@ -6,8 +6,9 @@
             <?php $this->load->view('components/_sidebar_nav') ?>
         </div>
         <div class="col-md-9 col-lg-10">
-            <div class="d-flex justify-content-between">
-                <h4 class="card-title pt-2">Users</h4>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="card-title mb-1">Users</h4>
+                <span class="text-muted d-none d-sm-block ml-2 mr-auto text-light-gray">a list of accounts and editor</span>
                 <div>
                     <a href="#modal-filter" data-toggle="modal" class="btn btn-outline-primary btn-sm pr-2 pl-2">
                         <i class="mdi mdi-filter-variant"></i>
@@ -21,22 +22,12 @@
                 </div>
             </div>
             <div class="<?= $users['total_data'] > 3 ? 'table-responsive' : '' ?>">
-                <table class="table table-hover mt-3" id="table-users">
-                    <thead>
-                    <tr>
-                        <th class="text-center" style="width: 60px">No</th>
-                        <th>Name</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th style="width: 80px">Action</th>
-                    </tr>
-                    </thead>
+                <table class="table table-sm table-hover mt-3" id="table-user">
                     <tbody>
                     <?php
                     $statuses = [
                         UserModel::STATUS_ACTIVATED => 'success',
-                        UserModel::STATUS_PENDING => 'info',
+                        UserModel::STATUS_PENDING => 'primary',
                         UserModel::STATUS_SUSPENDED => 'danger',
                     ]
                     ?>
@@ -44,14 +35,16 @@
                     <?php foreach ($users['data'] as $user): ?>
                         <tr>
                             <td class="text-center"><?= ++$no ?></td>
-                            <td>
+                            <td class="font-weight-bold">
                                 <div class="d-flex flex-row align-items-center">
-                                    <div class="rounded mr-2" style="height:40px; width: 40px; background: url('<?= base_url(if_empty($user['avatar'], 'assets/dist/img/no-avatar.png', 'uploads/')) ?>') center center / cover"></div>
+                                    <div class="rounded mr-3" style="height:40px; width: 40px; background: url('<?= base_url(if_empty($user['avatar'], 'assets/dist/img/no-avatar.png', 'uploads/')) ?>') center center / cover"></div>
                                     <?= $user['name'] ?>
                                 </div>
                             </td>
                             <td><?= $user['username'] ?></td>
-                            <td><?= $user['email'] ?></td>
+                            <td>
+                                <a href="mailto:<?= $user['email'] ?>"><?= $user['email'] ?></a>
+                            </td>
                             <td>
                                 <label class="badge badge-<?= $statuses[$user['status']] ?>">
                                     <?= $user['status'] ?>

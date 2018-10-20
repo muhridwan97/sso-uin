@@ -58,3 +58,5 @@ $route['migrate/(.+)'] = 'console/migrate/$1';
 
 $route['automate'] = 'console/automate';
 $route['automate/(.+)'] = 'console/automate/$1';
+
+$route['app/change-logs/(:num)'] = 'manage/release/change-logs/$1';

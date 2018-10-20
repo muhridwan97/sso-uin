@@ -6,8 +6,9 @@
             <?php $this->load->view('components/_sidebar_nav') ?>
         </div>
         <div class="col-md-9 col-lg-10">
-            <div class="d-flex justify-content-between">
-                <h4 class="card-title pt-2">Releases</h4>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="card-title mb-1">Releases</h4>
+                <span class="text-muted d-none d-sm-block ml-2 mr-auto text-light-gray">logs of deployments schedule</span>
                 <div>
                     <a href="#modal-filter" data-toggle="modal" class="btn btn-outline-primary btn-sm pr-2 pl-2">
                         <i class="mdi mdi-filter-variant"></i>
@@ -21,26 +22,29 @@
                 </div>
             </div>
             <div class="<?= $applicationReleases['total_data'] > 3 ? 'table-responsive' : '' ?>">
-                <table class="table table-hover mt-3" id="table-users">
-                    <thead>
-                    <tr>
-                        <th class="text-center" style="width: 60px">No</th>
-                        <th>Application</th>
-                        <th>Version</th>
-                        <th>Label</th>
-                        <th>Released At</th>
-                        <th style="width: 80px">Action</th>
-                    </tr>
-                    </thead>
+                <table class="table table-sm table-hover mt-3" id="table-release">
                     <tbody>
+                    <?php
+                    $statuses = [
+                        ApplicationReleaseModel::LABEL_RELEASE => 'success',
+                        ApplicationReleaseModel::LABEL_DRAFT => 'light',
+                        ApplicationReleaseModel::LABEL_RC => 'primary',
+                        ApplicationReleaseModel::LABEL_ALPHA => 'warning',
+                        ApplicationReleaseModel::LABEL_BETA => 'danger',
+                    ]
+                    ?>
                     <?php $no = isset($applicationReleases) ? ($applicationReleases['current_page'] - 1) * $applicationReleases['per_page'] : 0 ?>
                     <?php foreach ($applicationReleases['data'] as $release): ?>
                         <tr>
                             <td class="text-center"><?= ++$no ?></td>
-                            <td><?= $release['application_title'] ?></td>
+                            <td class="font-weight-bold"><?= $release['application_title'] ?></td>
                             <td><?= $release['version'] ?></td>
-                            <td><?= $release['label'] ?></td>
-                            <td><?= format_date($release['release_date'], 'd F Y') ?></td>
+                            <td class="text-sm-right">
+                                <span class="badge badge-<?= $statuses[$release['label']] ?> mr-2">
+                                    <?= $release['label'] ?>
+                                </span>
+                            </td>
+                            <td>at <?= format_date($release['release_date'], 'd F Y') ?></td>
                             <td class="text-right">
                                 <div class="dropdown">
                                     <button class="btn btn-light btn-sm dropdown-toggle" type="button"

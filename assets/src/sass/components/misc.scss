@@ -25,3 +25,15 @@
   box-shadow: 0 0 19px 0 rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(0, 0, 0, .07);
 }
+
+.font-weight-bold {
+  font-weight: $weight-bold !important;
+}
+
+.table td, .table th {
+  border-top: 1px solid lighten($light-gray, 30%);
+}
+
+.text-light-gray {
+  color: $light-gray !important;
+}
