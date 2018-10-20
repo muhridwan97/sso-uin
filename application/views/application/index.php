@@ -21,53 +21,51 @@
                     </a>
                 </div>
             </div>
-            <div class="<?= $applications['total_data'] > 3 ? 'table-responsive' : '' ?>">
-                <table class="table table-sm table-hover mt-3" id="table-application">
-                    <tbody>
-                    <?php $no = isset($applications) ? ($applications['current_page'] - 1) * $applications['per_page'] : 0 ?>
-                    <?php foreach ($applications['data'] as $application): ?>
-                        <tr>
-                            <td class="text-center"><?= ++$no ?></td>
-                            <td class="font-weight-bold">
-                                <a href="<?= $application['url'] ?>">
-                                    <?= $application['title'] ?>
-                                </a>
-                            </td>
-                            <td><?= $application['description'] ?></td>
-                            <td><?= $application['version'] ?></td>
-                            <td><?= $application['total_release'] ?>x</td>
-                            <td class="text-right">
-                                <div class="dropdown">
-                                    <button class="btn btn-light btn-sm dropdown-toggle" type="button"
-                                            data-toggle="dropdown">
-                                        Action
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="<?= site_url('manage/application/view/' . $application['id']) ?>">
-                                            <i class="mdi mdi-eye-outline mr-2"></i> View
-                                        </a>
-                                        <a class="dropdown-item" href="<?= site_url('manage/application/edit/' . $application['id']) ?>">
-                                            <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
-                                           data-id="<?= $application['id'] ?>" data-label="<?= $application['title'] ?>" data-title="Application"
-                                           data-url="<?= site_url('manage/application/delete/' . $application['id']) ?>">
-                                            <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
-                                        </a>
-                                    </div>
+            <table class="table table-sm table-hover mt-3 responsive" id="table-application">
+                <tbody>
+                <?php $no = isset($applications) ? ($applications['current_page'] - 1) * $applications['per_page'] : 0 ?>
+                <?php foreach ($applications['data'] as $application): ?>
+                    <tr>
+                        <td class="text-center responsive-hide"><?= ++$no ?></td>
+                        <td class="font-weight-bold">
+                            <a href="<?= $application['url'] ?>">
+                                <?= $application['title'] ?>
+                            </a>
+                        </td>
+                        <td><?= $application['description'] ?></td>
+                        <td><?= $application['version'] ?></td>
+                        <td><?= $application['total_release'] ?>x</td>
+                        <td class="text-lg-right">
+                            <div class="dropdown">
+                                <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                        data-toggle="dropdown">
+                                    Action
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="<?= site_url('manage/application/view/' . $application['id']) ?>">
+                                        <i class="mdi mdi-eye-outline mr-2"></i> View
+                                    </a>
+                                    <a class="dropdown-item" href="<?= site_url('manage/application/edit/' . $application['id']) ?>">
+                                        <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
+                                       data-id="<?= $application['id'] ?>" data-label="<?= $application['title'] ?>" data-title="Application"
+                                       data-url="<?= site_url('manage/application/delete/' . $application['id']) ?>">
+                                        <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
+                                    </a>
                                 </div>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                    <?php if (empty($applications['data'])): ?>
-                        <tr>
-                            <td colspan="6" class="text-center">No applications available</td>
-                        </tr>
-                    <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                <?php if (empty($applications['data'])): ?>
+                    <tr>
+                        <td colspan="6" class="text-center">No applications available</td>
+                    </tr>
+                <?php endif; ?>
+                </tbody>
+            </table>
             <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between mt-3">
                 <small class="text-muted mb-2">Total result <?= $applications['total_data'] ?> items</small>
                 <?php $this->load->view('components/_pagination', ['pagination' => $applications]) ?>

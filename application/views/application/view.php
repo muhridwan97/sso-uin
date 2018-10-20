@@ -103,7 +103,7 @@
                                 <label class="col-sm-3 col-form-label" for="updated_at">Updated At</label>
                                 <div class="col-sm-9">
                                     <p class="form-control-plaintext" id="updated_at">
-                                        <?= format_date($application['updated_at'], 'd F Y H:i') ?>
+                                        <?= if_empty(format_date($application['updated_at'], 'd F Y H:i'), '-') ?>
                                     </p>
                                 </div>
                             </div>

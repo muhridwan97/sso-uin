@@ -1,0 +1,50 @@
+/*
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media only screen and (max-width: 991px)  {
+
+  /* Force table to not be like tables anymore */
+  table.responsive,
+  table.responsive thead,
+  table.responsive tbody,
+  table.responsive th,
+  table.responsive td,
+  table.responsive tr {
+    display: block;
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  table.responsive thead tr,
+  table.responsive tfoot tr{
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  table.responsive tr {
+    margin-bottom: 25px;
+    border-bottom: 1px solid lighten($light-gray, 30%);
+  }
+
+  table.responsive td {
+    /* Behave  like a "row" */
+    position: relative;
+  }
+
+  table.responsive td:before {
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    top: 6px;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
+
+  table.responsive td.responsive-hide {
+    display: none;
+  }
+}
