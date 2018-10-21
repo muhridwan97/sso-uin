@@ -6,7 +6,7 @@
                 <?php $this->load->view('components/_sidebar_nav') ?>
             </div>
             <div class="col-md-9 col-lg-10">
-                <h4 class="card-title pt-2"><?= $title ?></h4>
+                <h4 class="card-title"><?= $title ?></h4>
                 <div class="form-plaintext">
                     <div class="row">
                         <div class="col-lg-6">

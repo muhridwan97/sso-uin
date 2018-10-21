@@ -35,7 +35,7 @@
                 <?php $no = isset($applicationReleases) ? ($applicationReleases['current_page'] - 1) * $applicationReleases['per_page'] : 0 ?>
                 <?php foreach ($applicationReleases['data'] as $release): ?>
                     <tr>
-                        <td class="text-center responsive-hide"><?= ++$no ?></td>
+                        <td class="text-center responsive-hide" style="width: 30px"><?= ++$no ?></td>
                         <td class="font-weight-bold"><?= $release['application_title'] ?></td>
                         <td><?= $release['version'] ?></td>
                         <td class="text-lg-right">

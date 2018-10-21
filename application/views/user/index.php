@@ -33,7 +33,7 @@
                 <?php $no = isset($users) ? ($users['current_page'] - 1) * $users['per_page'] : 0 ?>
                 <?php foreach ($users['data'] as $user): ?>
                     <tr>
-                        <td class="text-center responsive-hide"><?= ++$no ?></td>
+                        <td class="text-center responsive-hide" style="width: 30px"><?= ++$no ?></td>
                         <td class="font-weight-bold">
                             <div class="d-flex flex-row align-items-center">
                                 <div class="rounded mr-3" style="height:40px; width: 40px; background: url('<?= base_url(if_empty($user['avatar'], 'assets/dist/img/no-avatar.png', 'uploads/')) ?>') center center / cover"></div>

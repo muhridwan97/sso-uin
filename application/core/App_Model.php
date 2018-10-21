@@ -266,7 +266,7 @@ class App_Model extends CI_Model
         if (is_array($id)) {
             $condition = $id;
         }
-        if ($this->db->field_exists('updated_at', $this->table)) {
+        if ($this->db->field_exists('updated_by', $this->table)) {
             $data['updated_by'] = AuthModel::loginData('id', 0);
         }
         if ($this->db->field_exists('updated_at', $this->table)) {

@@ -2,8 +2,7 @@
     <div class="container">
         <h3 class="banner-title">Active Application Directory</h3>
         <p class="d-none d-sm-block">
-            Single sign-on (SSO) a gate for user authentication service that permits to access Transcon Indonesia<br>
-            management system use one set of login credentials
+            <?= get_setting('meta_description', 'Single sign-on (SSO) a gate for user authentication service that permits to access system use one set of login credentials') ?>
         </p>
         <div class="btn-section-wrapper">
             <?php $segment1 = $this->uri->segment(1) ?>

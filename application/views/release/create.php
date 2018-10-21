@@ -6,7 +6,7 @@
             <?php $this->load->view('components/_sidebar_nav') ?>
         </div>
         <div class="col-md-9 col-lg-10">
-            <h4 class="card-title pt-2">Publish a Version</h4>
+            <h4 class="card-title">Publish a Version</h4>
             <form action="<?= site_url('manage/release/save') ?>" method="post" enctype="multipart/form-data" id="form-release">
                 <?= _csrf() ?>
                 <div class="row">

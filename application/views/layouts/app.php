@@ -7,6 +7,8 @@
     <meta name="csrf-token" content="<?= $this->security->get_csrf_hash() ?>">
     <meta name="base-url" content="<?= site_url() ?>">
     <meta name="user-id" content="<?= AuthModel::loginData('id') ?>">
+    <meta name="description" content="<?= get_setting('meta_description') ?>">
+    <meta name="keywords" content="<?= get_setting('meta_keywords') ?>">
     <meta name="theme-color" content="#ffffff">
     <title><?= $this->config->item('app_name') ?> | <?= isset($title) ? $title : 'Home' ?></title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">

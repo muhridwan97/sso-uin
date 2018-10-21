@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Class Application
+ * Class App
  * @property ApplicationModel $application
  */
 class App extends App_Controller
@@ -22,6 +22,6 @@ class App extends App_Controller
     {
         $applications = $this->application->getAll();
 
-        $this->render('app/index', compact('applications'));
+        $this->render('application/card', compact('applications'));
     }
 }

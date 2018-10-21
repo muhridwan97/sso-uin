@@ -26,7 +26,7 @@
                 <?php $no = isset($applications) ? ($applications['current_page'] - 1) * $applications['per_page'] : 0 ?>
                 <?php foreach ($applications['data'] as $application): ?>
                     <tr>
-                        <td class="text-center responsive-hide"><?= ++$no ?></td>
+                        <td class="text-center responsive-hide" style="width: 30px"><?= ++$no ?></td>
                         <td class="font-weight-bold">
                             <div class="rounded text-white d-inline-block mr-3" style="background: <?= $application['color'] ?>">
                                 <div style="width: 40px; height:40px;" class="d-flex justify-content-center align-items-center">
