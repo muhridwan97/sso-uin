@@ -23,7 +23,8 @@ class Release extends App_Controller
         $this->load->model('modules/Exporter', 'exporter');
 
         $this->setFilterMethods([
-            'change_logs' => 'GET'
+            'change_logs' => 'GET',
+            'ajax_get_last_version' => 'GET'
         ]);
     }
 
@@ -38,16 +39,23 @@ class Release extends App_Controller
         $major = $this->input->post('major');
         $minor = $this->input->post('minor');
         $patch = $this->input->post('patch');
-        $applicationId = ['id_application' => $this->input->post('application')];
+        $label = $this->input->post('label');
+        $applicationId = [
+            'id_application' => $this->input->post('application'),
+            'application_releases.id!=' => $applicationReleaseId
+        ];
         $lastReleased = $this->applicationRelease->getBy($applicationId, true);
 
         return [
             'application' => [
-                'trim', 'required', ['version_behind', function ($field) use ($lastReleased, $major, $minor, $patch) {
-                    $this->form_validation->set_message('version_behind', 'Version before latest version is not allowed, set new version.');
-                    $currentVersion = intval($major . $minor . $patch);
-                    $latestVersion = intval($lastReleased['major'] . $lastReleased['minor'] . $lastReleased['patch']);
-                    return $currentVersion > $latestVersion;
+                'trim', 'required', ['version_behind', function ($field) use ($lastReleased, $major, $minor, $patch, $label, $applicationReleaseId) {
+                    if($applicationReleaseId == 0) {
+                        $this->form_validation->set_message('version_behind', 'Version before latest version is not allowed, set new version number or version label.');
+                        $currentVersion = intval($major . $minor . $patch);
+                        $latestVersion = intval($lastReleased['major'] . $lastReleased['minor'] . $lastReleased['patch']);
+                        return ($currentVersion > $latestVersion) || ($currentVersion == $latestVersion && $label != $lastReleased['label']);
+                    }
+                    return true;
                 }]
             ],
             'major' => 'trim|required|is_natural',
@@ -57,6 +65,19 @@ class Release extends App_Controller
             'description' => 'trim|required|min_length[20]',
             'release_date' => 'trim|required',
         ];
+    }
+
+    /**
+     * Get latest version of application.
+     *
+     * @param $applicationId
+     */
+    public function ajax_get_last_version($applicationId)
+    {
+        $applicationId = ['id_application' => $applicationId];
+        $lastReleased = $this->applicationRelease->getBy($applicationId, true);
+
+        $this->render_json($lastReleased);
     }
 
     /**
@@ -180,10 +201,10 @@ class Release extends App_Controller
      */
     public function edit($id)
     {
-        $applications = $this->application->getAll();
         $applicationRelease = $this->applicationRelease->getById($id);
+        $application = $this->application->getById($applicationRelease['id_application']);
 
-        $this->render('release/edit', compact('applications', 'applicationRelease'));
+        $this->render('release/edit', compact('application', 'applicationRelease'));
     }
 
     /**
@@ -193,7 +214,7 @@ class Release extends App_Controller
      */
     public function update($id)
     {
-        if ($this->validate()) {
+        if ($this->validate($this->_validation_rules($id))) {
             $applicationId = $this->input->post('application');
             $major = $this->input->post('major');
             $minor = $this->input->post('minor');
@@ -231,6 +252,13 @@ class Release extends App_Controller
                 'description' => $description,
                 'release_date' => format_date($releaseDate),
             ], $id);
+
+            // update only if the last release version is updated
+            if($application['version'] == $release['version']) {
+                $this->application->update([
+                    'version' => $version
+                ], $applicationId);
+            }
 
             $this->db->trans_complete();
 

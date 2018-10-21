@@ -53,7 +53,7 @@
 
                         <div class="mr-lg-3 ml-sm-4">
                             <label for="avatar">Photo</label>
-                            <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png" class="file-upload-default" data-max-size="3000000">
+                            <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png" class="file-upload-default" data-max-size="2000000">
                             <div class="input-group">
                                 <input type="text" class="form-control file-upload-info" disabled placeholder="Upload photo">
                                 <span class="input-group-append">
@@ -92,5 +92,6 @@
             </form>
         </div>
     </div>
-
 </div>
+
+<?php $this->load->view('components/modals/_alert') ?>

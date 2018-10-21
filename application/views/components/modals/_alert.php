@@ -11,7 +11,7 @@
                 <p class="lead modal-message mb-0"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">OK</button>
+                <button type="button" class="btn btn-primary btn-sm px-4" data-dismiss="modal">OK</button>
             </div>
         </div>
     </div>

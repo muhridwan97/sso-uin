@@ -39,7 +39,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="avatar">Photo</label>
-                            <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png" class="file-upload-default" data-max-size="3000000">
+                            <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png" class="file-upload-default" data-max-size="2000000">
                             <div class="input-group">
                                 <input type="text" class="form-control file-upload-info" disabled placeholder="Upload photo" value="<?= $user['avatar'] ?>">
                                 <div class="input-group-append">
@@ -113,3 +113,5 @@
         </div>
     </div>
 </div>
+
+<?php $this->load->view('components/modals/_alert') ?>

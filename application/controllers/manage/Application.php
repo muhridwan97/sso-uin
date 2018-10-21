@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class Application
  * @property ApplicationModel $application
+ * @property ApplicationReleaseModel $applicationRelease
  * @property Exporter $exporter
  */
 class Application extends App_Controller
@@ -16,6 +17,7 @@ class Application extends App_Controller
         parent::__construct();
 
         $this->load->model('ApplicationModel', 'application');
+        $this->load->model('ApplicationReleaseModel', 'applicationRelease');
         $this->load->model('modules/Exporter', 'exporter');
     }
 
@@ -103,11 +105,25 @@ class Application extends App_Controller
                 'color' => $color,
                 'icon' => $icon,
             ]);
+            $applicationId = $this->db->insert_id();
 
             $reorderApps = $this->application->getBy(['order>=' => $order]);
             foreach ($reorderApps as $reorderStage) {
                 $this->application->update(['order' => ++$order], $reorderStage['id']);
             }
+
+            $versions = preg_replace('/[vV]/', '', $version);
+            $versions = explode('.', $versions);
+
+            $this->applicationRelease->create([
+                'id_application' => $applicationId,
+                'major' => if_empty($versions[0], 0),
+                'minor' => if_empty($versions[1], 0),
+                'patch' => if_empty($versions[2], 0),
+                'description' => 'Initial release',
+                'label' => ApplicationReleaseModel::LABEL_RELEASE,
+                'release_date' => format_date('now')
+            ]);
 
             $this->db->trans_complete();
 

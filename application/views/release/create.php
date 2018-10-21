@@ -6,15 +6,15 @@
             <?php $this->load->view('components/_sidebar_nav') ?>
         </div>
         <div class="col-md-9 col-lg-10">
-            <h4 class="card-title pt-2">Draft a Release</h4>
-            <form action="<?= site_url('manage/release/save') ?>" method="post" enctype="multipart/form-data">
+            <h4 class="card-title pt-2">Publish a Version</h4>
+            <form action="<?= site_url('manage/release/save') ?>" method="post" enctype="multipart/form-data" id="form-release">
                 <?= _csrf() ?>
-                <p class="form-section-title">Profile Info</p>
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="application">Application</label>
                             <select class="custom-select" name="application" id="application" required>
+                                <option value="">-- Select application --</option>
                                 <?php foreach ($applications as $application): ?>
                                     <option value="<?= $application['id'] ?>"
                                         <?= set_select('application', $application['id'], $application['id'] == get_url_param('application_id')) ?>>
@@ -62,7 +62,7 @@
                     <?= form_error('description') ?>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label for="attachment">Attachment</label>
                             <input type="file" id="attachment" name="attachment" class="file-upload-default" data-max-size="5000000">
@@ -77,7 +77,7 @@
                             <?= form_error('attachment') ?>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-lg-6">
                         <div class="form-row">
                             <div class="col-6">
                                 <div class="form-group">
@@ -109,3 +109,5 @@
         </div>
     </div>
 </div>
+
+<?php $this->load->view('components/modals/_alert') ?>
