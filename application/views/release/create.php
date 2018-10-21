@@ -16,12 +16,13 @@
                             <label for="application">Application</label>
                             <select class="custom-select" name="application" id="application" required>
                                 <?php foreach ($applications as $application): ?>
-                                    <option value="<?= $application['id'] ?>"<?= set_select('application', $application['id']) ?>>
+                                    <option value="<?= $application['id'] ?>"
+                                        <?= set_select('application', $application['id'], $application['id'] == get_url_param('application_id')) ?>>
                                         <?= $application['title'] ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <?= form_error('name') ?>
+                            <?= form_error('application') ?>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -30,7 +31,7 @@
                                 <div class="form-group">
                                     <label for="major">Version</label>
                                     <input type="number" class="form-control" id="major" name="major"
-                                           placeholder="Major" min="0" value="<?= set_value('major') ?>">
+                                           placeholder="Major" min="0" value="<?= set_value('major', if_empty($lastReleased['major'], 1)) ?>">
                                     <?= form_error('major') ?>
                                 </div>
                             </div>
@@ -38,7 +39,7 @@
                                 <div class="form-group">
                                     <label for="minor">&nbsp;</label>
                                     <input type="number" class="form-control" id="minor" name="minor"
-                                           placeholder="Minor" min="0" value="<?= set_value('minor') ?>">
+                                           placeholder="Minor" min="0" value="<?= set_value('minor', if_empty($lastReleased['minor'], 0)) ?>">
                                     <?= form_error('minor') ?>
                                 </div>
                             </div>
@@ -46,7 +47,7 @@
                                 <div class="form-group">
                                     <label for="patch">&nbsp;</label>
                                     <input type="number" class="form-control" id="patch" name="patch"
-                                           placeholder="Patch" min="0" value="<?= set_value('patch') ?>">
+                                           placeholder="Patch" min="0" value="<?= set_value('patch', if_empty($lastReleased['patch'], 0)) ?>">
                                     <?= form_error('patch') ?>
                                 </div>
                             </div>
@@ -73,6 +74,7 @@
                                     </button>
                                 </div>
                             </div>
+                            <?= form_error('attachment') ?>
                         </div>
                     </div>
                     <div class="col-sm-6">

@@ -20,8 +20,8 @@
                             <div class="form-group">
                                 <label for="sort_by">Sort By</label>
                                 <select class="custom-select" name="sort_by" id="sort_by" required>
-                                    <option value="created_at"<?= set_select('sort_by', 'created_at', get_url_param('sort_by') == 'created_at') ?>>
-                                        CREATED AT
+                                    <option value="release_date"<?= set_select('sort_by', 'release_date', get_url_param('sort_by') == 'release_date') ?>>
+                                        RELEASED DATE
                                     </option>
                                     <option value="application_title"<?= set_select('sort_by', 'application_title', get_url_param('sort_by') == 'application_title') ?>>
                                         APPLICATION TITLE
@@ -52,6 +52,19 @@
                                 <?= form_error('order_method'); ?>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="application">Application</label>
+                        <select class="custom-select" name="application" id="application">
+                            <option value="">ALL APPLICATION</option>
+                            <?php foreach ($applications as $application): ?>
+                                <option value="<?= $application['id'] ?>"
+                                    <?= set_select('application', $application['id'], get_url_param('application') == $application['id']) ?>>
+                                    <?= $application['title'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?= form_error('order_method'); ?>
                     </div>
                 </div>
                 <div class="modal-footer">

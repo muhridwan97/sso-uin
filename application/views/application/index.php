@@ -28,13 +28,22 @@
                     <tr>
                         <td class="text-center responsive-hide"><?= ++$no ?></td>
                         <td class="font-weight-bold">
+                            <div class="rounded text-white d-inline-block mr-3" style="background: <?= $application['color'] ?>">
+                                <div style="width: 40px; height:40px;" class="d-flex justify-content-center align-items-center">
+                                    <span class="mdi <?= $application['icon'] ?>" style="font-size: 20px"></span>
+                                </div>
+                            </div>
                             <a href="<?= $application['url'] ?>">
                                 <?= $application['title'] ?>
                             </a>
                         </td>
                         <td><?= $application['description'] ?></td>
                         <td><?= $application['version'] ?></td>
-                        <td><?= $application['total_release'] ?>x</td>
+                        <td>
+                            <a href="<?= site_url('manage/release?application=' . $application['id']) ?>">
+                                <?= if_empty($application['total_release'], 0) ?>x released
+                            </a>
+                        </td>
                         <td class="text-lg-right">
                             <div class="dropdown">
                                 <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
@@ -44,6 +53,9 @@
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a class="dropdown-item" href="<?= site_url('manage/application/view/' . $application['id']) ?>">
                                         <i class="mdi mdi-eye-outline mr-2"></i> View
+                                    </a>
+                                    <a class="dropdown-item" href="<?= site_url('manage/release/create?application_id=' . $application['id']) ?>">
+                                        <i class="mdi mdi-file-upload-outline mr-2"></i> Release New
                                     </a>
                                     <a class="dropdown-item" href="<?= site_url('manage/application/edit/' . $application['id']) ?>">
                                         <i class="mdi mdi-square-edit-outline mr-2"></i> Edit

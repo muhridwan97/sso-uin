@@ -25,7 +25,8 @@
                         <div class="form-group">
                             <label for="version">Version</label>
                             <input type="text" class="form-control" id="version" name="version"
-                                   placeholder="Put app initial version eg. v2.1-RC" required maxlength="20"
+                                   placeholder="Put app current version eg. v2.1.0" required maxlength="20"
+                                   pattern="^[vV]\d+\.\d+(\.\d+)?" title="Eg. v2.1.0 or v3.0"
                                    value="<?= set_value('version', $application['version']) ?>">
                             <?= form_error('version') ?>
                         </div>

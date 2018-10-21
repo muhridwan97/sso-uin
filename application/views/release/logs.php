@@ -20,7 +20,7 @@
     </nav>
     <h3 class="mb-1"><?= $application['title'] ?></h3>
     <p class="text-muted mb-2"><?= $application['description'] ?></p>
-    <p class="text-primary"><?= $application['total_release'] ?>x released</p>
+    <p class="text-primary"><?= if_empty($application['total_release'], 0) ?>x released</p>
 
     <?php
     $statuses = [
@@ -59,4 +59,7 @@
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
+    <?php if(empty($applicationReleases)): ?>
+        <p>Ops, the application under development or it's in initial release.</p>
+    <?php endif; ?>
 </div>

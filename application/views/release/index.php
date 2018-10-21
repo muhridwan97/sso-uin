@@ -54,15 +54,17 @@
                                     <a class="dropdown-item" href="<?= site_url('manage/release/view/' . $release['id']) ?>">
                                         <i class="mdi mdi-eye-outline mr-2"></i> View
                                     </a>
-                                    <a class="dropdown-item" href="<?= site_url('manage/release/edit/' . $release['id']) ?>">
-                                        <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
-                                       data-id="<?= $release['id'] ?>" data-label="<?= $release['version'] ?>" data-title="Release"
-                                       data-url="<?= site_url('manage/release/delete/' . $release['id']) ?>">
-                                        <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
-                                    </a>
+                                    <?php if($release['release_age'] >= 0): ?>
+                                        <a class="dropdown-item" href="<?= site_url('manage/release/edit/' . $release['id']) ?>">
+                                            <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
+                                           data-id="<?= $release['id'] ?>" data-label="<?= $release['version'] ?>" data-title="Release"
+                                           data-url="<?= site_url('manage/release/delete/' . $release['id']) ?>">
+                                            <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
+                                        </a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </td>
@@ -70,7 +72,7 @@
                 <?php endforeach; ?>
                 <?php if (empty($applicationReleases['data'])): ?>
                     <tr>
-                        <td colspan="6" class="text-center">No users available</td>
+                        <td colspan="6" class="text-center">No releases available</td>
                     </tr>
                 <?php endif; ?>
                 </tbody>

@@ -164,7 +164,7 @@ class App_Model extends CI_Model
      */
     public function getBy($conditions, $resultRow = false)
     {
-        $baseQuery = $this->getBaseQuery()->order_by($this->table . '.id', 'asc');
+        $baseQuery = $this->getBaseQuery()->order_by($this->table . '.id', 'desc');
 
         $baseQuery->where($conditions);
 

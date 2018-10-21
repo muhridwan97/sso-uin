@@ -22,7 +22,7 @@
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <?= form_error('name') ?>
+                            <?= form_error('application') ?>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -74,6 +74,7 @@
                                     </button>
                                 </div>
                             </div>
+                            <?= form_error('attachment') ?>
                         </div>
                     </div>
                     <div class="col-sm-6">

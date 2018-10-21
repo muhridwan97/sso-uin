@@ -32,7 +32,7 @@ class Application extends App_Controller
             'icon' => 'trim|required|max_length[50]',
             'url' => 'trim|required|valid_url|max_length[50]',
             'order' => 'trim|required|is_natural_no_zero',
-            'version' => 'trim|required|max_length[20]',
+            'version' => 'trim|required|max_length[20]|regex_match[/^[vV]\d+\.\d+(\.\d+)?/]',
             'description' => 'trim|required|max_length[35]',
         ];
     }

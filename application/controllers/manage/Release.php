@@ -30,12 +30,26 @@ class Release extends App_Controller
     /**
      * Set validation rules.
      *
+     * @param int $applicationReleaseId
      * @return array
      */
-    protected function _validation_rules()
+    protected function _validation_rules($applicationReleaseId = 0)
     {
+        $major = $this->input->post('major');
+        $minor = $this->input->post('minor');
+        $patch = $this->input->post('patch');
+        $applicationId = ['id_application' => $this->input->post('application')];
+        $lastReleased = $this->applicationRelease->getBy($applicationId, true);
+
         return [
-            'application' => 'trim|required',
+            'application' => [
+                'trim', 'required', ['version_behind', function ($field) use ($lastReleased, $major, $minor, $patch) {
+                    $this->form_validation->set_message('version_behind', 'Version before latest version is not allowed, set new version.');
+                    $currentVersion = intval($major . $minor . $patch);
+                    $latestVersion = intval($lastReleased['major'] . $lastReleased['minor'] . $lastReleased['patch']);
+                    return $currentVersion > $latestVersion;
+                }]
+            ],
             'major' => 'trim|required|is_natural',
             'minor' => 'trim|required|is_natural',
             'patch' => 'trim|required|is_natural',
@@ -61,7 +75,9 @@ class Release extends App_Controller
             $this->exporter->exportFromArray('Release', $applicationReleases);
         }
 
-        $this->render('release/index', compact('applicationReleases'));
+        $applications = $this->application->getAll();
+
+        $this->render('release/index', compact('applications', 'applicationReleases'));
     }
 
     /**
@@ -96,7 +112,10 @@ class Release extends App_Controller
     {
         $applications = $this->application->getAll();
 
-        $this->render('release/create', compact('applications'));
+        $applicationId = ['id_application' => get_url_param('application_id')];
+        $lastReleased = $this->applicationRelease->getBy($applicationId, true);
+
+        $this->render('release/create', compact('applications', 'lastReleased'));
     }
 
     /**
@@ -113,6 +132,8 @@ class Release extends App_Controller
             $description = $this->input->post('description');
             $releaseDate = $this->input->post('release_date');
             $version = 'v' . $major . '.' . $minor . '.' . $patch;
+
+            $application = $this->application->getById($applicationId);
 
             $this->db->trans_start();
 
@@ -144,7 +165,7 @@ class Release extends App_Controller
             $this->db->trans_complete();
 
             if ($this->db->trans_status()) {
-                flash('success', __('entity_created', ['title' => $version]), 'manage/release');
+                flash('success', __('entity_created', ['title' => $application['title'] . ' ' . $version]), 'manage/release');
             } else {
                 flash('danger', __('entity_error'));
             }
@@ -180,7 +201,9 @@ class Release extends App_Controller
             $label = $this->input->post('label');
             $description = $this->input->post('description');
             $releaseDate = $this->input->post('release_date');
+            $version = 'v' . $major . '.' . $minor . '.' . $patch;
 
+            $application = $this->application->getById($applicationId);
             $release = $this->applicationRelease->getById($id);
 
             $this->db->trans_start();
@@ -212,8 +235,7 @@ class Release extends App_Controller
             $this->db->trans_complete();
 
             if ($this->db->trans_status()) {
-                $release = $this->applicationRelease->getById($id);
-                flash('success', __('entity_updated', ['title' => $release['version']]), 'manage/release');
+                flash('success', __('entity_updated', ['title' => $application['title'] . ' ' . $version]), 'manage/release');
             } else {
                 flash('danger', __('entity_error'));
             }
