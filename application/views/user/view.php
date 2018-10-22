@@ -90,6 +90,9 @@
                                                         <?= $application['title'] ?>
                                                     </a>
                                                 <?php endforeach; ?>
+                                                <?php if(empty($userApplications)): ?>
+                                                    No applications access
+                                                <?php endif; ?>
                                             </p>
                                         </div>
                                     </div>

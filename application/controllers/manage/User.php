@@ -18,6 +18,9 @@ class User extends App_Controller
     {
         parent::__construct();
 
+        if(AuthModel::loginData('username') != 'admin')
+            flash('danger', 'You unauthorized to access the page', '_back', 'app');
+
         $this->load->model('ApplicationModel', 'application');
         $this->load->model('UserApplicationModel', 'userApplication');
         $this->load->model('UserModel', 'user');
@@ -213,7 +216,7 @@ class User extends App_Controller
                 'email' => $email,
                 'status' => $status,
                 'avatar' => $avatar,
-                'password' => password_hash($password, CRYPT_BLOWFISH),
+                'password' => empty($password) ? $user['password'] : password_hash($password, CRYPT_BLOWFISH),
             ], $id);
 
             $this->userApplication->delete(['id_user' => $id]);

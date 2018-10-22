@@ -27,7 +27,9 @@ class ApplicationModel extends App_Model
     public function getByUser($id)
     {
         $applications = $this->getBaseQuery()
+            ->distinct()
             ->join('prv_user_applications', 'prv_user_applications.id_application = prv_applications.id')
+            ->join('prv_users', 'prv_users.id = prv_user_applications.id_user')
             ->where('prv_user_applications.id_user', $id);
 
         return $applications->get()->result_array();

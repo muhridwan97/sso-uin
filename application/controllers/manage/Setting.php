@@ -12,6 +12,9 @@ class Setting extends App_Controller
     {
         parent::__construct();
 
+        if(AuthModel::loginData('username') != 'admin')
+            flash('danger', 'You unauthorized to access the page', '_back', 'app');
+
         $this->load->model('SettingModel', 'setting');
     }
 

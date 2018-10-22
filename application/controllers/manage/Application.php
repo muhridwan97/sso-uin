@@ -16,6 +16,9 @@ class Application extends App_Controller
     {
         parent::__construct();
 
+        if(AuthModel::loginData('username') != 'admin')
+            flash('danger', 'You unauthorized to access the page', '_back', 'app');
+
         $this->load->model('ApplicationModel', 'application');
         $this->load->model('ApplicationReleaseModel', 'applicationRelease');
         $this->load->model('modules/Exporter', 'exporter');

@@ -20,7 +20,7 @@ class App extends App_Controller
      */
     public function index()
     {
-        $applications = $this->application->getAll();
+        $applications = $this->application->getByUser(AuthModel::loginData('id'));
 
         $this->render('application/card', compact('applications'));
     }

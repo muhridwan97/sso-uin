@@ -54,7 +54,7 @@
                                     <a class="dropdown-item" href="<?= site_url('manage/release/view/' . $release['id']) ?>">
                                         <i class="mdi mdi-eye-outline mr-2"></i> View
                                     </a>
-                                    <?php if($release['release_age'] >= 0): ?>
+                                    <?php if($release['release_age'] < 0): ?>
                                         <a class="dropdown-item" href="<?= site_url('manage/release/edit/' . $release['id']) ?>">
                                             <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
                                         </a>
