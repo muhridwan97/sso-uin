@@ -17,4 +17,19 @@ class ApplicationModel extends App_Model
                 ) AS releases', 'releases.id_application = prv_applications.id', 'left')
             ->order_by('order', 'asc');
     }
+
+    /**
+     * Get applications access by specific user.
+     *
+     * @param $id
+     * @return array
+     */
+    public function getByUser($id)
+    {
+        $applications = $this->getBaseQuery()
+            ->join('prv_user_applications', 'prv_user_applications.id_application = prv_applications.id')
+            ->where('prv_user_applications.id_user', $id);
+
+        return $applications->get()->result_array();
+    }
 }

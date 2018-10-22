@@ -80,8 +80,9 @@ class User extends App_Controller
     public function view($id)
     {
         $user = $this->user->getById($id);
+        $userApplications = $this->application->getByUser($id);
 
-        $this->render('user/view', compact('user'));
+        $this->render('user/view', compact('user', 'userApplications'));
     }
 
     /**

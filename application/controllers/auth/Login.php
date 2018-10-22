@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Class Login
+ * @property ApplicationModel $application
  * @property AuthModel $auth
  * @property UserModel $user
  */
@@ -16,6 +17,7 @@ class Login extends App_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('ApplicationModel', 'application');
         $this->load->model('AuthModel', 'auth');
         $this->load->model('UserModel', 'user');
     }
@@ -37,11 +39,22 @@ class Login extends App_Controller
                     flash('danger', 'Your account has status <strong>' . $authenticated . '</strong>, please contact our administrator');
                 } else {
                     if ($authenticated) {
-                        $intended = $this->input->get('redirect');
+                        $intended = urldecode($this->input->get('redirect'));
                         if(empty($intended)) {
                             redirect("app");
                         }
-                        redirect(urldecode($intended));
+                        $whitelistedApps = $this->application->getAll();
+                        $appFound = false;
+                        foreach ($whitelistedApps as $application) {
+                            if(rtrim($application['url'], '/') == rtrim($intended, '/')) {
+                                $appFound = true;
+                            }
+                        }
+                        if($appFound) {
+                            redirect($intended);
+                        }
+                        flash('danger', $intended . ' is not registered in whitelisted app, proceed with careful, maybe a danger link.');
+                        redirect("app");
                     } else {
                         flash('danger', 'Username and password mismatch.');
                     }

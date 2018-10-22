@@ -377,8 +377,8 @@ $config['encryption_key'] = 'lv4PfLSVNmtKS4H6YFmpcKCDlGq4yelY';
 | except for 'cookie_prefix' and 'cookie_httponly', which are ignored here.
 |
 */
-$config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'user_exporter_session';
+$config['sess_driver'] = getenv('SESSION_DRIVER');
+$config['sess_cookie_name'] = getenv('SESSION_COOKIE');
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = NULL;
 $config['sess_match_ip'] = FALSE;
@@ -401,7 +401,7 @@ $config['sess_regenerate_destroy'] = FALSE;
 |
 */
 $config['cookie_prefix']	= '';
-$config['cookie_domain']	= '';
+$config['cookie_domain']	= getenv('COOKIE_DOMAIN');
 $config['cookie_path']		= '/';
 $config['cookie_secure']	= FALSE;
 $config['cookie_httponly'] 	= FALSE;

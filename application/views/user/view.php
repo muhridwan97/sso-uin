@@ -79,6 +79,22 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="application">Applications</label>
+                                        <div class="col-sm-8">
+                                            <p class="form-control-plaintext" id="application">
+                                                <?php foreach ($userApplications as $application): ?>
+                                                    <a href="<?= $application['url'] ?>" target="_blank" class="d-block">
+                                                        <?= $application['title'] ?>
+                                                    </a>
+                                                <?php endforeach; ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

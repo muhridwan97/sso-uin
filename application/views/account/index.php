@@ -2,7 +2,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="<?= site_url('app') ?>">
+                <a href="javascript:void()" onclick="history.back()">
                     <span class="mdi mdi-arrow-left"></span> Application
                 </a>
             </li>
