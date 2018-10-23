@@ -28,7 +28,7 @@ class Login extends App_Controller
     public function index()
     {
         if (_is_method('post')) {
-            if($this->validate()) {
+            if ($this->validate()) {
                 $username = $this->input->post('username');
                 $password = $this->input->post('password');
                 $remember = $this->input->post('remember');
@@ -40,21 +40,25 @@ class Login extends App_Controller
                 } else {
                     if ($authenticated) {
                         $intended = urldecode($this->input->get('redirect'));
-                        if(empty($intended)) {
+                        if (empty($intended)) {
                             redirect("app");
                         }
+
                         $whitelistedApps = $this->application->getAll();
+                        $whitelistedApps[] = ['url' => site_url('/')];
+
                         $appFound = false;
+                        $parsedUrl = parse_url($intended);
+                        $basedUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
                         foreach ($whitelistedApps as $application) {
-                            if(rtrim($application['url'], '/') == rtrim($intended, '/')) {
+                            if (rtrim($application['url'], '/') == rtrim($basedUrl, '/')) {
                                 $appFound = true;
                             }
                         }
-                        if($appFound) {
+                        if ($appFound) {
                             redirect($intended);
                         }
-                        flash('danger', $intended . ' is not registered in whitelisted app, proceed with careful, maybe a danger link.');
-                        redirect("app");
+                        flash('danger', $intended . ' is not registered in whitelisted app, proceed with careful, maybe a danger link.', 'app');
                     } else {
                         flash('danger', 'Username and password mismatch.');
                     }
