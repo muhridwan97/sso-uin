@@ -48,6 +48,3 @@
         </div>
     </div>
 </div>
-
-<?php $this->load->view('release/_modal_filter') ?>
-<?php $this->load->view('components/modals/_delete') ?>
