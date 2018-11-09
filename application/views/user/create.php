@@ -40,7 +40,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="parent_user">Parent User</label>
-                            <select class="custom-select" name="parent_user" id="parent_user" required>
+                            <select class="custom-select" name="parent_user" id="parent_user">
                                 <option value="">-- No parent user --</option>
                                 <?php foreach ($parentUsers as $parentUser): ?>
                                     <option value="<?= $parentUser['id'] ?>"<?= set_select('parent_user', $parentUser['id']) ?>>
