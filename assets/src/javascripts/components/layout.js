@@ -1,4 +1,4 @@
-export default (function() {
+export default function() {
     $('.btn-section').on('mouseover', function () {
         let sectionTitle = $(this).data('title');
         $('.app-banner-description').find('.container').text(sectionTitle);
@@ -10,4 +10,4 @@ export default (function() {
         $('.app-banner-description').find('.container').text(sectionTitle);
     }
     setBannerDescription();
-})();
+};

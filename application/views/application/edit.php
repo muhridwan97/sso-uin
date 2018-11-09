@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-9 col-lg-10">
             <h4 class="card-title"><?= $title ?></h4>
-            <form action="<?= site_url('manage/application/update/' . $application['id']) ?>" method="post">
+            <form action="<?= site_url('manage/application/update/' . $application['id']) ?>" method="post" id="form-application">
                 <?= _csrf() ?>
                 <?= _method('put') ?>
                 <p class="form-section-title">Basic Info</p>

@@ -119,8 +119,9 @@ class App_Controller extends CI_Controller
      */
     protected function render_json($data)
     {
-        header('Content-Type: application/json');
-        echo json_encode($data);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($data));
     }
 
     /**

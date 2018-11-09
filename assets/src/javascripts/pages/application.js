@@ -1,4 +1,4 @@
-export default (function () {
+export default function () {
 
     /**
      * url: /manage/application/{create/({edit/:id})}
@@ -24,4 +24,4 @@ export default (function () {
             }
         });
     });
-})();
+};
