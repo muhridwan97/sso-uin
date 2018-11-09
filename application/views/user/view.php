@@ -51,7 +51,16 @@
 									<label class="col-sm-4 col-form-label" for="status">Status</label>
 									<div class="col-sm-8">
 										<p class="form-control-plaintext" id="status">
-											<?= $user['status'] ?>
+                                            <?php
+                                            $statuses = [
+                                                UserModel::STATUS_ACTIVATED => 'success',
+                                                UserModel::STATUS_PENDING => 'primary',
+                                                UserModel::STATUS_SUSPENDED => 'danger',
+                                            ]
+                                            ?>
+                                            <span class="badge badge-<?= $statuses[$user['status']] ?>">
+                                                <?= $user['status'] ?>
+                                            </span>
 										</p>
 									</div>
 								</div>
@@ -68,16 +77,16 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-6">
-								<div class="form-group row">
-									<label class="col-sm-4 col-form-label" for="updated_at">Updated At</label>
-									<div class="col-sm-8">
-										<p class="form-control-plaintext" id="updated_at">
-											<?= if_empty(format_date($user['updated_at'], 'd F Y H:i'), '-') ?>
-										</p>
-									</div>
-								</div>
-							</div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label" for="parent_user">Parent User</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-plaintext" id="parent_user">
+                                            <?= if_empty($user['parent_user'], 'No parent') ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 						</div>
 						<div class="row">
 							<div class="col-lg-6">
@@ -97,6 +106,23 @@
 									</div>
 								</div>
 							</div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label" for="subordinate">Subordinates</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-plaintext" id="subordinate">
+                                            <?php foreach ($userSubordinates as $subordinate): ?>
+                                                <a href="master/users/view/<?= $subordinate['id'] ?>" target="_blank" class="d-block">
+                                                    <?= $subordinate['name'] ?>
+                                                </a>
+                                            <?php endforeach; ?>
+                                            <?php if(empty($userSubordinates)): ?>
+                                                No subordinates
+                                            <?php endif; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 						</div>
 					</div>
 				</div>

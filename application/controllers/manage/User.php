@@ -18,7 +18,7 @@ class User extends App_Controller
     {
         parent::__construct();
 
-        if(AuthModel::loginData('username') != 'admin')
+        if (AuthModel::loginData('username') != 'admin')
             flash('danger', 'You unauthorized to access the page', '_back', 'app');
 
         $this->load->model('ApplicationModel', 'application');
@@ -83,9 +83,10 @@ class User extends App_Controller
     public function view($id)
     {
         $user = $this->user->getById($id);
+        $userSubordinates = $this->user->getBy(['prv_users.id_user' => $id]);
         $userApplications = $this->application->getByUser($id);
 
-        $this->render('user/view', compact('user', 'userApplications'));
+        $this->render('user/view', compact('user', 'userSubordinates', 'userApplications'));
     }
 
     /**
@@ -94,8 +95,12 @@ class User extends App_Controller
     public function create()
     {
         $applications = $this->application->getAll();
+        $parentUsers = $this->user->getBy([
+            'prv_users.id!=' => AuthModel::loginData('id', 0),
+            'prv_users.username!=' => 'admin'
+        ]);
 
-        $this->render('user/create', compact('applications'));
+        $this->render('user/create', compact('applications', 'parentUsers'));
     }
 
     /**
@@ -107,6 +112,7 @@ class User extends App_Controller
             $name = $this->input->post('name');
             $username = $this->input->post('username');
             $email = $this->input->post('email');
+            $parent = $this->input->post('parent_user');
             $status = $this->input->post('status');
             $password = $this->input->post('password');
             $applications = $this->input->post('applications');
@@ -124,6 +130,7 @@ class User extends App_Controller
             }
 
             $this->user->create([
+                'id_user' => if_empty($parent, null),
                 'name' => $name,
                 'username' => $username,
                 'email' => $email,
@@ -163,6 +170,10 @@ class User extends App_Controller
         $user = $this->user->getById($id);
 
         $applications = $this->application->getAll();
+        $parentUsers = $this->user->getBy([
+            'prv_users.id!=' => $id,
+            'prv_users.username!=' => 'admin'
+        ]);
 
         $userApplications = $this->userApplication->getBy(['id_user' => $id]);
         $selectedApps = array_column($userApplications, 'id_application');
@@ -175,7 +186,7 @@ class User extends App_Controller
             }
         }
 
-        $this->render('user/edit', compact('user', 'applications'));
+        $this->render('user/edit', compact('user', 'applications', 'parentUsers'));
     }
 
     /**
@@ -189,6 +200,7 @@ class User extends App_Controller
             $name = $this->input->post('name');
             $username = $this->input->post('username');
             $email = $this->input->post('email');
+            $parent = $this->input->post('parent_user');
             $status = $this->input->post('status');
             $password = $this->input->post('password');
             $applications = $this->input->post('applications');
@@ -211,6 +223,7 @@ class User extends App_Controller
             }
 
             $this->user->update([
+                'id_user' => if_empty($parent, null),
                 'name' => $name,
                 'username' => $username,
                 'email' => $email,

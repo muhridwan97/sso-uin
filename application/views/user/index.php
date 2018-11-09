@@ -37,7 +37,12 @@
                         <td class="font-weight-bold">
                             <div class="d-flex flex-row align-items-center">
                                 <div class="rounded mr-3" style="height:40px; width: 40px; background: url('<?= base_url(if_empty($user['avatar'], 'assets/dist/img/no-avatar.png', 'uploads/')) ?>') center center / cover"></div>
-                                <?= $user['name'] ?>
+                                <div>
+                                    <p style="margin-bottom: -5px"><?= $user['name'] ?></p>
+                                    <?php if(!empty($user['parent_user'])): ?>
+                                        <small class="text-muted">Parent: <?= $user['parent_user'] ?></small>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </td>
                         <td><?= $user['username'] ?></td>
@@ -45,9 +50,9 @@
                             <a href="mailto:<?= $user['email'] ?>"><?= $user['email'] ?></a>
                         </td>
                         <td>
-                            <label class="badge badge-<?= $statuses[$user['status']] ?>">
+                            <span class="badge badge-<?= $statuses[$user['status']] ?>">
                                 <?= $user['status'] ?>
-                            </label>
+                            </span>
                         </td>
                         <td class="text-lg-right">
                             <div class="dropdown">

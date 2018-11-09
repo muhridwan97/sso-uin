@@ -11,6 +11,7 @@ class Migration_Create_table_prv_users extends CI_Migration
     {
         $this->dbforge->add_field([
             'id' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11, 'auto_increment' => TRUE],
+            'id_user' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11, 'null' => TRUE],
             'name' => ['type' => 'VARCHAR', 'constraint' => '50'],
             'username' => ['type' => 'VARCHAR', 'constraint' => '50', 'unique' => TRUE],
             'email' => ['type' => 'VARCHAR', 'constraint' => '50', 'unique' => TRUE],
@@ -18,7 +19,6 @@ class Migration_Create_table_prv_users extends CI_Migration
             'avatar' => ['type' => 'VARCHAR', 'constraint' => '300', 'null' => TRUE],
             'status' => ['type' => 'ENUM("ACTIVATED", "PENDING", "SUSPENDED")', 'default' => 'PENDING'],
             'user_type' => ['type' => 'VARCHAR', 'constraint' => '50', 'default' => 'INTERNAL'],
-            'id_user' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11],
             'is_deleted' => ['type' => 'INT', 'constraint' => 1, 'default' => 0],
             'created_at' => ['type' => 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP'],
             'created_by' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE],
