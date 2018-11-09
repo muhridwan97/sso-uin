@@ -7,6 +7,21 @@ $.ajaxSetup({
     }
 });
 
+
+// deferred style or fonts
+let loadDeferredStyles = function() {
+    let addStylesNode = document.getElementById("deferred-styles");
+    let replacement = document.createElement("div");
+    replacement.innerHTML = addStylesNode.textContent;
+    document.body.appendChild(replacement);
+    addStylesNode.parentElement.removeChild(addStylesNode);
+};
+let raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+else window.addEventListener('load', loadDeferredStyles);
+
+
 import("./components/layout").then(layout => layout.default());
 
 if ($('#modal-delete').length) {

@@ -23,10 +23,7 @@ module.exports = {
                 sourceMap: true
             }),
             new OptimizeCSSAssetsPlugin({})
-        ],
-        splitChunks: {
-            chunks: 'all'
-        }
+        ]
     },
     watchOptions: {
         aggregateTimeout: 300,
