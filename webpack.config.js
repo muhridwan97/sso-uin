@@ -16,14 +16,17 @@ module.exports = {
         chunkFilename: '[name].bundle.js',
     },
     devtool: 'source-map',
-    mode: 'development',
+    mode: process.env.WEBPACK_MODE || 'development',
     optimization: {
         minimizer: [
             new UglifyJsPlugin({
                 sourceMap: true
             }),
             new OptimizeCSSAssetsPlugin({})
-        ]
+        ],
+        splitChunks: {
+            chunks: 'all'
+        }
     },
     watchOptions: {
         aggregateTimeout: 300,
@@ -73,7 +76,7 @@ module.exports = {
                     MiniCssExtractPlugin.loader,
 
                     // Interprets `@import` and `url()` like `import/require()` and will resolve them
-                    {loader: 'css-loader', options: { minimize: true }},
+                    {loader: 'css-loader', options: {minimize: true}},
 
                     // Loader for webpack to process CSS with PostCSS
                     {
