@@ -20,6 +20,14 @@ class App extends App_Controller
      */
     public function index()
     {
+        $referrer = $this->agent->referrer();
+        $isRedirectFromLogin = $referrer == site_url('auth/login');
+        $requestAppIndex = $this->uri->segment(1);
+
+        if ((!empty(get_setting('default_application')) && $isRedirectFromLogin) || empty($requestAppIndex)) {
+            redirect(get_setting('default_application'));
+        }
+
         $applications = $this->application->getByUser(AuthModel::loginData('id'));
 
         $this->render('application/card', compact('applications'));

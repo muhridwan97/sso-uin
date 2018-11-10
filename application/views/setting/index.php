@@ -34,7 +34,19 @@
                            placeholder="Enter application keywords" maxlength="300" value="<?= set_value('meta_keywords', get_if_exist($setting, 'meta_keywords', 'sso,auth,multi-app,login,credential')) ?>">
                     <?= form_error('meta_keywords') ?>
                 </div>
-
+                <div class="form-group">
+                    <label for="default_application">Default Application</label>
+                    <select class="custom-select" name="default_application" id="default_application">
+                        <option value="">-- No default --</option>
+                        <?php foreach ($applications as $application): ?>
+                            <option value="<?= $application['url'] ?>"<?= set_select('default_application', $application['url'], $application['url'] == get_if_exist($setting, 'default_application')) ?>>
+                                <?= $application['title'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <span class="form-text">Default application url redirection after login SSO.</span>
+                    <?= form_error('default_application') ?>
+                </div>
                 <div class="form-group">
                     <label for="meta_description">Description</label>
                     <textarea class="form-control" id="meta_description" name="meta_description"

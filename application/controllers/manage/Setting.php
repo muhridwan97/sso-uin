@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class Setting
  * @property SettingModel $setting
+ * @property ApplicationModel $application
  */
 class Setting extends App_Controller
 {
@@ -16,6 +17,7 @@ class Setting extends App_Controller
             flash('danger', 'You unauthorized to access the page', '_back', 'app');
 
         $this->load->model('SettingModel', 'setting');
+        $this->load->model('ApplicationModel', 'application');
     }
 
     /**
@@ -48,8 +50,9 @@ class Setting extends App_Controller
         }
 
         $setting = $this->setting->getAll();
+        $applications = $this->application->getAll();
 
-        $this->render('setting/index', compact('setting'));
+        $this->render('setting/index', compact('setting', 'applications'));
     }
 
     /**
