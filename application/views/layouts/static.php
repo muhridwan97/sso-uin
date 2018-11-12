@@ -9,6 +9,9 @@
     <meta name="user-id" content="">
     <meta name="theme-color" content="#ffffff">
     <title><?= $this->config->item('app_name') ?> | <?= isset($title) ? $title : 'Home' ?></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="<?= base_url('assets/dist/app.css') ?>">
 </head>
 
 <body class="has-sticky-footer">
@@ -20,9 +23,6 @@
 <?php $this->load->view('components/_footer') ?>
 
 <noscript id="deferred-styles">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="<?= base_url('assets/dist/app.css') ?>">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.8.94/css/materialdesignicons.min.css">
 </noscript>
