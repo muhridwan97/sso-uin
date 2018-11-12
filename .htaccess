@@ -2,3 +2,12 @@ RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/$1 [L]
+
+<IfModule mod_headers.c>
+
+    # One month for most static assets
+    <filesMatch ".(css|jpg|jpeg|png|gif|js|ico)$">
+    Header set Cache-Control "max-age=2628000, public"
+    </filesMatch>
+
+</IfModule>
