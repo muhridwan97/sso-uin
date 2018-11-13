@@ -23,6 +23,30 @@
 										</p>
 									</div>
 								</div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label" for="email">Email</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-plaintext" id="email">
+                                            <?= $user['email'] ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label" for="user_type">Type</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-plaintext" id="user_type">
+                                            <?= $user['user_type'] ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label" for="created_at">Created At</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-plaintext" id="created_at">
+                                            <?= format_date($user['created_at'], 'd F Y H:i') ?>
+                                        </p>
+                                    </div>
+                                </div>
 							</div>
 							<div class="col-lg-6">
 								<div class="form-group row">
@@ -33,24 +57,10 @@
 										</p>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6">
-								<div class="form-group row">
-									<label class="col-sm-4 col-form-label" for="email">Email</label>
-									<div class="col-sm-8">
-										<p class="form-control-plaintext" id="email">
-											<?= $user['email'] ?>
-										</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="form-group row">
-									<label class="col-sm-4 col-form-label" for="status">Status</label>
-									<div class="col-sm-8">
-										<p class="form-control-plaintext" id="status">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label" for="status">Status</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-plaintext" id="status">
                                             <?php
                                             $statuses = [
                                                 UserModel::STATUS_ACTIVATED => 'success',
@@ -61,23 +71,9 @@
                                             <span class="badge badge-<?= $statuses[$user['status']] ?>">
                                                 <?= $user['status'] ?>
                                             </span>
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6">
-								<div class="form-group row">
-									<label class="col-sm-4 col-form-label" for="created_at">Created At</label>
-									<div class="col-sm-8">
-										<p class="form-control-plaintext" id="created_at">
-											<?= format_date($user['created_at'], 'd F Y H:i') ?>
-										</p>
-									</div>
-								</div>
-							</div>
-                            <div class="col-lg-6">
+                                        </p>
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label" for="parent_user">Parent User</label>
                                     <div class="col-sm-8">
@@ -86,7 +82,15 @@
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label" for="updated_at">Updated At</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-plaintext" id="updated_at">
+                                            <?= format_date($user['updated_at'], 'd F Y H:i') ?>
+                                        </p>
+                                    </div>
+                                </div>
+							</div>
 						</div>
 						<div class="row">
 							<div class="col-lg-6">

@@ -49,9 +49,17 @@
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <?= form_error('status'); ?>
+                            <?= form_error('parent_user'); ?>
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="user_type">User Type</label>
+                    <select class="custom-select" name="user_type" id="user_type">
+                        <option value="INTERNAL"<?= set_select('user_type', 'INTERNAL', $user['user_type'] == 'INTERNAL') ?>>INTERNAL</option>
+                        <option value="EXTERNAL"<?= set_select('user_type', 'EXTERNAL', $user['user_type'] == 'EXTERNAL') ?>>EXTERNAL</option>
+                    </select>
+                    <?= form_error('user_type'); ?>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">

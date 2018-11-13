@@ -112,6 +112,7 @@ class User extends App_Controller
             $name = $this->input->post('name');
             $username = $this->input->post('username');
             $email = $this->input->post('email');
+            $userType = $this->input->post('user_type');
             $parent = $this->input->post('parent_user');
             $status = $this->input->post('status');
             $password = $this->input->post('password');
@@ -135,6 +136,7 @@ class User extends App_Controller
                 'username' => $username,
                 'email' => $email,
                 'status' => $status,
+                'user_type' => $userType,
                 'avatar' => $avatar,
                 'password' => password_hash($password, CRYPT_BLOWFISH),
             ]);
@@ -200,6 +202,7 @@ class User extends App_Controller
             $name = $this->input->post('name');
             $username = $this->input->post('username');
             $email = $this->input->post('email');
+            $userType = $this->input->post('user_type');
             $parent = $this->input->post('parent_user');
             $status = $this->input->post('status');
             $password = $this->input->post('password');
@@ -228,6 +231,7 @@ class User extends App_Controller
                 'username' => $username,
                 'email' => $email,
                 'status' => $status,
+                'user_type' => $userType,
                 'avatar' => $avatar,
                 'password' => empty($password) ? $user['password'] : password_hash($password, CRYPT_BLOWFISH),
             ], $id);
