@@ -23,12 +23,9 @@ class App extends App_Controller
         $redirectTo = get_setting('default_application');
         $referrer = $this->agent->referrer();
         $isRedirectFromLogin = $referrer == site_url('auth/login');
-        $requestAppIndex = $this->uri->segment(1);
 
-        if (!empty($redirectTo)) {
-            if ($isRedirectFromLogin || empty($requestAppIndex)) {
-                redirect(get_setting('default_application'));
-            }
+        if (!empty($redirectTo) && $isRedirectFromLogin) {
+            redirect(get_setting('default_application'));
         }
 
         $applications = $this->application->getByUser(AuthModel::loginData('id'));
