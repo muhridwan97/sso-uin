@@ -117,6 +117,7 @@ class User extends App_Controller
             $status = $this->input->post('status');
             $password = $this->input->post('password');
             $applications = $this->input->post('applications');
+            $defaultApplication = $this->input->post('default_application');
 
             $this->db->trans_start();
 
@@ -146,7 +147,8 @@ class User extends App_Controller
                 if (!empty($application)) {
                     $this->userApplication->create([
                         'id_user' => $userId,
-                        'id_application' => $application
+                        'id_application' => $application,
+                        'is_default' => ($defaultApplication == $application)
                     ]);
                 }
             }
@@ -176,8 +178,15 @@ class User extends App_Controller
             'prv_users.id!=' => $id,
             'prv_users.username!=' => 'admin'
         ]);
+        $defaultApp = '';
 
         $userApplications = $this->userApplication->getBy(['id_user' => $id]);
+        foreach ($userApplications as $userApplication) {
+            if ($userApplication['is_default']) {
+                $defaultApp = $userApplication['id_application'];
+                break;
+            }
+        }
         $selectedApps = array_column($userApplications, 'id_application');
 
         foreach ($applications as &$application) {
@@ -188,7 +197,7 @@ class User extends App_Controller
             }
         }
 
-        $this->render('user/edit', compact('user', 'applications', 'parentUsers'));
+        $this->render('user/edit', compact('user', 'applications', 'defaultApp', 'parentUsers'));
     }
 
     /**
@@ -207,6 +216,7 @@ class User extends App_Controller
             $status = $this->input->post('status');
             $password = $this->input->post('password');
             $applications = $this->input->post('applications');
+            $defaultApplication = $this->input->post('default_application');
 
             $user = $this->user->getById($id);
 
@@ -241,7 +251,8 @@ class User extends App_Controller
                 if (!empty($applicationId)) {
                     $this->userApplication->create([
                         'id_user' => $id,
-                        'id_application' => $applicationId
+                        'id_application' => $applicationId,
+                        'is_default' => ($defaultApplication == $applicationId)
                     ]);
                 }
             }

@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-9 col-lg-10">
             <h4 class="card-title"><?= $title ?></h4>
-            <form action="<?= site_url('manage/user/save') ?>" method="post" enctype="multipart/form-data">
+            <form action="<?= site_url('manage/user/save') ?>" method="post" enctype="multipart/form-data" id="form-user">
                 <?= _csrf() ?>
                 <p class="form-section-title">Profile Info</p>
                 <div class="row">
@@ -131,6 +131,21 @@
                             </div>
                         </div>
                     <?php endforeach; ?>
+                </div>
+
+                <p class="form-section-title">Default Application</p>
+                <div class="form-group">
+                    <select class="custom-select" name="default_application" id="default_application">
+                        <option value="">-- No default application --</option>
+                        <?php foreach ($applications as $application): ?>
+                            <option value="<?= $application['id'] ?>" style="display: none"
+                                <?= set_select('default_application', $application['id']) ?>>
+                                <?= $application['title'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <span class="form-text">Redirect to default application after login.</span>
+                    <?= form_error('default_application') ?>
                 </div>
 
                 <button type="submit" class="btn btn-success my-4">Create User</button>

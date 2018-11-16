@@ -38,6 +38,9 @@ if ($('#form-application').length) {
 if ($('#form-release').length) {
     import("./pages/release").then(release => release.default());
 }
+if ($('#form-user').length) {
+    import("./pages/user").then(user => user.default());
+}
 
 
 import '../sass/app.scss';
