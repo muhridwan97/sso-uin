@@ -50,11 +50,10 @@ class Login extends App_Controller
                         $appFound = false;
                         $parsedUrl = parse_url($intended);
                         $basedUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
-                        if (key_exists('PATH_INFO', $_SERVER) && key_exists('REDIRECT_URL', $_SERVER)) {
-                            $basedUrl .= str_replace($_SERVER['PATH_INFO'], '', $_SERVER['REDIRECT_URL']);
-                        }
                         foreach ($whitelistedApps as $application) {
-                            if (rtrim($application['url'], '/') == rtrim($basedUrl, '/')) {
+                            $matchBaseUrl = (rtrim($application['url'], '/') == rtrim($basedUrl, '/'));
+                            $partOfUrl = (strpos($intended, $application['url']) !== false);
+                            if ($matchBaseUrl || $partOfUrl) {
                                 $appFound = true;
                             }
                         }
