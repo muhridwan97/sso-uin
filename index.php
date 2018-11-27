@@ -36,15 +36,76 @@
  * @filesource
  */
 
+class AppEnvironment
+{
+    static $environments = null;
+
+    /**
+     * Parse environment data.
+     *
+     * @param string $file
+     */
+    public function parseEnv($file = '')
+    {
+        if (self::$environments === null) {
+
+            if (empty($file)) {
+                $file = dirname(__FILE__) . '/.env';
+            }
+
+            $streamFile = fopen($file, 'r');
+            $theData = fread($streamFile, filesize($file));
+
+            $configs = [];
+            $lines = explode("\n", $theData);
+            foreach ($lines as $line) {
+                if (!empty(trim($line))) {
+                    $tmp = explode("=", $line);
+                    $configs[$tmp[0]] = str_replace(["\n","\r\n","\r", "\""], '', $tmp[1]);
+                }
+            }
+            fclose($streamFile);
+
+            self::$environments = $configs;
+        }
+    }
+
+    /**
+     * Get environment value.
+     *
+     * @param $key
+     * @param string $default
+     * @return mixed|string
+     */
+    public function env($key, $default = '')
+    {
+        return key_exists($key, self::$environments) ? self::$environments[$key] : $default;
+    }
+}
+
+/**
+ * Get environment value.
+ *
+ * @param $key
+ * @param string $default
+ * @return mixed|string
+ */
+function env($key, $default = '')
+{
+    $config = new AppEnvironment();
+    $config->parseEnv();
+    return $config->env($key, $default);
+}
+
 /*
  * --------------------------------------------------------------------
  * LOAD PHP DOT ENV FILE
  * --------------------------------------------------------------------
+ * require_once dirname(__FILE__) . '/vendor/autoload.php';
+ * $dotenv = new Dotenv\Dotenv(__DIR__);
+ * $dotenv->load();
  */
-require_once dirname(__FILE__) . '/vendor/autoload.php';
 
-$dotenv = new Dotenv\Dotenv(__DIR__);
-$dotenv->load();
 
 /*
  *---------------------------------------------------------------
@@ -63,7 +124,7 @@ $dotenv->load();
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : getenv('APP_ENVIRONMENT'));
+	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : env('APP_ENVIRONMENT'));
 
 /*
  *---------------------------------------------------------------
