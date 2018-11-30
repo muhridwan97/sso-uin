@@ -6,6 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property ApplicationModel $application
  * @property AuthModel $auth
  * @property UserModel $user
+ * @property UserApplicationModel $userApplication
  */
 class Login extends App_Controller
 {
@@ -20,6 +21,7 @@ class Login extends App_Controller
         $this->load->model('ApplicationModel', 'application');
         $this->load->model('AuthModel', 'auth');
         $this->load->model('UserModel', 'user');
+        $this->load->model('UserApplicationModel', 'userApplication');
     }
 
     /**
@@ -39,11 +41,13 @@ class Login extends App_Controller
                     flash('danger', 'Your account has status <strong>' . $authenticated . '</strong>, please contact our administrator');
                 } else {
                     if ($authenticated) {
+                        // decide where application to go after login
                         $intended = urldecode($this->input->get('redirect'));
                         if (empty($intended)) {
                             redirect("app");
                         }
 
+                        // check if redirect url is registered applications
                         $whitelistedApps = $this->application->getAll();
                         $whitelistedApps[] = ['url' => site_url('/')];
 
@@ -57,7 +61,24 @@ class Login extends App_Controller
                                 $appFound = true;
                             }
                         }
+
                         if ($appFound) {
+
+                            // redirect to default application setting
+                            $defaultApplication = get_setting('default_application');
+                            $defaultUserApplication = $this->userApplication->getBy([
+                                'id_user' => AuthModel::loginData('id'),
+                                'is_default' => 1
+                            ], true);
+
+                            if (!empty($defaultUserApplication)) {
+                                $defaultApp = $this->application->getById($defaultUserApplication['id_application']);
+                                redirect($defaultApp['url']);
+                            } else if (!empty($defaultApplication)) {
+                                redirect($defaultApplication);
+                            }
+
+                            // redirect to intended page if no default application is set up
                             redirect($intended);
                         }
                         flash('danger', $intended . ' is not registered in whitelisted app, proceed with careful, maybe a danger link.', 'app');
