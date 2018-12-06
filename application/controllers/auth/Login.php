@@ -43,33 +43,34 @@ class Login extends App_Controller
                     if ($authenticated) {
                         // decide where application to go after login
                         $intended = urldecode($this->input->get('redirect'));
-                        if (empty($intended)) {
-                            redirect("app");
-                        }
 
                         // check if redirect url is registered applications
-                        $whitelistedApps = $this->application->getAll();
-                        $whitelistedApps[] = ['url' => site_url('/')];
-
                         $appFound = false;
-                        $parsedUrl = parse_url($intended);
-                        $basedUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
-                        foreach ($whitelistedApps as $application) {
-                            $matchBaseUrl = (rtrim($application['url'], '/') == rtrim($basedUrl, '/'));
-                            $partOfUrl = (strpos($intended, $application['url']) !== false);
-                            if ($matchBaseUrl || $partOfUrl) {
-                                $appFound = true;
+                        if (!empty($intended)) {
+                            $whitelistedApps = $this->application->getAll();
+                            $whitelistedApps[] = ['url' => site_url('/')];
+
+                            $parsedUrl = parse_url($intended);
+                            $basedUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
+                            foreach ($whitelistedApps as $application) {
+                                $matchBaseUrl = (rtrim($application['url'], '/') == rtrim($basedUrl, '/'));
+                                $partOfUrl = (strpos($intended, $application['url']) !== false);
+                                if ($matchBaseUrl || $partOfUrl) {
+                                    $appFound = true;
+                                }
                             }
+                        } else {
+                            $appFound = true;
                         }
 
                         if ($appFound) {
 
                             // redirect to default application setting
-                            $defaultApplication = get_setting('default_application');
                             $defaultUserApplication = $this->userApplication->getBy([
                                 'id_user' => AuthModel::loginData('id'),
                                 'is_default' => 1
                             ], true);
+                            $defaultApplication = get_setting('default_application');
 
                             if (!empty($defaultUserApplication)) {
                                 $defaultApp = $this->application->getById($defaultUserApplication['id_application']);
@@ -79,9 +80,14 @@ class Login extends App_Controller
                             }
 
                             // redirect to intended page if no default application is set up
+                            if (empty($intended)) {
+                                redirect("app");
+                            }
                             redirect($intended);
                         }
-                        flash('danger', $intended . ' is not registered in whitelisted app, proceed with careful, maybe a danger link.', 'app');
+
+                        flash('danger', 'App ' . $intended . ' is not registered in whitelisted app, proceed with careful.', 'app');
+
                     } else {
                         flash('danger', 'Username and password mismatch.');
                     }
