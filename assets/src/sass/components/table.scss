@@ -1,9 +1,4 @@
-/*
-Max width before this PARTICULAR table gets nasty
-This query will take effect for any screen smaller than 760px
-and also iPads specifically.
-*/
-@media only screen and (max-width: 991px)  {
+@media (max-width: 767px) {
 
   /* Force table to not be like tables anymore */
   table.responsive,
@@ -15,22 +10,41 @@ and also iPads specifically.
     display: block;
   }
 
+  table.responsive table {
+    border: none;
+  }
+
   /* Hide table headers (but not display: none;, for accessibility) */
   table.responsive thead tr,
-  table.responsive tfoot tr{
+  table.responsive tfoot tr {
     position: absolute;
     top: -9999px;
     left: -9999px;
   }
 
   table.responsive tr {
-    margin-bottom: 25px;
-    border-bottom: 1px solid lighten($light-gray, 30%);
+    margin-bottom: 15px;
+    border: 1px solid #dddddd !important;
   }
 
-  table.responsive td {
+  table.responsive .responsive-label {
+    width: 40%;
+    display: inline-block;
+    font-weight: 500;
+    left: 10px;
+    position: absolute;
+  }
+
+  table.responsive > tbody > tr:not(.row-no-header) > td:not([colspan]) {
+    padding-left: 40%;
+  }
+
+  table.responsive > tbody > tr > td {
     /* Behave  like a "row" */
+    border: none !important;
     position: relative;
+    margin-bottom: -1px;
+    border-bottom: 1px solid #dddddd !important;
   }
 
   table.responsive td:before {
@@ -42,9 +56,5 @@ and also iPads specifically.
     width: 45%;
     padding-right: 10px;
     white-space: nowrap;
-  }
-
-  table.responsive td.responsive-hide {
-    display: none;
   }
 }

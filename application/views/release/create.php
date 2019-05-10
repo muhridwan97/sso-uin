@@ -104,7 +104,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-success my-4">Create Release</button>
+                <button type="submit" class="btn btn-success my-4" data-toggle="one-touch" data-touch-message="Saving...">Create Release</button>
             </form>
         </div>
     </div>

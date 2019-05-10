@@ -100,7 +100,7 @@
 
                 <?php $this->load->view('application/_icon_selector') ?>
 
-                <button type="submit" class="btn btn-success my-5">Update Application</button>
+                <button type="submit" class="btn btn-success my-5" data-toggle="one-touch" data-touch-message="Updating...">Update Application</button>
             </form>
         </div>
     </div>

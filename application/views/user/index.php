@@ -37,8 +37,8 @@
                         <td class="font-weight-bold">
                             <div class="d-flex flex-row align-items-center">
                                 <div class="rounded mr-3" style="height:40px; width: 40px; background: url('<?= base_url(if_empty($user['avatar'], 'assets/dist/img/no-avatar.png', 'uploads/')) ?>') center center / cover"></div>
-                                <div>
-                                    <p style="margin-bottom: -5px"><?= $user['name'] ?></p>
+                                <div style="flex: 1">
+                                    <p style="margin-bottom: -5px"><?= strtoupper($user['name']) ?></p>
                                     <?php if(!empty($user['parent_user'])): ?>
                                         <small class="text-muted">Parent: <?= $user['parent_user'] ?></small>
                                     <?php endif; ?>
@@ -84,10 +84,7 @@
                 <?php endif; ?>
                 </tbody>
             </table>
-            <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between mt-3">
-                <small class="text-muted mb-2">Total result <?= $users['total_data'] ?> items</small>
-                <?php $this->load->view('components/_pagination', ['pagination' => $users]) ?>
-            </div>
+            <?php $this->load->view('components/_pagination', ['pagination' => $users]) ?>
         </div>
     </div>
 </div>

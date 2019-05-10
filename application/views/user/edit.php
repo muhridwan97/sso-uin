@@ -162,7 +162,7 @@
                     <?= form_error('default_application') ?>
                 </div>
 
-                <button type="submit" class="btn btn-success my-4">Update User</button>
+                <button type="submit" class="btn btn-success my-4" data-toggle="one-touch" data-touch-message="Updating...">Update User</button>
             </form>
         </div>
     </div>

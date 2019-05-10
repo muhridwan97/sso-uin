@@ -103,7 +103,7 @@
 
                 <?php $this->load->view('application/_icon_selector') ?>
 
-                <button type="submit" class="btn btn-success my-5">Create Application</button>
+                <button type="submit" class="btn btn-success my-5" data-toggle="one-touch" data-touch-message="Saving...">Create Application</button>
             </form>
         </div>
     </div>

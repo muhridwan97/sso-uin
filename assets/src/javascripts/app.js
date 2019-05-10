@@ -7,6 +7,7 @@ $.ajaxSetup({
     }
 });
 
+require('jquery-validation');
 
 // deferred style or fonts
 let loadDeferredStyles = function() {
@@ -27,11 +28,6 @@ import("./components/layout").then(layout => layout.default());
 if ($('#modal-delete').length) {
     import("./components/delete").then(modalDelete => modalDelete.default());
 }
-if ($('form').length) {
-    import("./components/form").then(form => form.default());
-}
-
-
 if ($('#form-application').length) {
     import("./pages/application").then(application => application.default());
 }
@@ -42,5 +38,11 @@ if ($('#form-user').length) {
     import("./pages/user").then(user => user.default());
 }
 
+
+// loading misc scripts
+require('./scripts/validation');
+require('./scripts/table-responsive');
+require('./scripts/one-touch-submit');
+require('./scripts/miscellaneous');
 
 import '../sass/app.scss';

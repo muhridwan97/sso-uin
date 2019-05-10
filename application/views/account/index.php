@@ -88,7 +88,7 @@
                            placeholder="Repeat your password" minlength="6" maxlength="50">
                     <?= form_error('confirm_password') ?>
                 </div>
-                <button type="submit" class="btn btn-primary my-4">Update Account</button>
+                <button type="submit" class="btn btn-primary my-4" data-toggle="one-touch" data-touch-message="Updating...">Update Account</button>
             </form>
         </div>
     </div>

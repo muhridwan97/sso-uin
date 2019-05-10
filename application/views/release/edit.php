@@ -84,7 +84,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-success my-4">Update Release</button>
+                <button type="submit" class="btn btn-success my-4" data-toggle="one-touch" data-touch-message="Updating...">Update Release</button>
             </form>
         </div>
     </div>

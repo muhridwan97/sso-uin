@@ -148,7 +148,7 @@
                     <?= form_error('default_application') ?>
                 </div>
 
-                <button type="submit" class="btn btn-success my-4">Create User</button>
+                <button type="submit" class="btn btn-success my-4" data-toggle="one-touch" data-touch-message="Saving...">Create User</button>
             </form>
         </div>
     </div>

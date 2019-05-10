@@ -21,10 +21,15 @@
   "author": "Angga Ari Wijaya",
   "license": "ISC",
   "dependencies": {
-    "@mdi/font": "^2.6.95"
+    "@mdi/font": "^2.6.95",
+    "jquery-validation": "^1.19.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/preset-env": "^7.4.4",
     "autoprefixer": "^9.1.3",
+    "babel-loader": "^8.0.5",
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^1.0.0",
     "file-loader": "^1.1.11",

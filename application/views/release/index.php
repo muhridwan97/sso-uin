@@ -77,10 +77,7 @@
                 <?php endif; ?>
                 </tbody>
             </table>
-            <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between mt-3">
-                <small class="text-muted mb-2">Total result <?= $applicationReleases['total_data'] ?> items</small>
-                <?php $this->load->view('components/_pagination', ['pagination' => $applicationReleases]) ?>
-            </div>
+            <?php $this->load->view('components/_pagination', ['pagination' => $applicationReleases]) ?>
         </div>
     </div>
 </div>
