@@ -22,6 +22,14 @@
                 </div>
             </div>
             <table class="table table-sm table-hover mt-3 responsive" id="table-release">
+                <tr>
+                    <th>No</th>
+                    <th>Application</th>
+                    <th>Version</th>
+                    <th>Tag</th>
+                    <th>Released At</th>
+                    <th class="text-md-right">Action</th>
+                </tr>
                 <tbody>
                 <?php
                 $statuses = [
@@ -35,16 +43,16 @@
                 <?php $no = isset($applicationReleases) ? ($applicationReleases['current_page'] - 1) * $applicationReleases['per_page'] : 0 ?>
                 <?php foreach ($applicationReleases['data'] as $release): ?>
                     <tr>
-                        <td class="text-center responsive-hide" style="width: 30px"><?= ++$no ?></td>
+                        <td class="text-md-center" style="width: 30px"><?= ++$no ?></td>
                         <td class="font-weight-bold"><?= $release['application_title'] ?></td>
                         <td><?= $release['version'] ?></td>
-                        <td class="text-lg-right">
+                        <td class="text-md-right">
                             <span class="badge badge-<?= $statuses[$release['label']] ?> mr-2">
                                 <?= $release['label'] ?>
                             </span>
                         </td>
                         <td>at <?= format_date($release['release_date'], 'd F Y') ?></td>
-                        <td class="text-lg-right">
+                        <td class="text-md-right">
                             <div class="dropdown">
                                 <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
                                         data-toggle="dropdown">

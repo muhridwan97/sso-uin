@@ -22,11 +22,21 @@
                 </div>
             </div>
             <table class="table table-sm table-hover mt-3 responsive" id="table-application">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Application</th>
+                    <th>Description</th>
+                    <th>Version</th>
+                    <th>Release</th>
+                    <th class="text-md-right">Action</th>
+                </tr>
+                </thead>
                 <tbody>
                 <?php $no = isset($applications) ? ($applications['current_page'] - 1) * $applications['per_page'] : 0 ?>
                 <?php foreach ($applications['data'] as $application): ?>
                     <tr>
-                        <td class="text-center responsive-hide" style="width: 30px"><?= ++$no ?></td>
+                        <td class="text-md-center"><?= ++$no ?></td>
                         <td class="font-weight-bold">
                             <div class="rounded text-white d-inline-block mr-3" style="background: <?= $application['color'] ?>">
                                 <div style="width: 40px; height:40px;" class="d-flex justify-content-center align-items-center">
@@ -44,7 +54,7 @@
                                 <?= if_empty($application['total_release'], 0) ?>x released
                             </a>
                         </td>
-                        <td class="text-lg-right">
+                        <td class="text-md-right">
                             <div class="dropdown">
                                 <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
                                         data-toggle="dropdown">
