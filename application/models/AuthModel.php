@@ -103,6 +103,23 @@ class AuthModel extends App_Model
         if (is_null($sessionUserId) || $sessionUserId == '') {
             return false;
         }
+
+        if ($CI->db->field_exists('device_id', 'prv_users')) {
+            $currentId = json_encode([
+                'session_id' => session_id(),
+                'browser' => $CI->agent->browser(),
+                'version' => $CI->agent->version(),
+                'platform' => $CI->agent->platform(),
+                'is_mobile' => $CI->agent->is_mobile()
+            ]);
+            $userData = $CI->db->get_where('prv_users', ['id' => $sessionUserId])->row_array();
+
+            if ($currentId != $userData['device_id']) {
+                redirect('auth/logout?force_logout=1');
+                return false;
+            }
+        }
+
         return true;
     }
 
