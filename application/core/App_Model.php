@@ -6,6 +6,7 @@ class App_Model extends CI_Model
     protected $table = '';
     protected $id = 'id';
     protected $filteredFields = ['*'];
+    protected $filteredMaps = [];
 
     /**
      * Set field to filtered list.
@@ -28,6 +29,17 @@ class App_Model extends CI_Model
     }
 
     /**
+     * Set field to map as filter list.
+     *
+     * @param $key
+     * @param $field
+     */
+    protected function addFilteredMap($key, $field)
+    {
+        $this->filteredMaps[$key] = $field;
+    }
+
+    /**
      * Get base query of table.
      *
      * @return CI_DB_query_builder
@@ -46,9 +58,6 @@ class App_Model extends CI_Model
      */
     public function getAll($filters = [], $withTrashed = false)
     {
-        $currentPage = 1;
-        $perPage = 15;
-
         $this->db->start_cache();
 
         $baseQuery = $this->getBaseQuery();
@@ -63,18 +72,16 @@ class App_Model extends CI_Model
             }
 
             if (key_exists('search', $filters) && !empty($filters['search'])) {
-                $baseQuery->group_start();
                 foreach ($this->filteredFields as $filteredField) {
                     if ($filteredField == '*') {
                         $fields = $this->db->list_fields($this->table);
                         foreach ($fields as $field) {
-                            $baseQuery->or_like($this->table . '.' . $field, trim($filters['search']));
+                            $baseQuery->or_having($this->table . '.' . $field . ' LIKE', '%' . trim($filters['search']) . '%');
                         }
                     } else {
-                        $baseQuery->or_like($filteredField, trim($filters['search']));
+                        $baseQuery->or_having($filteredField . ' LIKE', '%' . trim($filters['search']) . '%');
                     }
                 }
-                $baseQuery->group_end();
             }
 
             if (key_exists('status', $filters) && !empty($filters['status'])) {
@@ -89,18 +96,47 @@ class App_Model extends CI_Model
                 }
             }
 
-            if (key_exists('page', $filters) && !empty($filters['page'])) {
-                $currentPage = $filters['page'];
+            if (key_exists('date_from', $filters) && !empty($filters['date_from'])) {
+                if ($this->db->field_exists('created_at', $this->table)) {
+                    $baseQuery->where($this->table . '.created_at>=', format_date($filters['date_from']));
+                }
             }
 
-            if (key_exists('per_page', $filters) && !empty($filters['per_page'])) {
-                $perPage = $filters['per_page'];
+            if (key_exists('date_to', $filters) && !empty($filters['date_to'])) {
+                if ($this->db->field_exists('created_at', $this->table)) {
+                    $baseQuery->where($this->table . '.created_at<=', format_date($filters['date_to']));
+                }
+            }
+
+            if (!empty($this->filteredMaps)) {
+                foreach ($this->filteredMaps as $filterKey => $filterField) {
+                    if (key_exists($filterKey, $filters) && !empty($filters[$filterKey])) {
+                        $baseQuery->where_in($filterField, $filters[$filterKey]);
+                    }
+                }
             }
         }
         $this->db->stop_cache();
 
+        if (key_exists('per_page', $filters) && !empty($filters['per_page'])) {
+            $perPage = $filters['per_page'];
+        } else {
+            $perPage = 25;
+        }
+
         if (key_exists('page', $filters) && !empty($filters['page'])) {
-            $totalData = $this->db->count_all_results();
+            $currentPage = $filters['page'];
+
+            //$totalData = $this->db->count_all_results();
+
+            $querySelect = $this->db->get_compiled_select();
+            $totalQuery = $this->db->query("SELECT COUNT(*) AS total_record FROM ({$querySelect}) AS report");
+            $totalRows = $totalQuery->row_array();
+            if (!empty($totalRows)) {
+                $totalData = $totalRows['total_record'];
+            } else {
+                $totalData = 0;
+            }
 
             if (key_exists('sort_by', $filters) && !empty($filters['sort_by'])) {
                 if (key_exists('order_method', $filters) && !empty($filters['order_method'])) {
@@ -124,6 +160,14 @@ class App_Model extends CI_Model
                 'current_page' => $currentPage,
                 'data' => $pageData
             ];
+        }
+
+        if (key_exists('sort_by', $filters) && !empty($filters['sort_by'])) {
+            if (key_exists('order_method', $filters) && !empty($filters['order_method'])) {
+                $baseQuery->order_by($filters['sort_by'], $filters['order_method']);
+            } else {
+                $baseQuery->order_by($filters['sort_by'], 'asc');
+            }
         } else {
             $baseQuery->order_by($this->table . '.' . $this->id, 'desc');
         }
@@ -160,13 +204,18 @@ class App_Model extends CI_Model
      *
      * @param $conditions
      * @param bool $resultRow
+     * @param bool $withTrashed
      * @return array
      */
-    public function getBy($conditions, $resultRow = false)
+    public function getBy($conditions, $resultRow = false, $withTrashed = false)
     {
-        $baseQuery = $this->getBaseQuery()->order_by($this->table . '.id', 'desc');
+        $baseQuery = $this->getBaseQuery()->order_by($this->table . '.id', 'asc');
 
         $baseQuery->where($conditions);
+
+        if (!$withTrashed && $this->db->field_exists('is_deleted', $this->table)) {
+            $baseQuery->where($this->table . '.is_deleted', false);
+        }
 
         if ($resultRow) {
             return $baseQuery->get()->row_array();
@@ -186,21 +235,23 @@ class App_Model extends CI_Model
     {
         $baseQuery = $this->getBaseQuery();
 
-        $baseQuery->group_start();
-
-        $fields = $this->db->list_fields($this->table);
-        foreach ($fields as $field) {
-            $baseQuery->or_like($this->table . '.' . $field, $keyword);
+        foreach ($this->filteredFields as $filteredField) {
+            if ($filteredField == '*') {
+                $fields = $this->db->list_fields($this->table);
+                foreach ($fields as $field) {
+                    $baseQuery->or_having($this->table . '.' . $field . ' LIKE', '%' . trim($keyword) . '%');
+                }
+            } else {
+                $baseQuery->or_having($filteredField . ' LIKE', '%' . trim($keyword) . '%');
+            }
         }
-
-        $baseQuery->group_end();
 
         if (!$withTrashed && $this->db->field_exists('is_deleted', $this->table)) {
             $baseQuery->where($this->table . '.is_deleted', false);
         }
 
         if (!empty($limit)) {
-            $baseQuery->limit(10);
+            $baseQuery->limit($limit);
         }
 
         return $baseQuery->get()->result_array();

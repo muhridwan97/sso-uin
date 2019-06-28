@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class UserModel extends App_Model
 {
     protected $table = 'prv_users';
+    protected $filteredMaps = ['user_type' => 'prv_users.user_type'];
 
     const STATUS_PENDING = 'PENDING';
     const STATUS_ACTIVATED = 'ACTIVATED';

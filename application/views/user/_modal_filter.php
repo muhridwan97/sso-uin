@@ -18,6 +18,49 @@
                     <div class="row">
                         <div class="col-8 col-sm-6">
                             <div class="form-group">
+                                <label for="user_type">User Type</label>
+                                <select class="custom-select" name="user_type" id="user_type">
+                                    <option value=""<?= set_select('user_type', 'created_at', get_url_param('user_type') == 'created_at') ?>>
+                                        ALL
+                                    </option>
+                                    <option value="INTERNAL"<?= set_select('user_type', 'INTERNAL', get_url_param('user_type') == 'INTERNAL') ?>>
+                                        INTERNAL
+                                    </option>
+                                    <option value="EXTERNAL"<?= set_select('user_type', 'EXTERNAL', get_url_param('user_type') == 'EXTERNAL') ?>>
+                                        EXTERNAL
+                                    </option>
+                                </select>
+                                <?= form_error('user_type'); ?>
+                            </div>
+                        </div>
+                        <div class="col-4 col-sm-6">
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="custom-select" name="status" id="status">
+                                    <option value=""
+                                        <?= set_select('status', 'ALL STATUS', get_url_param('status') == 'ALL STATUS') ?>>
+                                        ALL STATUS
+                                    </option>
+                                    <option value="PENDING"
+                                        <?= set_select('status', 'PENDING', get_url_param('status') == 'PENDING') ?>>
+                                        PENDING
+                                    </option>
+                                    <option value="ACTIVATED"
+                                        <?= set_select('status', 'ACTIVATED', get_url_param('status') == 'ACTIVATED') ?>>
+                                        ACTIVATED
+                                    </option>
+                                    <option value="SUSPENDED"
+                                        <?= set_select('status', 'SUSPENDED', get_url_param('status') == 'SUSPENDED') ?>>
+                                        SUSPENDED
+                                    </option>
+                                </select>
+                                <?= form_error('status'); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8 col-sm-6">
+                            <div class="form-group">
                                 <label for="sort_by">Sort By</label>
                                 <select class="custom-select" name="sort_by" id="sort_by" required>
                                     <option value="created_at"<?= set_select('sort_by', 'created_at', get_url_param('sort_by') == 'created_at') ?>>

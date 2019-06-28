@@ -13,8 +13,9 @@
 	"require": {
 		"php": ">=7.0",
 		"vlucas/phpdotenv": "^2.5",
-		"phpoffice/phpspreadsheet": "^1.4"
-	},
+		"phpoffice/phpspreadsheet": "^1.4",
+      	"ext-json": "*"
+    },
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
 	},

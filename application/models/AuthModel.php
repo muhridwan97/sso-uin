@@ -45,6 +45,18 @@ class AuthModel extends App_Model
                     'auth.is_logged_in' => true
                 ]);
 
+                $this->user->update([
+                    'device_id' => json_encode([
+                        'session_id' => session_id(),
+                        'browser' => $this->agent->browser(),
+                        'version' => $this->agent->version(),
+                        'platform' => $this->agent->platform(),
+                        'is_mobile' => $this->agent->is_mobile()
+                    ]),
+                    'ip_address' => $this->input->ip_address(),
+                    'last_logged_in' => date('Y-m-d H:i:s')
+                ], $result['id']);
+
                 if ($remember || $remember == 'on') {
                     $this->load->model('UserTokenModel', 'userToken');
 
