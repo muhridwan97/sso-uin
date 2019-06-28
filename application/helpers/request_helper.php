@@ -76,7 +76,6 @@ if (!function_exists('get_url_param')) {
     }
 }
 
-
 if (!function_exists('set_url_param')) {
 
     /**
@@ -96,7 +95,7 @@ if (!function_exists('set_url_param')) {
         // mapping to key->value array
         for ($i = 0; $i < count($params); $i++) {
             $param = explode('=', $params[$i]);
-            if(!empty($param[0])) {
+            if (!empty($param[0])) {
                 $builtParam[$param[0]] = key_exists(1, $param) ? $param[1] : '';
             }
         }
@@ -106,7 +105,7 @@ if (!function_exists('set_url_param')) {
             $builtParam[$key] = $value;
         }
 
-        if($returnArray) {
+        if ($returnArray) {
             return $builtParam;
         }
 
@@ -117,5 +116,32 @@ if (!function_exists('set_url_param')) {
         }
 
         return $baseQuery;
+    }
+}
+
+if (!function_exists('get_client_ip')) {
+    /**
+     * Get client ip.
+     *
+     * @return array|false|string
+     */
+    function get_client_ip()
+    {
+        if (getenv('HTTP_CLIENT_IP'))
+            $ipaddress = getenv('HTTP_CLIENT_IP');
+        else if (getenv('HTTP_X_FORWARDED_FOR'))
+            $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+        else if (getenv('HTTP_X_FORWARDED'))
+            $ipaddress = getenv('HTTP_X_FORWARDED');
+        else if (getenv('HTTP_FORWARDED_FOR'))
+            $ipaddress = getenv('HTTP_FORWARDED_FOR');
+        else if (getenv('HTTP_FORWARDED'))
+            $ipaddress = getenv('HTTP_FORWARDED');
+        else if (getenv('REMOTE_ADDR'))
+            $ipaddress = getenv('REMOTE_ADDR');
+        else
+            $ipaddress = '';
+
+        return $ipaddress;
     }
 }

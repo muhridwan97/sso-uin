@@ -53,7 +53,7 @@ class AuthModel extends App_Model
                         'platform' => $this->agent->platform(),
                         'is_mobile' => $this->agent->is_mobile()
                     ]),
-                    'ip_address' => $this->input->ip_address(),
+                    'ip_address' => get_client_ip(),
                     'last_logged_in' => date('Y-m-d H:i:s')
                 ], $result['id']);
 
