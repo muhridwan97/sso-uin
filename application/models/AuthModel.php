@@ -47,7 +47,7 @@ class AuthModel extends App_Model
 
                 $this->user->update([
                     'device_id' => json_encode([
-                        'session_id' => session_id(),
+                        'session_id' => $this->agent->agent_string(),
                         'browser' => $this->agent->browser(),
                         'version' => $this->agent->version(),
                         'platform' => $this->agent->platform(),
@@ -106,7 +106,7 @@ class AuthModel extends App_Model
 
         if ($CI->db->field_exists('device_id', 'prv_users')) {
             $currentId = json_encode([
-                'session_id' => session_id(),
+                'session_id' => $CI->agent->agent_string(),
                 'browser' => $CI->agent->browser(),
                 'version' => $CI->agent->version(),
                 'platform' => $CI->agent->platform(),
