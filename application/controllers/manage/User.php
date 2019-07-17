@@ -39,7 +39,7 @@ class User extends App_Controller
         return [
             'name' => 'trim|required|max_length[50]',
             'username' => [
-                'trim', 'required', 'max_length[50]', ['username_exists', function ($username) use ($userId) {
+                'trim', 'required', 'max_length[25]', 'regex_match[/^[a-zA-Z0-9.\-_]+$/]', ['username_exists', function ($username) use ($userId) {
                     $this->form_validation->set_message('username_exists', 'The %s has been registered before, try another');
                     return $this->user->isUniqueUsername($username, $userId);
                 }]
