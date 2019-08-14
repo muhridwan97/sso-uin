@@ -26,7 +26,8 @@ class AuthModel extends App_Model
         }
 
         $user = $this->db->get_where($this->table, [
-            $usernameField => $username
+            $usernameField => $username,
+            'prv_users.is_deleted' => false
         ]);
 
         if ($user->num_rows() > 0) {

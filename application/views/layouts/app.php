@@ -14,7 +14,7 @@
     <link rel="icon" href="<?= base_url('assets/dist/img/icon.png') ?>" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="<?= base_url('assets/dist/app.css') ?>">
+    <link rel="stylesheet" href="<?= base_url(get_asset('app.css')) ?>">
 </head>
 
 <body class="has-sticky-footer">
@@ -63,7 +63,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
-<script src="<?= base_url('assets/dist/app.bundle.js?v=2') ?>"></script>
+<script src="<?= base_url(get_asset('runtime.js')) ?>"></script>
+<script src="<?= base_url(get_asset('vendors.js')) ?>"></script>
+<script src="<?= base_url(get_asset('app.js')) ?>"></script>
 
 </body>
 

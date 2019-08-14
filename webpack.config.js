@@ -2,25 +2,42 @@ const webpack = require('webpack');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 
 module.exports = {
     entry: {
-        app: './assets/src/javascripts/app.js',
+        app: path.resolve(__dirname, 'assets/src/javascripts/app.js'),
     },
     output: {
-        filename: '[name].bundle.js',
+        filename: '[name].bundle.[contenthash].js',
         path: path.resolve(__dirname, 'assets/dist'),
         publicPath: '/assets/dist/',
-        chunkFilename: '[name].bundle.js',
+        chunkFilename: '[name].bundle.[contenthash].js',
     },
     devtool: 'source-map',
     mode: process.env.WEBPACK_MODE || 'development',
     optimization: {
+        moduleIds: 'hashed',
+        runtimeChunk: 'single',
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        },
         minimizer: [
-            new UglifyJsPlugin({
-                sourceMap: true
+            new TerserPlugin({
+                sourceMap: true,
+                parallel: true,
+                terserOptions: {
+                    ecma: 6,
+                },
             }),
             new OptimizeCSSAssetsPlugin({})
         ]
@@ -31,8 +48,13 @@ module.exports = {
         ignored: /node_modules/
     },
     plugins: [
+        new CleanWebpackPlugin(),
+        new ManifestPlugin({
+            fileName: 'manifest.json',
+            publicPath: 'assets/dist/'
+        }),
         new MiniCssExtractPlugin({
-            filename: "[name].css",
+            filename: "[name].[contenthash].css",
         }),
         new CopyWebpackPlugin([
             {from: './assets/src/images/', to: 'img/', toType: 'dir'}
