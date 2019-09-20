@@ -17,9 +17,6 @@ class Release extends App_Controller
     {
         parent::__construct();
 
-        if(AuthModel::loginData('username') != 'admin')
-            flash('danger', 'You unauthorized to access the page', '_back', 'app');
-
         $this->load->model('ApplicationModel', 'application');
         $this->load->model('ApplicationReleaseModel', 'applicationRelease');
         $this->load->model('modules/Uploader', 'uploader');
@@ -88,6 +85,8 @@ class Release extends App_Controller
      */
     public function index()
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_RELEASE_VIEW);
+
         $filters = array_merge($_GET, ['page' => get_url_param('page', 1)]);
 
         $export = $this->input->get('export');
@@ -111,6 +110,8 @@ class Release extends App_Controller
      */
     public function view($id)
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_RELEASE_VIEW);
+
         $applicationRelease = $this->applicationRelease->getById($id);
 
         $this->render('release/view', compact('applicationRelease'));
@@ -134,6 +135,8 @@ class Release extends App_Controller
      */
     public function create()
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_RELEASE_CREATE);
+
         $applications = $this->application->getAll();
 
         $applicationId = ['id_application' => get_url_param('application_id')];
@@ -147,6 +150,8 @@ class Release extends App_Controller
      */
     public function save()
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_RELEASE_CREATE);
+
         if ($this->validate()) {
             $applicationId = $this->input->post('application');
             $major = $this->input->post('major');
@@ -204,6 +209,8 @@ class Release extends App_Controller
      */
     public function edit($id)
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_RELEASE_EDIT);
+
         $applicationRelease = $this->applicationRelease->getById($id);
         $application = $this->application->getById($applicationRelease['id_application']);
 
@@ -217,6 +224,8 @@ class Release extends App_Controller
      */
     public function update($id)
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_RELEASE_EDIT);
+
         if ($this->validate($this->_validation_rules($id))) {
             $applicationId = $this->input->post('application');
             $major = $this->input->post('major');
@@ -281,6 +290,8 @@ class Release extends App_Controller
      */
     public function delete($id)
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_RELEASE_DELETE);
+
         $release = $this->applicationRelease->getById($id);
 
         if ($this->applicationRelease->delete($id)) {

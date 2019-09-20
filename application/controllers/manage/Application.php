@@ -16,9 +16,6 @@ class Application extends App_Controller
     {
         parent::__construct();
 
-        if(AuthModel::loginData('username') != 'admin')
-            flash('danger', 'You unauthorized to access the page', '_back', 'app');
-
         $this->load->model('ApplicationModel', 'application');
         $this->load->model('ApplicationReleaseModel', 'applicationRelease');
         $this->load->model('modules/Exporter', 'exporter');
@@ -47,6 +44,8 @@ class Application extends App_Controller
      */
     public function index()
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_APPLICATION_VIEW);
+
         $filters = array_merge($_GET, ['page' => get_url_param('page', 1)]);
 
         $export = $this->input->get('export');
@@ -68,6 +67,8 @@ class Application extends App_Controller
      */
     public function view($id)
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_APPLICATION_VIEW);
+
         $application = $this->application->getById($id);
 
         $this->render('application/view', compact('application'));
@@ -78,6 +79,8 @@ class Application extends App_Controller
      */
     public function create()
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_APPLICATION_CREATE);
+
         $applications = $this->application->getAll();
 
         $this->render('application/create', compact('applications'));
@@ -88,6 +91,8 @@ class Application extends App_Controller
      */
     public function save()
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_APPLICATION_CREATE);
+
         if ($this->validate()) {
             $title = $this->input->post('title');
             $version = $this->input->post('version');
@@ -146,6 +151,8 @@ class Application extends App_Controller
      */
     public function edit($id)
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_APPLICATION_EDIT);
+
         $applications = $this->application->getAll();
         $application = $this->application->getById($id);
 
@@ -159,6 +166,8 @@ class Application extends App_Controller
      */
     public function update($id)
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_APPLICATION_EDIT);
+
         if ($this->validate()) {
             $title = $this->input->post('title');
             $version = $this->input->post('version');
@@ -207,6 +216,8 @@ class Application extends App_Controller
      */
     public function delete($id)
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_APPLICATION_DELETE);
+
         $application = $this->application->getById($id);
 
         $this->db->trans_start();

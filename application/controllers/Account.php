@@ -17,6 +17,8 @@ class Account extends App_Controller
 
         $this->load->model('UserModel', 'user');
         $this->load->model('modules/Uploader', 'uploader');
+
+        AuthorizationModel::mustAuthorized(PERMISSION_ACCOUNT_EDIT);
     }
 
     /**

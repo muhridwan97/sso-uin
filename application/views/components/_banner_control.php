@@ -8,8 +8,27 @@
             <?php $segment1 = $this->uri->segment(1) ?>
             <a href="<?= site_url('app') ?>" data-title="Applications supporting single sign on and full user management "
                class="btn btn-section<?= $segment1 == '' || $segment1 == 'app' ? ' active' : '' ?>">Application</a>
-            <?php if(AuthModel::loginData('username') == 'admin'): ?>
-                <a href="<?= site_url('manage/user') ?>" data-title="Manage master data and application module"
+            <?php if(AuthorizationModel::isAuthorized(PERMISSION_USER_VIEW)
+                || AuthorizationModel::isAuthorized(PERMISSION_ROLE_VIEW)
+                || AuthorizationModel::isAuthorized(PERMISSION_APPLICATION_VIEW)
+                || AuthorizationModel::isAuthorized(PERMISSION_RELEASE_VIEW)
+                || AuthorizationModel::isAuthorized(PERMISSION_SETTING_EDIT)): ?>
+                <?php
+                    if(AuthorizationModel::isAuthorized(PERMISSION_USER_VIEW)) {
+                        $destination = 'user';
+                    } elseif(AuthorizationModel::isAuthorized(PERMISSION_ROLE_VIEW)) {
+                        $destination = 'role';
+                    } elseif(AuthorizationModel::isAuthorized(PERMISSION_APPLICATION_VIEW)) {
+                        $destination = 'application';
+                    } elseif(AuthorizationModel::isAuthorized(PERMISSION_RELEASE_VIEW)) {
+                        $destination = 'release';
+                    } elseif(AuthorizationModel::isAuthorized(PERMISSION_SETTING_EDIT)) {
+                        $destination = 'setting';
+                    } else {
+                        $destination = '';
+                    }
+                ?>
+                <a href="<?= site_url('manage/' . $destination) ?>" data-title="Manage master data and application module"
                    class="btn btn-section<?= $segment1 == 'manage' ? ' active' : '' ?>">Manage</a>
             <?php endif; ?>
             <a href="<?= site_url('notification') ?>" data-title="Your detail push notification"

@@ -6,6 +6,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property ApplicationModel $application
  * @property UserApplicationModel $userApplication
  * @property UserModel $user
+ * @property RoleModel $role
+ * @property UserRoleModel $userRole
  * @property Uploader $uploader
  * @property Exporter $exporter
  */
@@ -18,12 +20,11 @@ class User extends App_Controller
     {
         parent::__construct();
 
-        if (AuthModel::loginData('username') != 'admin')
-            flash('danger', 'You unauthorized to access the page', '_back', 'app');
-
         $this->load->model('ApplicationModel', 'application');
         $this->load->model('UserApplicationModel', 'userApplication');
         $this->load->model('UserModel', 'user');
+        $this->load->model('RoleModel', 'role');
+        $this->load->model('UserRoleModel', 'userRole');
         $this->load->model('modules/Uploader', 'uploader');
         $this->load->model('modules/Exporter', 'exporter');
     }
@@ -61,6 +62,8 @@ class User extends App_Controller
      */
     public function index()
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_USER_VIEW);
+
         $filters = array_merge($_GET, ['page' => get_url_param('page', 1)]);
 
         $export = $this->input->get('export');
@@ -82,11 +85,14 @@ class User extends App_Controller
      */
     public function view($id)
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_USER_VIEW);
+
         $user = $this->user->getById($id);
         $userSubordinates = $this->user->getBy(['prv_users.id_user' => $id]);
         $userApplications = $this->application->getByUser($id);
+        $roles = $this->userRole->getBy(['prv_user_roles.id_user' => $id]);
 
-        $this->render('user/view', compact('user', 'userSubordinates', 'userApplications'));
+        $this->render('user/view', compact('user', 'userSubordinates', 'userApplications', 'roles'));
     }
 
     /**
@@ -94,13 +100,16 @@ class User extends App_Controller
      */
     public function create()
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_USER_CREATE);
+
         $applications = $this->application->getAll();
         $parentUsers = $this->user->getBy([
             'prv_users.id!=' => AuthModel::loginData('id', 0),
             'prv_users.username!=' => 'admin'
         ]);
+        $roles = $this->role->getAll();
 
-        $this->render('user/create', compact('applications', 'parentUsers'));
+        $this->render('user/create', compact('applications', 'parentUsers', 'roles'));
     }
 
     /**
@@ -108,6 +117,8 @@ class User extends App_Controller
      */
     public function save()
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_USER_CREATE);
+
         if ($this->validate()) {
             $name = $this->input->post('name');
             $username = $this->input->post('username');
@@ -118,6 +129,7 @@ class User extends App_Controller
             $password = $this->input->post('password');
             $applications = $this->input->post('applications');
             $defaultApplication = $this->input->post('default_application');
+            $roles = $this->input->post('roles');
 
             $this->db->trans_start();
 
@@ -153,6 +165,13 @@ class User extends App_Controller
                 }
             }
 
+            foreach ($roles as $roleId) {
+                $this->userRole->create([
+                    'id_user' => $userId,
+                    'id_role' => $roleId,
+                ]);
+            }
+
             $this->db->trans_complete();
 
             if ($this->db->trans_status()) {
@@ -171,6 +190,8 @@ class User extends App_Controller
      */
     public function edit($id)
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_USER_EDIT);
+
         $user = $this->user->getById($id);
 
         $applications = $this->application->getAll();
@@ -196,8 +217,10 @@ class User extends App_Controller
                 $application['_selected'] = false;
             }
         }
+        $roles = $this->role->getAll();
+        $userRoles = $this->userRole->getBy(['id_user' => $id]);
 
-        $this->render('user/edit', compact('user', 'applications', 'defaultApp', 'parentUsers'));
+        $this->render('user/edit', compact('user', 'applications', 'defaultApp', 'parentUsers', 'roles', 'userRoles'));
     }
 
     /**
@@ -207,6 +230,8 @@ class User extends App_Controller
      */
     public function update($id)
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_USER_EDIT);
+
         if ($this->validate($this->_validation_rules($id))) {
             $name = $this->input->post('name');
             $username = $this->input->post('username');
@@ -217,6 +242,7 @@ class User extends App_Controller
             $password = $this->input->post('password');
             $applications = $this->input->post('applications');
             $defaultApplication = $this->input->post('default_application');
+            $roles = $this->input->post('roles');
 
             $user = $this->user->getById($id);
 
@@ -257,6 +283,14 @@ class User extends App_Controller
                 }
             }
 
+            $this->userRole->delete(['id_user' => $id]);
+            foreach ($roles as $roleId) {
+                $this->userRole->create([
+                    'id_user' => $id,
+                    'id_role' => $roleId,
+                ]);
+            }
+
             $this->db->trans_complete();
 
             if ($this->db->trans_status()) {
@@ -275,6 +309,8 @@ class User extends App_Controller
      */
     public function delete($id)
     {
+        AuthorizationModel::mustAuthorized(PERMISSION_USER_DELETE);
+
         $user = $this->user->getById($id);
 
         if ($user['username'] == 'admin') {

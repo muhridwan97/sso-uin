@@ -83,3 +83,30 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+// Super admin permission
+defined('PERMISSION_ALL_ACCESS') OR define('PERMISSION_ALL_ACCESS', 'all-access');
+
+// Account setting permission
+defined('PERMISSION_ACCOUNT_EDIT') OR define('PERMISSION_ACCOUNT_EDIT', 'account-edit');
+defined('PERMISSION_SETTING_EDIT') OR define('PERMISSION_SETTING_EDIT', 'setting-edit');
+
+defined('PERMISSION_USER_VIEW') OR define('PERMISSION_USER_VIEW', 'user-view');
+defined('PERMISSION_USER_CREATE') OR define('PERMISSION_USER_CREATE', 'user-create');
+defined('PERMISSION_USER_EDIT') OR define('PERMISSION_USER_EDIT', 'user-edit');
+defined('PERMISSION_USER_DELETE') OR define('PERMISSION_USER_DELETE', 'user-delete');
+
+defined('PERMISSION_ROLE_VIEW') OR define('PERMISSION_ROLE_VIEW', 'role-view');
+defined('PERMISSION_ROLE_CREATE') OR define('PERMISSION_ROLE_CREATE', 'role-create');
+defined('PERMISSION_ROLE_EDIT') OR define('PERMISSION_ROLE_EDIT', 'role-edit');
+defined('PERMISSION_ROLE_DELETE') OR define('PERMISSION_ROLE_DELETE', 'role-delete');
+
+defined('PERMISSION_APPLICATION_VIEW') OR define('PERMISSION_APPLICATION_VIEW', 'application-view');
+defined('PERMISSION_APPLICATION_CREATE') OR define('PERMISSION_APPLICATION_CREATE', 'application-create');
+defined('PERMISSION_APPLICATION_EDIT') OR define('PERMISSION_APPLICATION_EDIT', 'application-edit');
+defined('PERMISSION_APPLICATION_DELETE') OR define('PERMISSION_APPLICATION_DELETE', 'application-delete');
+
+defined('PERMISSION_RELEASE_VIEW') OR define('PERMISSION_RELEASE_VIEW', 'release-view');
+defined('PERMISSION_RELEASE_CREATE') OR define('PERMISSION_RELEASE_CREATE', 'release-create');
+defined('PERMISSION_RELEASE_EDIT') OR define('PERMISSION_RELEASE_EDIT', 'release-edit');
+defined('PERMISSION_RELEASE_DELETE') OR define('PERMISSION_RELEASE_DELETE', 'release-delete');

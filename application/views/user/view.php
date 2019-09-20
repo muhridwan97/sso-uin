@@ -102,6 +102,19 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="role">Roles</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext" id="role">
+                                    <?php foreach ($roles as $role): ?>
+                                        <?= $role['role'] ?>
+                                    <?php endforeach; ?>
+                                    <?php if(empty($roles)): ?>
+                                        No role access
+                                    <?php endif; ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-4 col-form-label" for="application">Applications</label>
                             <div class="col-sm-8">
                                 <p class="form-control-plaintext" id="application">
@@ -121,9 +134,11 @@
 
 				<div class="d-flex justify-content-between mt-3">
 					<a href="javascript:void()" onclick="history.back()" class="btn btn-secondary">Back</a>
-					<a href="<?= site_url('manage/user/edit/' . $user['id']) ?>" class="btn btn-primary">
-						Edit User
-					</a>
+                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_USER_EDIT)): ?>
+                        <a href="<?= site_url('manage/user/edit/' . $user['id']) ?>" class="btn btn-primary">
+                            Edit User
+                        </a>
+                    <?php endif; ?>
 				</div>
 			</div>
 		</div>
