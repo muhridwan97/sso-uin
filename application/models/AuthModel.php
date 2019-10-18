@@ -116,7 +116,7 @@ class AuthModel extends App_Model
             ]);
             $userData = $CI->db->get_where('prv_users', ['id' => $sessionUserId])->row_array();
 
-            if ($currentId != $userData['device_id']) {
+            if ($currentId != $userData['device_id'] && AuthModel::loginData('username') != 'admin') {
                 redirect('auth/logout?force_logout=1');
                 return false;
             }
