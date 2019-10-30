@@ -21,30 +21,30 @@
                 <?= _method('put') ?>
                 <?= _csrf() ?>
                 <p class="form-section-title">Basic Profile</p>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name="name"
-                                   placeholder="Your full name" maxlength="50" value="<?= set_value('name', $user['name']) ?>">
-                            <?= form_error('name') ?>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" name="username"
-                                   placeholder="Enter username" maxlength="50" value="<?= set_value('username', $user['username']) ?>">
-                            <?= form_error('username') ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" class="form-control" id="email" name="email"
-                           placeholder="Your email address" maxlength="50" value="<?= set_value('email', $user['email']) ?>">
-                    <?= form_error('email') ?>
-                </div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label for="name">Name</label>
+							<input type="text" class="form-control" id="name" name="name" <?= AuthorizationModel::isAuthorized(PERMISSION_ACCOUNT_EDIT) ? '' : 'readonly' ?>
+								   placeholder="Your full name" maxlength="50" value="<?= set_value('name', $user['name']) ?>">
+							<?= form_error('name') ?>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label for="username">Username</label>
+							<input type="text" class="form-control" id="username" name="username" <?= AuthorizationModel::isAuthorized(PERMISSION_ACCOUNT_EDIT) ? '' : 'readonly' ?>
+								   placeholder="Enter username" maxlength="50" value="<?= set_value('username', $user['username']) ?>">
+							<?= form_error('username') ?>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="email">Email Address</label>
+					<input type="email" class="form-control" id="email" name="email" <?= AuthorizationModel::isAuthorized(PERMISSION_ACCOUNT_EDIT) ? '' : 'readonly' ?>
+						   placeholder="Your email address" maxlength="50" value="<?= set_value('email', $user['email']) ?>">
+					<?= form_error('email') ?>
+				</div>
 
                 <p class="form-section-title">Avatar</p>
                 <div class="form-group">

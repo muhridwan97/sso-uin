@@ -26,26 +26,24 @@
                 </div>
             </div>
         <?php endforeach; ?>
-        <?php if(AuthorizationModel::isAuthorized(PERMISSION_ACCOUNT_EDIT)): ?>
-            <div class="col-sm-6 col-md-4 col-lg-3 card-app mb-4 mb-sm-5">
-                <div class="d-flex flex-row flex-sm-column">
-                    <a href="<?= site_url('account') ?>">
-                        <div class="card text-light mr-3" style="background: #4d4f53">
-                            <div class="card-body d-flex justify-content-center align-items-center">
-                                <span class="app-icon align-middle mdi mdi-security-account-outline"></span>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="card-title d-flex align-items-center d-sm-block">
-                        <div>
-                            <a href="<?= site_url('account') ?>" class="d-block">
-                                <h3 class="app-title">My Account</h3>
-                                <p class="app-subtitle mb-0">Manage your profile & password</p>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php endif; ?>
+		<div class="col-sm-6 col-md-4 col-lg-3 card-app mb-4 mb-sm-5">
+			<div class="d-flex flex-row flex-sm-column">
+				<a href="<?= site_url('account') ?>">
+					<div class="card text-light mr-3" style="background: #4d4f53">
+						<div class="card-body d-flex justify-content-center align-items-center">
+							<span class="app-icon align-middle mdi mdi-security-account-outline"></span>
+						</div>
+					</div>
+				</a>
+				<div class="card-title d-flex align-items-center d-sm-block">
+					<div>
+						<a href="<?= site_url('account') ?>" class="d-block">
+							<h3 class="app-title">My Account</h3>
+							<p class="app-subtitle mb-0">Manage your profile & password</p>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
     </div>
 </div>
