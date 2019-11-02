@@ -29,7 +29,7 @@ class Uploader extends CI_Model
         $fileSize = key_exists('size', $options) ? $options['size'] : 3000;
         $maxWidth = key_exists('max_width', $options) ? $options['max_width'] : 5000;
         $maxHeight = key_exists('max_height', $options) ? $options['max_height'] : 5000;
-        $fileName = key_exists('file_name', $options) ? $options['file_name'] : (!is_array($_FILES[$input]['name']) ? uniqid() . '.' . pathinfo($_FILES[$input]['name'], PATHINFO_EXTENSION) : '');
+        $fileName = key_exists('file_name', $options) ? $options['file_name'] : (!is_array($_FILES[$input]['name']) ? uniqid() . '.' . strtolower(pathinfo($_FILES[$input]['name'], PATHINFO_EXTENSION)) : '');
 
         $config['upload_path'] = empty($destination) ? self::TEMP_PATH : $destination;
         $config['allowed_types'] = empty($fileType) ? self::WHITELISTED_TYPE : $fileType;
