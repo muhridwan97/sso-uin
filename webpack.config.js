@@ -7,6 +7,10 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 
+require('dotenv').config();
+
+const ASSET_PATH = process.env.ASSET_PATH || '/assets/dist/'; // DO NOT CHANGE, USE .env instead
+
 module.exports = {
     entry: {
         app: path.resolve(__dirname, 'assets/src/javascripts/app.js'),
@@ -14,7 +18,7 @@ module.exports = {
     output: {
         filename: '[name].bundle.[contenthash].js',
         path: path.resolve(__dirname, 'assets/dist'),
-        publicPath: '/assets/dist/',
+		publicPath: ASSET_PATH, // DO NOT CHANGE, USE .env instead
         chunkFilename: '[name].bundle.[contenthash].js',
     },
     devtool: 'source-map',
