@@ -79,6 +79,10 @@ class UserModel extends App_Model
                 $baseQuery->where($this->table . '.created_at<=', format_date($filters['date_to']));
             }
 
+            if (key_exists('user_type', $filters) && !empty($filters['user_type'])) {
+                $baseQuery->where('prv_users.user_type', $filters['user_type']);
+            }
+
             if (key_exists('role', $filters) && !empty($filters['role'])) {
                 $baseQuery->where('prv_roles.id', $filters['role']);
             }
