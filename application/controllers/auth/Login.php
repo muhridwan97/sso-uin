@@ -6,6 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property ApplicationModel $application
  * @property AuthModel $auth
  * @property UserModel $user
+ * @property UserTokenModel $userToken
  * @property UserApplicationModel $userApplication
  */
 class Login extends App_Controller
@@ -21,6 +22,7 @@ class Login extends App_Controller
         $this->load->model('ApplicationModel', 'application');
         $this->load->model('AuthModel', 'auth');
         $this->load->model('UserModel', 'user');
+        $this->load->model('UserTokenModel', 'userToken');
         $this->load->model('UserApplicationModel', 'userApplication');
     }
 
@@ -66,6 +68,34 @@ class Login extends App_Controller
                         flash('danger', 'Your account has status <strong>' . $authenticated . '</strong>, please contact our administrator');
                     } else {
                         if ($authenticated) {
+                        	// check if password expired
+							$passwordExpiredDays = get_setting('password_expiration_days');
+							if($passwordExpiredDays > 0) {
+								$user = AuthModel::loginData();
+								$dayBeforeExpired = difference_date(date('Y-m-d'), format_date($user['password_expired_at']));
+								if($dayBeforeExpired <= 0) {
+									// force clear session because password expired
+									$this->auth->logout();
+
+									$changePasswordVerification = get_setting('email_verification_after_password_expired_days');
+									if($changePasswordVerification > 0) {
+										$passwordVerifiedAt = date('Y-m-d', strtotime(format_date($user['password_expired_at']) . ' +' . $changePasswordVerification . ' day'));
+										$dayBeforeVerification = difference_date(date('Y-m-d'), format_date($passwordVerifiedAt));
+										if($dayBeforeVerification <= 0) {
+											// reset password by email verification
+											flash('danger', 'Password expired, must verify email to reset the password', 'auth/password/forgot-password?expired=1&email=' . base64_encode($user['email']));
+										}
+									}
+
+									// offer change password
+									$token = $this->userToken->create($user['email'], UserTokenModel::TOKEN_PASSWORD);
+									if($token == false) {
+										flash('danger', 'Password expired, create token failed', 'auth/login');
+									}
+									flash('danger', 'Your password expired', 'auth/password/reset/' . $token . '?expired=1');
+								}
+							}
+
                             // remove login throttle if exist
                             $this->session->unset_userdata(['auth.throttle', 'auth.throttle_expired']);
 

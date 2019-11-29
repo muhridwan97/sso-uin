@@ -13,317 +13,333 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class User extends App_Controller
 {
-    /**
-     * User constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
+	/**
+	 * User constructor.
+	 */
+	public function __construct()
+	{
+		parent::__construct();
 
-        $this->load->model('ApplicationModel', 'application');
-        $this->load->model('UserApplicationModel', 'userApplication');
-        $this->load->model('UserModel', 'user');
-        $this->load->model('RoleModel', 'role');
-        $this->load->model('UserRoleModel', 'userRole');
-        $this->load->model('modules/Uploader', 'uploader');
-        $this->load->model('modules/Exporter', 'exporter');
-    }
+		$this->load->model('ApplicationModel', 'application');
+		$this->load->model('UserApplicationModel', 'userApplication');
+		$this->load->model('UserModel', 'user');
+		$this->load->model('RoleModel', 'role');
+		$this->load->model('UserRoleModel', 'userRole');
+		$this->load->model('modules/Uploader', 'uploader');
+		$this->load->model('modules/Exporter', 'exporter');
+	}
 
-    /**
-     * Set validation rules.
-     *
-     * @param int $userId
-     * @return array
-     */
-    protected function _validation_rules($userId = 0)
-    {
-        return [
-            'name' => 'trim|required|max_length[50]',
-            'username' => [
-                'trim', 'required', 'max_length[25]', 'regex_match[/^[a-zA-Z0-9.\-_]+$/]', ['username_exists', function ($username) use ($userId) {
-                    $this->form_validation->set_message('username_exists', 'The %s has been registered before, try another');
-                    return $this->user->isUniqueUsername($username, $userId);
-                }]
-            ],
-            'email' => [
-                'trim', 'required', 'valid_email', 'max_length[50]', ['email_exists', function ($username) use ($userId) {
-                    $this->form_validation->set_message('email_exists', 'The %s has been registered before, try another');
-                    return $this->user->isUniqueEmail($username, $userId);
-                }]
-            ],
-            'status' => 'trim|required|in_list[' . UserModel::STATUS_ACTIVATED . ',' . UserModel::STATUS_PENDING . ',' . UserModel::STATUS_SUSPENDED . ']',
-            'password' => 'min_length[6]' . ($userId > 0 ? '' : '|required'),
-            'confirm_password' => 'matches[password]',
-        ];
-    }
+	/**
+	 * Set validation rules.
+	 *
+	 * @param int $userId
+	 * @return array
+	 */
+	protected function _validation_rules($userId = 0)
+	{
+		return [
+			'name' => 'trim|required|max_length[50]',
+			'username' => [
+				'trim', 'required', 'max_length[25]', 'regex_match[/^[a-zA-Z0-9.\-_]+$/]', ['username_exists', function ($username) use ($userId) {
+					$this->form_validation->set_message('username_exists', 'The %s has been registered before, try another');
+					return $this->user->isUniqueUsername($username, $userId);
+				}]
+			],
+			'email' => [
+				'trim', 'required', 'valid_email', 'max_length[50]', ['email_exists', function ($username) use ($userId) {
+					$this->form_validation->set_message('email_exists', 'The %s has been registered before, try another');
+					return $this->user->isUniqueEmail($username, $userId);
+				}]
+			],
+			'status' => 'trim|required|in_list[' . UserModel::STATUS_ACTIVATED . ',' . UserModel::STATUS_PENDING . ',' . UserModel::STATUS_SUSPENDED . ']',
+			'password' => 'min_length[6]' . ($userId > 0 ? '' : '|required'),
+			'confirm_password' => 'matches[password]',
+		];
+	}
 
-    /**
-     * Show user data.
-     */
-    public function index()
-    {
-        AuthorizationModel::mustAuthorized(PERMISSION_USER_VIEW);
+	/**
+	 * Show user data.
+	 */
+	public function index()
+	{
+		AuthorizationModel::mustAuthorized(PERMISSION_USER_VIEW);
 
-        $filters = array_merge($_GET, ['page' => get_url_param('page', 1)]);
+		$filters = array_merge($_GET, ['page' => get_url_param('page', 1)]);
 
-        $export = $this->input->get('export');
-        if ($export) unset($filters['page']);
+		$export = $this->input->get('export');
+		if ($export) unset($filters['page']);
 
-        $users = $this->user->getAll($filters);
+		$users = $this->user->getAll($filters);
 
-        if ($export) {
-            $this->exporter->exportFromArray('Users', $users);
-        }
+		if ($export) {
+			$this->exporter->exportFromArray('Users', $users);
+		}
 
-        $this->render('user/index', compact('users'));
-    }
+		$this->render('user/index', compact('users'));
+	}
 
-    /**
-     * Show data user.
-     *
-     * @param $id
-     */
-    public function view($id)
-    {
-        AuthorizationModel::mustAuthorized(PERMISSION_USER_VIEW);
+	/**
+	 * Show data user.
+	 *
+	 * @param $id
+	 */
+	public function view($id)
+	{
+		AuthorizationModel::mustAuthorized(PERMISSION_USER_VIEW);
 
-        $user = $this->user->getById($id);
-        $userSubordinates = $this->user->getBy(['prv_users.id_user' => $id]);
-        $userApplications = $this->application->getByUser($id);
-        $roles = $this->userRole->getBy(['prv_user_roles.id_user' => $id]);
+		$user = $this->user->getById($id);
+		$userSubordinates = $this->user->getBy(['prv_users.id_user' => $id]);
+		$userApplications = $this->application->getByUser($id);
+		$roles = $this->userRole->getBy(['prv_user_roles.id_user' => $id]);
 
-        $this->render('user/view', compact('user', 'userSubordinates', 'userApplications', 'roles'));
-    }
+		$this->render('user/view', compact('user', 'userSubordinates', 'userApplications', 'roles'));
+	}
 
-    /**
-     * Show form create user.
-     */
-    public function create()
-    {
-        AuthorizationModel::mustAuthorized(PERMISSION_USER_CREATE);
+	/**
+	 * Show form create user.
+	 */
+	public function create()
+	{
+		AuthorizationModel::mustAuthorized(PERMISSION_USER_CREATE);
 
-        $applications = $this->application->getAll();
-        $parentUsers = $this->user->getBy([
-            'prv_users.id!=' => AuthModel::loginData('id', 0),
-            'prv_users.username!=' => 'admin'
-        ]);
-        $roles = $this->role->getAll();
+		$applications = $this->application->getAll();
+		$parentUsers = $this->user->getBy([
+			'prv_users.id!=' => AuthModel::loginData('id', 0),
+			'prv_users.username!=' => 'admin'
+		]);
+		$roles = $this->role->getAll();
 
-        $this->render('user/create', compact('applications', 'parentUsers', 'roles'));
-    }
+		$this->render('user/create', compact('applications', 'parentUsers', 'roles'));
+	}
 
-    /**
-     * Save user data.
-     */
-    public function save()
-    {
-        AuthorizationModel::mustAuthorized(PERMISSION_USER_CREATE);
+	/**
+	 * Save user data.
+	 */
+	public function save()
+	{
+		AuthorizationModel::mustAuthorized(PERMISSION_USER_CREATE);
 
-        if ($this->validate()) {
-            $name = $this->input->post('name');
-            $username = $this->input->post('username');
-            $email = $this->input->post('email');
-            $userType = $this->input->post('user_type');
-            $parent = $this->input->post('parent_user');
-            $status = $this->input->post('status');
-            $password = $this->input->post('password');
-            $applications = $this->input->post('applications');
-            $defaultApplication = $this->input->post('default_application');
-            $roles = $this->input->post('roles');
+		if ($this->validate()) {
+			$name = $this->input->post('name');
+			$username = $this->input->post('username');
+			$email = $this->input->post('email');
+			$userType = $this->input->post('user_type');
+			$parent = $this->input->post('parent_user');
+			$status = $this->input->post('status');
+			$password = $this->input->post('password');
+			$applications = $this->input->post('applications');
+			$defaultApplication = $this->input->post('default_application');
+			$roles = $this->input->post('roles');
 
-            $this->db->trans_start();
+			$this->db->trans_start();
 
-            $avatar = null;
-            if (!empty($_FILES['avatar']['name'])) {
-                if ($this->uploader->uploadTo('avatar', ['destination' => 'avatars/' . date('Y/m')])) {
-                    $uploadedData = $this->uploader->getUploadedData();
-                    $avatar = $uploadedData['uploaded_path'];
-                } else {
-                    flash('danger', $this->uploader->getDisplayErrors(), '_back');
-                }
-            }
+			$avatar = null;
+			if (!empty($_FILES['avatar']['name'])) {
+				if ($this->uploader->uploadTo('avatar', ['destination' => 'avatars/' . date('Y/m')])) {
+					$uploadedData = $this->uploader->getUploadedData();
+					$avatar = $uploadedData['uploaded_path'];
+				} else {
+					flash('danger', $this->uploader->getDisplayErrors(), '_back');
+				}
+			}
 
-            $this->user->create([
-                'id_user' => if_empty($parent, null),
-                'name' => $name,
-                'username' => $username,
-                'email' => $email,
-                'status' => $status,
-                'user_type' => $userType,
-                'avatar' => $avatar,
-                'password' => password_hash($password, CRYPT_BLOWFISH),
-            ]);
-            $userId = $this->db->insert_id();
+			// check password expiration
+			$passwordExpiredDays = get_setting('password_expiration_days');
+			$passwordExpiredAt = null;
+			if ($passwordExpiredDays > 0) {
+				$passwordExpiredAt = date('Y-m-d H:i:s', strtotime('+' . $passwordExpiredDays . ' day'));
+			}
 
-            foreach ($applications as $application) {
-                if (!empty($application)) {
-                    $this->userApplication->create([
-                        'id_user' => $userId,
-                        'id_application' => $application,
-                        'is_default' => ($defaultApplication == $application)
-                    ]);
-                }
-            }
+			$this->user->create([
+				'id_user' => if_empty($parent, null),
+				'name' => $name,
+				'username' => $username,
+				'email' => $email,
+				'status' => $status,
+				'user_type' => $userType,
+				'avatar' => $avatar,
+				'password' => password_hash($password, CRYPT_BLOWFISH),
+				'password_expired_at' => $passwordExpiredAt
+			]);
+			$userId = $this->db->insert_id();
 
-            foreach ($roles as $roleId) {
-                $this->userRole->create([
-                    'id_user' => $userId,
-                    'id_role' => $roleId,
-                ]);
-            }
+			foreach ($applications as $application) {
+				if (!empty($application)) {
+					$this->userApplication->create([
+						'id_user' => $userId,
+						'id_application' => $application,
+						'is_default' => ($defaultApplication == $application)
+					]);
+				}
+			}
 
-            $this->db->trans_complete();
+			foreach ($roles as $roleId) {
+				$this->userRole->create([
+					'id_user' => $userId,
+					'id_role' => $roleId,
+				]);
+			}
 
-            if ($this->db->trans_status()) {
-                flash('success', __('entity_created', ['title' => $name]), 'manage/user');
-            } else {
-                flash('danger', __('entity_error'));
-            }
-        }
-        $this->create();
-    }
+			$this->db->trans_complete();
 
-    /**
-     * Show form edit user.
-     *
-     * @param $id
-     */
-    public function edit($id)
-    {
-        AuthorizationModel::mustAuthorized(PERMISSION_USER_EDIT);
+			if ($this->db->trans_status()) {
+				flash('success', __('entity_created', ['title' => $name]), 'manage/user');
+			} else {
+				flash('danger', __('entity_error'));
+			}
+		}
+		$this->create();
+	}
 
-        $user = $this->user->getById($id);
+	/**
+	 * Show form edit user.
+	 *
+	 * @param $id
+	 */
+	public function edit($id)
+	{
+		AuthorizationModel::mustAuthorized(PERMISSION_USER_EDIT);
 
-        $applications = $this->application->getAll();
-        $parentUsers = $this->user->getBy([
-            'prv_users.id!=' => $id,
-            'prv_users.username!=' => 'admin'
-        ]);
-        $defaultApp = '';
+		$user = $this->user->getById($id);
 
-        $userApplications = $this->userApplication->getBy(['id_user' => $id]);
-        foreach ($userApplications as $userApplication) {
-            if ($userApplication['is_default']) {
-                $defaultApp = $userApplication['id_application'];
-                break;
-            }
-        }
-        $selectedApps = array_column($userApplications, 'id_application');
+		$applications = $this->application->getAll();
+		$parentUsers = $this->user->getBy([
+			'prv_users.id!=' => $id,
+			'prv_users.username!=' => 'admin'
+		]);
+		$defaultApp = '';
 
-        foreach ($applications as &$application) {
-            if (in_array($application['id'], $selectedApps)) {
-                $application['_selected'] = true;
-            } else {
-                $application['_selected'] = false;
-            }
-        }
-        $roles = $this->role->getAll();
-        $userRoles = $this->userRole->getBy(['id_user' => $id]);
+		$userApplications = $this->userApplication->getBy(['id_user' => $id]);
+		foreach ($userApplications as $userApplication) {
+			if ($userApplication['is_default']) {
+				$defaultApp = $userApplication['id_application'];
+				break;
+			}
+		}
+		$selectedApps = array_column($userApplications, 'id_application');
 
-        $this->render('user/edit', compact('user', 'applications', 'defaultApp', 'parentUsers', 'roles', 'userRoles'));
-    }
+		foreach ($applications as &$application) {
+			if (in_array($application['id'], $selectedApps)) {
+				$application['_selected'] = true;
+			} else {
+				$application['_selected'] = false;
+			}
+		}
+		$roles = $this->role->getAll();
+		$userRoles = $this->userRole->getBy(['id_user' => $id]);
 
-    /**
-     * Save updated user data.
-     *
-     * @param $id
-     */
-    public function update($id)
-    {
-        AuthorizationModel::mustAuthorized(PERMISSION_USER_EDIT);
+		$this->render('user/edit', compact('user', 'applications', 'defaultApp', 'parentUsers', 'roles', 'userRoles'));
+	}
 
-        if ($this->validate($this->_validation_rules($id))) {
-            $name = $this->input->post('name');
-            $username = $this->input->post('username');
-            $email = $this->input->post('email');
-            $userType = $this->input->post('user_type');
-            $parent = $this->input->post('parent_user');
-            $status = $this->input->post('status');
-            $password = $this->input->post('password');
-            $applications = $this->input->post('applications');
-            $defaultApplication = $this->input->post('default_application');
-            $roles = $this->input->post('roles');
+	/**
+	 * Save updated user data.
+	 *
+	 * @param $id
+	 */
+	public function update($id)
+	{
+		AuthorizationModel::mustAuthorized(PERMISSION_USER_EDIT);
 
-            $user = $this->user->getById($id);
+		if ($this->validate($this->_validation_rules($id))) {
+			$name = $this->input->post('name');
+			$username = $this->input->post('username');
+			$email = $this->input->post('email');
+			$userType = $this->input->post('user_type');
+			$parent = $this->input->post('parent_user');
+			$status = $this->input->post('status');
+			$password = $this->input->post('password');
+			$applications = $this->input->post('applications');
+			$defaultApplication = $this->input->post('default_application');
+			$roles = $this->input->post('roles');
 
-            $this->db->trans_start();
+			$user = $this->user->getById($id);
 
-            $avatar = if_empty($user['avatar'], null);
-            if (!empty($_FILES['avatar']['name'])) {
-                if ($this->uploader->uploadTo('avatar', ['destination' => 'avatars/' . date('Y/m')])) {
-                    $uploadedData = $this->uploader->getUploadedData();
-                    $avatar = $uploadedData['uploaded_path'];
-                    if (!empty($user['avatar'])) {
-                        $this->uploader->delete($user['avatar']);
-                    }
-                } else {
-                    flash('danger', $this->uploader->getDisplayErrors(), '_back');
-                }
-            }
+			$this->db->trans_start();
 
-            $this->user->update([
-                'id_user' => if_empty($parent, null),
-                'name' => $name,
-                'username' => $username,
-                'email' => $email,
-                'status' => $status,
-                'user_type' => $userType,
-                'avatar' => $avatar,
-                'password' => empty($password) ? $user['password'] : password_hash($password, CRYPT_BLOWFISH),
-            ], $id);
+			$avatar = if_empty($user['avatar'], null);
+			if (!empty($_FILES['avatar']['name'])) {
+				if ($this->uploader->uploadTo('avatar', ['destination' => 'avatars/' . date('Y/m')])) {
+					$uploadedData = $this->uploader->getUploadedData();
+					$avatar = $uploadedData['uploaded_path'];
+					if (!empty($user['avatar'])) {
+						$this->uploader->delete($user['avatar']);
+					}
+				} else {
+					flash('danger', $this->uploader->getDisplayErrors(), '_back');
+				}
+			}
 
-            $this->userApplication->delete(['id_user' => $id]);
-            foreach ($applications as $applicationId) {
-                if (!empty($applicationId)) {
-                    $this->userApplication->create([
-                        'id_user' => $id,
-                        'id_application' => $applicationId,
-                        'is_default' => ($defaultApplication == $applicationId)
-                    ]);
-                }
-            }
+			// check password expiration
+			$passwordExpiredDays = get_setting('password_expiration_days');
+			$passwordExpiredAt = null;
+			if ($passwordExpiredDays > 0) {
+				$passwordExpiredAt = date('Y-m-d H:i:s', strtotime('+' . $passwordExpiredDays . ' day'));
+			}
 
-            $this->userRole->delete(['id_user' => $id]);
-            foreach ($roles as $roleId) {
-                $this->userRole->create([
-                    'id_user' => $id,
-                    'id_role' => $roleId,
-                ]);
-            }
+			$this->user->update([
+				'id_user' => if_empty($parent, null),
+				'name' => $name,
+				'username' => $username,
+				'email' => $email,
+				'status' => $status,
+				'user_type' => $userType,
+				'avatar' => $avatar,
+				'password' => empty($password) ? $user['password'] : password_hash($password, CRYPT_BLOWFISH),
+				'password_expired_at' => empty($password) ? $user['password_expired_at'] : $passwordExpiredAt
+			], $id);
 
-            $this->db->trans_complete();
+			$this->userApplication->delete(['id_user' => $id]);
+			foreach ($applications as $applicationId) {
+				if (!empty($applicationId)) {
+					$this->userApplication->create([
+						'id_user' => $id,
+						'id_application' => $applicationId,
+						'is_default' => ($defaultApplication == $applicationId)
+					]);
+				}
+			}
 
-            if ($this->db->trans_status()) {
-                flash('success', __('entity_updated', ['title' => $name]), 'manage/user');
-            } else {
-                flash('danger', __('entity_error'));
-            }
-        }
-        $this->edit($id);
-    }
+			$this->userRole->delete(['id_user' => $id]);
+			foreach ($roles as $roleId) {
+				$this->userRole->create([
+					'id_user' => $id,
+					'id_role' => $roleId,
+				]);
+			}
 
-    /**
-     * Perform deleting user data.
-     *
-     * @param $id
-     */
-    public function delete($id)
-    {
-        AuthorizationModel::mustAuthorized(PERMISSION_USER_DELETE);
+			$this->db->trans_complete();
 
-        $user = $this->user->getById($id);
+			if ($this->db->trans_status()) {
+				flash('success', __('entity_updated', ['title' => $name]), 'manage/user');
+			} else {
+				flash('danger', __('entity_error'));
+			}
+		}
+		$this->edit($id);
+	}
 
-        if ($user['username'] == 'admin') {
-            flash('danger', 'Administrator is reserved user.');
-        } else {
-            if ($this->user->delete($id)) {
-                flash('success', __('entity_deleted', ['title' => $user['name']]));
-            } else {
-                flash('danger', __('entity_error'));
-            }
-        }
+	/**
+	 * Perform deleting user data.
+	 *
+	 * @param $id
+	 */
+	public function delete($id)
+	{
+		AuthorizationModel::mustAuthorized(PERMISSION_USER_DELETE);
 
-        redirect('manage/user');
-    }
+		$user = $this->user->getById($id);
+
+		if ($user['username'] == 'admin') {
+			flash('danger', 'Administrator is reserved user.');
+		} else {
+			if ($this->user->delete($id)) {
+				flash('success', __('entity_deleted', ['title' => $user['name']]));
+			} else {
+				flash('danger', __('entity_error'));
+			}
+		}
+
+		redirect('manage/user');
+	}
 
 }

@@ -94,8 +94,16 @@ class Password extends App_Controller
                 } else {
                     $this->db->trans_start();
 
+					// check password expiration
+					$passwordExpiredDays = get_setting('password_expiration_days');
+					$passwordExpiredAt = null;
+					if ($passwordExpiredDays > 0) {
+						$passwordExpiredAt = date('Y-m-d H:i:s', strtotime('+' . $passwordExpiredDays . ' day'));
+					}
+
                     $this->user->update([
-                        'password' => password_hash($newPassword, CRYPT_BLOWFISH)
+                        'password' => password_hash($newPassword, CRYPT_BLOWFISH),
+						'password_expired_at' => $passwordExpiredAt
                     ], ['email' => $email]);
 
                     $this->userToken->delete($token);

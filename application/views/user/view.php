@@ -79,6 +79,22 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="last_logged_in">Last Logged In</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext" id="last_logged_in">
+                                    <?= if_empty(format_date($user['last_logged_in'], 'd F Y H:i:s'), '-') ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="password_expired_at">Password Expired At</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext" id="password_expired_at">
+                                    <?= if_empty(format_date($user['password_expired_at'], 'd F Y H:i:s'), '-') ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-4 col-form-label" for="updated_at">Updated At</label>
                             <div class="col-sm-8">
                                 <p class="form-control-plaintext" id="updated_at">
