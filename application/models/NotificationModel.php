@@ -58,13 +58,22 @@ class NotificationModel extends App_Model
 			$userId = AuthModel::loginData('id');
 		}
 
-		return NotificationModel::baseQuery()
-			->where([
-				'id_user' => $userId,
-				'is_read' => false,
-				'created_at>=DATE(NOW()) - INTERVAL 30 DAY' => null
-			])
-			->count_all_results();
+		get_instance()->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
+		$cacheKey = 'unread-' . $userId;
+
+		if (!$totalUnread = get_instance()->cache->get($cacheKey)) {
+			$totalUnread = NotificationModel::baseQuery()
+				->where([
+					'id_user' => $userId,
+					'is_read' => false,
+					'created_at>=DATE(NOW()) - INTERVAL 30 DAY' => null
+				])
+				->count_all_results();
+
+			get_instance()->cache->save($cacheKey, $totalUnread, 60);
+		}
+
+		return $totalUnread;
 	}
 
 	/**

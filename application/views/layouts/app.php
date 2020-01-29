@@ -33,7 +33,10 @@
                     <a class="dropdown-item" href="<?= site_url('account') ?>">My Account</a>
                     <a class="dropdown-item" href="<?= site_url('notification') ?>">
 						Notification
-						<span class="badge badge-primary ml-2"><?= NotificationModel::getUnreadNotification() ?></span>
+						<?php $unreadNotification =  NotificationModel::getUnreadNotification() ?>
+						<?php if($unreadNotification > 0): ?>
+							<span class="badge badge-danger ml-2"><?= $unreadNotification ?></span>
+						<?php endif ?>
 					</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?= site_url('auth/logout') ?>">Sign Out</a>

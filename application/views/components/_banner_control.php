@@ -34,7 +34,10 @@
             <a href="<?= site_url('notification') ?>" data-title="Your detail push notification"
                class="d-none d-sm-inline-block btn btn-section<?= $segment1 == 'notification' ? ' active' : '' ?>">
 				Notification
-				<span class="badge badge-danger ml-2"><?= NotificationModel::getUnreadNotification() ?></span>
+				<?php $unreadNotification =  NotificationModel::getUnreadNotification() ?>
+				<?php if($unreadNotification > 0): ?>
+					<span class="badge badge-danger ml-2"><?= $unreadNotification ?></span>
+				<?php endif ?>
 			</a>
         </div>
     </div>
