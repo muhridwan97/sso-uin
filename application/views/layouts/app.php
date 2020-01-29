@@ -31,7 +31,10 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="<?= site_url('account') ?>">My Account</a>
-                    <a class="dropdown-item" href="<?= site_url('notification') ?>">Notification</a>
+                    <a class="dropdown-item" href="<?= site_url('notification') ?>">
+						Notification
+						<span class="badge badge-primary ml-2"><?= NotificationModel::getUnreadNotification() ?></span>
+					</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?= site_url('auth/logout') ?>">Sign Out</a>
                 </div>

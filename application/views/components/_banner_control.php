@@ -32,7 +32,10 @@
                    class="btn btn-section<?= $segment1 == 'manage' ? ' active' : '' ?>">Manage</a>
             <?php endif; ?>
             <a href="<?= site_url('notification') ?>" data-title="Your detail push notification"
-               class="d-none d-sm-inline-block btn btn-section<?= $segment1 == 'notification' ? ' active' : '' ?>">Notification</a>
+               class="d-none d-sm-inline-block btn btn-section<?= $segment1 == 'notification' ? ' active' : '' ?>">
+				Notification
+				<span class="badge badge-danger ml-2"><?= NotificationModel::getUnreadNotification() ?></span>
+			</a>
         </div>
     </div>
 </div>
