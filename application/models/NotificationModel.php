@@ -58,7 +58,7 @@ class NotificationModel extends App_Model
 			$userId = AuthModel::loginData('id');
 		}
 
-		get_instance()->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
+		get_instance()->load->driver('cache', ['adapter' => 'file']);
 		$cacheKey = 'unread-' . $userId;
 
 		if (!$totalUnread = get_instance()->cache->get($cacheKey)) {
