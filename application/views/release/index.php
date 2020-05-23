@@ -16,9 +16,11 @@
                     <a href="<?= base_url(uri_string()) ?>?<?= $_SERVER['QUERY_STRING'] ?>&export=true" class="btn btn-outline-primary btn-sm pr-2 pl-2">
                         <i class="mdi mdi-file-download-outline"></i>
                     </a>
-                    <a href="<?= site_url('manage/release/create') ?>" class="btn btn-sm btn-primary">
-                        <i class="mdi mdi-plus-box-outline mr-1"></i>Release
-                    </a>
+                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_RELEASE_VIEW)): ?>
+                        <a href="<?= site_url('manage/release/create') ?>" class="btn btn-sm btn-primary">
+                            <i class="mdi mdi-plus-box-outline mr-1"></i>Release
+                        </a>
+                    <?php endif ?>
                 </div>
             </div>
             <table class="table table-sm table-hover mt-3 responsive" id="table-release">
@@ -59,19 +61,25 @@
                                     Action
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="<?= site_url('manage/release/view/' . $release['id']) ?>">
-                                        <i class="mdi mdi-eye-outline mr-2"></i> View
-                                    </a>
+                                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_RELEASE_VIEW)): ?>
+                                        <a class="dropdown-item" href="<?= site_url('manage/release/view/' . $release['id']) ?>">
+                                            <i class="mdi mdi-eye-outline mr-2"></i> View
+                                        </a>
+                                    <?php endif; ?>
                                     <?php if($release['release_age'] < 0): ?>
-                                        <a class="dropdown-item" href="<?= site_url('manage/release/edit/' . $release['id']) ?>">
-                                            <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
-                                           data-id="<?= $release['id'] ?>" data-label="<?= $release['version'] ?>" data-title="Release"
-                                           data-url="<?= site_url('manage/release/delete/' . $release['id']) ?>">
-                                            <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
-                                        </a>
+                                        <?php if(AuthorizationModel::isAuthorized(PERMISSION_RELEASE_EDIT)): ?>
+                                            <a class="dropdown-item" href="<?= site_url('manage/release/edit/' . $release['id']) ?>">
+                                                <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
+                                            </a>
+                                        <?php endif; ?>
+                                        <?php if(AuthorizationModel::isAuthorized(PERMISSION_RELEASE_DELETE)): ?>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
+                                               data-id="<?= $release['id'] ?>" data-label="<?= $release['version'] ?>" data-title="Release"
+                                               data-url="<?= site_url('manage/release/delete/' . $release['id']) ?>">
+                                                <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
+                                            </a>
+                                        <?php endif; ?>
                                     <?php endif; ?>
                                 </div>
                             </div>

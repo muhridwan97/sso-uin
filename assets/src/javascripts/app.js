@@ -37,6 +37,9 @@ if ($('#form-release').length) {
 if ($('#form-user').length) {
     import("./pages/user").then(user => user.default());
 }
+if ($('#form-role').length) {
+    import("./pages/role").then(role => role.default());
+}
 
 
 // loading misc scripts

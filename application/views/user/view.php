@@ -79,6 +79,22 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="last_logged_in">Last Logged In</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext" id="last_logged_in">
+                                    <?= if_empty(format_date($user['last_logged_in'], 'd F Y H:i:s'), '-') ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="password_expired_at">Password Expired At</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext" id="password_expired_at">
+                                    <?= if_empty(format_date($user['password_expired_at'], 'd F Y H:i:s'), '-') ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-4 col-form-label" for="updated_at">Updated At</label>
                             <div class="col-sm-8">
                                 <p class="form-control-plaintext" id="updated_at">
@@ -97,6 +113,19 @@
                                     <?php endforeach; ?>
                                     <?php if(empty($userSubordinates)): ?>
                                         No subordinates
+                                    <?php endif; ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="role">Roles</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext" id="role">
+                                    <?php foreach ($roles as $role): ?>
+                                        <?= $role['role'] ?>
+                                    <?php endforeach; ?>
+                                    <?php if(empty($roles)): ?>
+                                        No role access
                                     <?php endif; ?>
                                 </p>
                             </div>
@@ -121,9 +150,11 @@
 
 				<div class="d-flex justify-content-between mt-3">
 					<a href="javascript:void()" onclick="history.back()" class="btn btn-secondary">Back</a>
-					<a href="<?= site_url('manage/user/edit/' . $user['id']) ?>" class="btn btn-primary">
-						Edit User
-					</a>
+                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_USER_EDIT)): ?>
+                        <a href="<?= site_url('manage/user/edit/' . $user['id']) ?>" class="btn btn-primary">
+                            Edit User
+                        </a>
+                    <?php endif; ?>
 				</div>
 			</div>
 		</div>

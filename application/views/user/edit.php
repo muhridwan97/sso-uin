@@ -129,6 +129,33 @@
                     </div>
                 </div>
 
+                <p class="form-section-title">Role Access</p>
+                <div class="form-group">
+                    <div class="row">
+                        <?php foreach ($roles as $role): ?>
+                            <?php
+                            $hasRole = false;
+                            foreach ($userRoles as $userRole) {
+                                if ($role['id'] == $userRole['id_role']) {
+                                    $hasRole = true;
+                                    break;
+                                }
+                            }
+                            ?>
+                            <div class="col-md-4">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"<?= set_checkbox('roles', $role['id'], $hasRole); ?>
+                                           id="role_<?= $role['id'] ?>" name="roles[]" value="<?= $role['id'] ?>">
+                                    <label class="custom-control-label" for="role_<?= $role['id'] ?>">
+                                        <?= strtoupper($role['role']) ?>
+                                    </label>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?= form_error('roles[]'); ?>
+                </div>
+
                 <p class="form-section-title">Application Access</p>
                 <div class="row">
                     <?php foreach ($applications as $application): ?>

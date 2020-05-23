@@ -95,3 +95,95 @@ $db['default'] = array(
     'failover' => array(),
     'save_queries' => TRUE
 );
+
+$db['purchasing'] = array(
+    'dsn' => '',
+    'hostname' => env('PCH_HOST'),
+    'username' => env('PCH_USERNAME'),
+    'password' => env('PCH_PASSWORD'),
+    'database' => env('PCH_DATABASE'),
+    'dbdriver' => env('PCH_DRIVER'),
+    'port' => env('PCH_PORT'),
+    'dbprefix' => '',
+    'pconnect' => FALSE,
+    'db_debug' => (ENVIRONMENT !== 'production'),
+    'cache_on' => FALSE,
+    'cachedir' => '',
+    'char_set' => 'utf8',
+    'dbcollat' => 'utf8_general_ci',
+    'swap_pre' => '',
+    'encrypt' => FALSE,
+    'compress' => FALSE,
+    'stricton' => FALSE,
+    'failover' => array(),
+    'save_queries' => TRUE
+);
+
+$db['finance'] = array(
+    'dsn' => '',
+    'hostname' => env('FIN_HOST'),
+    'username' => env('FIN_USERNAME'),
+    'password' => env('FIN_PASSWORD'),
+    'database' => env('FIN_DATABASE'),
+    'dbdriver' => env('FIN_DRIVER'),
+    'port' => env('FIN_PORT'),
+    'dbprefix' => '',
+    'pconnect' => FALSE,
+    'db_debug' => (ENVIRONMENT !== 'production'),
+    'cache_on' => FALSE,
+    'cachedir' => '',
+    'char_set' => 'utf8',
+    'dbcollat' => 'utf8_general_ci',
+    'swap_pre' => '',
+    'encrypt' => FALSE,
+    'compress' => FALSE,
+    'stricton' => FALSE,
+    'failover' => array(),
+    'save_queries' => TRUE
+);
+
+$db['hr'] = array(
+    'dsn' => '',
+    'hostname' => env('HR_HOST'),
+    'username' => env('HR_USERNAME'),
+    'password' => env('HR_PASSWORD'),
+    'database' => env('HR_DATABASE'),
+    'dbdriver' => env('HR_DRIVER'),
+    'port' => env('HR_PORT'),
+    'dbprefix' => '',
+    'pconnect' => FALSE,
+    'db_debug' => (ENVIRONMENT !== 'production'),
+    'cache_on' => FALSE,
+    'cachedir' => '',
+    'char_set' => 'utf8',
+    'dbcollat' => 'utf8_general_ci',
+    'swap_pre' => '',
+    'encrypt' => FALSE,
+    'compress' => FALSE,
+    'stricton' => FALSE,
+    'failover' => array(),
+    'save_queries' => TRUE
+);
+
+$db['crm'] = array(
+    'dsn' => '',
+    'hostname' => env('CRM_HOST'),
+    'username' => env('CRM_USERNAME'),
+    'password' => env('CRM_PASSWORD'),
+    'database' => env('CRM_DATABASE'),
+    'dbdriver' => env('CRM_DRIVER'),
+    'port' => env('CRM_PORT'),
+    'dbprefix' => '',
+    'pconnect' => FALSE,
+    'db_debug' => (ENVIRONMENT !== 'production'),
+    'cache_on' => FALSE,
+    'cachedir' => '',
+    'char_set' => 'utf8',
+    'dbcollat' => 'utf8_general_ci',
+    'swap_pre' => '',
+    'encrypt' => FALSE,
+    'compress' => FALSE,
+    'stricton' => FALSE,
+    'failover' => array(),
+    'save_queries' => TRUE
+);

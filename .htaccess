@@ -11,3 +11,8 @@ RewriteRule ^(.*)$ index.php/$1 [L]
     </filesMatch>
 
 </IfModule>
+
+<Files ~ "\.(env|env.example|gitignore|json|lock)$">
+order allow,deny
+deny from all
+</Files>

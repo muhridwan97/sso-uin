@@ -31,7 +31,13 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="<?= site_url('account') ?>">My Account</a>
-                    <a class="dropdown-item" href="<?= site_url('notification') ?>">Notification</a>
+                    <a class="dropdown-item" href="<?= site_url('notification') ?>">
+						Notification
+						<?php $unreadNotification =  NotificationModel::getUnreadNotification() ?>
+						<?php if($unreadNotification > 0): ?>
+							<span class="badge badge-danger ml-2"><?= $unreadNotification ?></span>
+						<?php endif ?>
+					</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?= site_url('auth/logout') ?>">Sign Out</a>
                 </div>

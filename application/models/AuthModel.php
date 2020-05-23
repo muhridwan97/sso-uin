@@ -86,7 +86,8 @@ class AuthModel extends App_Model
     {
         if ($this->session->has_userdata('auth.id')) {
             $this->session->unset_userdata([
-                'auth.id', 'auth.is_logged_in', 'auth.remember_me', 'auth.remember_token'
+                'auth.id', 'auth.is_logged_in', 'auth.remember_me', 'auth.remember_token',
+                'auth.throttle', 'auth.throttle_expired'
             ]);
             return true;
         }
@@ -115,7 +116,7 @@ class AuthModel extends App_Model
             ]);
             $userData = $CI->db->get_where('prv_users', ['id' => $sessionUserId])->row_array();
 
-            if ($currentId != $userData['device_id']) {
+            if ($currentId != $userData['device_id'] && AuthModel::loginData('username') != 'admin') {
                 redirect('auth/logout?force_logout=1');
                 return false;
             }
