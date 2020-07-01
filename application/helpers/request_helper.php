@@ -83,39 +83,45 @@ if (!function_exists('set_url_param')) {
      * @param array $setParams
      * @param null $query
      * @param bool $returnArray
-     * @return string
+	 * @return string|array
      */
     function set_url_param($setParams = [], $query = null, $returnArray = false)
     {
-        $queryString = empty($query) ? $_SERVER['QUERY_STRING'] : $query;
-        $params = explode('&', $queryString);
+		$queryString = empty($query) ? $_SERVER['QUERY_STRING'] : $query;
+		$params = explode('&', $queryString);
 
-        $builtParam = [];
+		$builtParam = [];
 
-        // mapping to key->value array
-        for ($i = 0; $i < count($params); $i++) {
-            $param = explode('=', $params[$i]);
-            if (!empty($param[0])) {
-                $builtParam[$param[0]] = key_exists(1, $param) ? $param[1] : '';
-            }
-        }
+		// mapping to key->value array
+		for ($i = 0; $i < count($params); $i++) {
+			$param = explode('=', $params[$i]);
+			if (!empty($param[0])) {
+				$builtParam[] = [
+					'key' => $param[0],
+					'value' => key_exists(1, $param) ? $param[1] : '',
+				];
+			}
+		}
 
-        // set params
-        foreach ($setParams as $key => $value) {
-            $builtParam[$key] = $value;
-        }
+		// set params
+		foreach ($setParams as $key => $value) {
+			$builtParam[] = [
+				'key' => $key,
+				'value' => $value
+			];
+		}
 
-        if ($returnArray) {
-            return $builtParam;
-        }
+		if ($returnArray) {
+			return $builtParam;
+		}
 
-        // convert to string
-        $baseQuery = '';
-        foreach ($builtParam as $key => $value) {
-            $baseQuery .= (empty($baseQuery) ? '' : '&') . ($key . '=' . $value);
-        }
+		// convert to string
+		$baseQuery = '';
+		foreach ($builtParam as $value) {
+			$baseQuery .= (empty($baseQuery) ? '' : '&') . ($value['key'] . '=' . $value['value']);
+		}
 
-        return $baseQuery;
+		return $baseQuery;
     }
 }
 
