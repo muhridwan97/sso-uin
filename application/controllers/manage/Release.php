@@ -74,8 +74,14 @@ class Release extends App_Controller
      */
     public function ajax_get_last_version($applicationId)
     {
-        $applicationId = ['id_application' => $applicationId];
-        $lastReleased = $this->applicationRelease->getBy($applicationId, true);
+        $lastReleased = $this->applicationRelease->getAll([
+        	'application' => $applicationId,
+			'sort_by' => 'version',
+			'order_method' => 'desc',
+		], true);
+		if (!empty($lastReleased)) {
+			$lastReleased = $lastReleased[0];
+		}
 
         $this->render_json($lastReleased);
     }
@@ -125,7 +131,11 @@ class Release extends App_Controller
     public function change_logs($applicationId)
     {
         $application = $this->application->getById($applicationId);
-        $applicationReleases = $this->applicationRelease->getBy(['id_application' => $applicationId]);
+        $applicationReleases = $this->applicationRelease->getAll([
+        	'application' => $applicationId,
+        	'sort_by' => 'version',
+        	'order_method' => 'desc',
+		]);
 
         $this->render('release/logs', compact('application', 'applicationReleases'));
     }
@@ -139,8 +149,14 @@ class Release extends App_Controller
 
         $applications = $this->application->getAll();
 
-        $applicationId = ['id_application' => get_url_param('application_id')];
-        $lastReleased = $this->applicationRelease->getBy($applicationId, true);
+        $lastReleased = $this->applicationRelease->getAll([
+			'application' => get_url_param('application_id'),
+			'sort_by' => 'version',
+			'order_method' => 'desc',
+		], true);
+		if (!empty($lastReleased)) {
+			$lastReleased = $lastReleased[0];
+		}
 
         $this->render('release/create', compact('applications', 'lastReleased'));
     }

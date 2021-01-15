@@ -110,9 +110,17 @@ class ApplicationReleaseModel extends App_Model
                 'current_page' => $currentPage,
                 'data' => $pageData
             ];
-        } else {
-            $baseQuery->order_by($this->table . '.' . $this->id, 'desc');
         }
+
+		if (key_exists('sort_by', $filters) && !empty($filters['sort_by'])) {
+			if (key_exists('order_method', $filters) && !empty($filters['order_method'])) {
+				$baseQuery->order_by($filters['sort_by'], $filters['order_method']);
+			} else {
+				$baseQuery->order_by($filters['sort_by'], 'asc');
+			}
+		} else {
+			$baseQuery->order_by($this->table . '.' . $this->id, 'desc');
+		}
 
         $data = $baseQuery->get()->result_array();
 
