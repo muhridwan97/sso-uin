@@ -105,10 +105,22 @@ if (!function_exists('set_url_param')) {
 
 		// set params
 		foreach ($setParams as $key => $value) {
-			$builtParam[] = [
-				'key' => $key,
-				'value' => $value
-			];
+			$pageFound = false;
+			if ($key == 'page') {
+				foreach ($builtParam as &$currentParam) {
+					if($currentParam['key'] == 'page') {
+						$currentParam['value'] = $value;
+						$pageFound = true;
+						break;
+					}
+				}
+			}
+			if (!$pageFound) {
+				$builtParam[] = [
+					'key' => $key,
+					'value' => $value
+				];
+			}
 		}
 
 		if ($returnArray) {
