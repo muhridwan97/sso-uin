@@ -163,3 +163,51 @@ if (!function_exists('get_client_ip')) {
         return $ipaddress;
     }
 }
+
+if (!function_exists('asset_url')) {
+	/**
+	 * Get uploaded in storage url.
+	 * asset_url('home/apple.jpg')  ->  local.com/uploads/home/apple.jpg
+	 * asset_url('home/apple.jpg', false)  ->  s3.server.com/bucket/uploads/home/apple.jpg
+	 * asset_url('http://server.com/images/apple.jpg')  ->  http://server.com/images/apple.jpg
+	 *
+	 * @param string $key
+	 * @param bool $getLocalFirst
+	 * @param mixed|string $bucket
+	 * @return string
+	 */
+	function asset_url($key = '', $getLocalFirst = true, $bucket = null)
+	{
+		// check if full url
+		$regex = "((https?|ftp)\:\/\/)?"; // SCHEME
+		$regex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?"; // User and Pass
+		$regex .= "([a-z0-9-.]*)\.([a-z]{2,5})"; // Host or IP
+		$regex .= "(\:[0-9]{2,5})?"; // Port
+		$regex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?"; // Path
+		$regex .= "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?"; // GET Query
+		$regex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?"; // Anchor
+
+		// `i` flag for case-insensitive
+		if (preg_match("/^$regex$/i", $key)) {
+			return $key;
+		}
+
+		// check if in local exist
+		if ($getLocalFirst) {
+			$file = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . $key;
+			if (file_exists($file) && is_readable($file)) {
+				return base_url('uploads/' . $key);
+			}
+		}
+
+		// get from s3
+		if (empty($bucket)) {
+			$bucket = env('S3_BUCKET');
+		} else {
+			if (!empty(env('S3_CDN'))) {
+				return rtrim(env('S3_CDN'), '/') . '/' . $key;
+			}
+		}
+		return rtrim(env('S3_ENDPOINT'), '/') . '/' . $bucket . '/' . $key;
+	}
+}

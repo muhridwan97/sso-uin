@@ -48,7 +48,7 @@
                         <td class="text-md-center"><?= ++$no ?></td>
                         <td class="font-weight-bold">
                             <div class="d-flex flex-row align-items-center">
-                                <div class="rounded mr-3" style="height:40px; width: 40px; background: url('<?= base_url(if_empty($user['avatar'], 'assets/dist/img/no-avatar.png', 'uploads/')) ?>') center center / cover"></div>
+                                <div class="rounded mr-3" style="height:40px; width: 40px; background: url('<?= asset_url(if_empty($user['avatar'], base_url('assets/dist/img/no-avatar.png'))) ?>') center center / cover"></div>
                                 <div style="flex: 1">
                                     <p style="margin-bottom: -5px"><?= strtoupper($user['name']) ?></p>
                                     <?php if(!empty($user['parent_user'])): ?>

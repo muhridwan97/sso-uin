@@ -10,7 +10,7 @@
 			<div class="form-plaintext">
 				<div class="row">
 					<div class="col-lg-2">
-						<div class="rounded my-3" style="height:100px; width: 100px; background: url('<?= base_url(if_empty($user['avatar'], 'assets/dist/img/no-avatar.png', '/uploads/')) ?>') center center / cover"></div>
+						<div class="rounded my-3" style="height:100px; width: 100px; background: url('<?= asset_url(if_empty($user['avatar'], base_url('assets/dist/img/no-avatar.png'))) ?>') center center / cover"></div>
 					</div>
 					<div class="col-lg-10">
                         <div class="form-group row">

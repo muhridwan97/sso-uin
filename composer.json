@@ -14,7 +14,8 @@
 		"php": ">=7.0",
 		"vlucas/phpdotenv": "^2.5",
 		"phpoffice/phpspreadsheet": "^1.4",
-      	"ext-json": "*"
+      	"ext-json": "*",
+		"aws/aws-sdk-php": "^3.176"
     },
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

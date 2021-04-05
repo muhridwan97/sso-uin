@@ -55,7 +55,7 @@
                                 <?php if(empty($applicationRelease['attachment'])): ?>
                                     No attachment
                                 <?php else: ?>
-                                    <a href="<?= base_url('uploads/' . $applicationRelease['attachment']) ?>">
+                                    <a href="<?= asset_url($applicationRelease['attachment']) ?>">
                                         <?= $applicationRelease['attachment'] ?>
                                     </a>
                                 <?php endif ?>
