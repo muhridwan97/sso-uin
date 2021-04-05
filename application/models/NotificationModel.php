@@ -61,7 +61,8 @@ class NotificationModel extends App_Model
 		get_instance()->load->driver('cache', ['adapter' => 'file']);
 		$cacheKey = 'unread-' . $userId;
 
-		if (!$totalUnread = get_instance()->cache->get($cacheKey)) {
+		$totalUnread = get_instance()->cache->get($cacheKey);
+		if ($totalUnread === false) {
 			$totalUnread = NotificationModel::baseQuery()
 				->where([
 					'id_user' => $userId,
@@ -70,7 +71,7 @@ class NotificationModel extends App_Model
 				])
 				->count_all_results();
 
-			get_instance()->cache->save($cacheKey, $totalUnread, 60);
+			get_instance()->cache->save($cacheKey, $totalUnread, 300);
 		}
 
 		return $totalUnread;

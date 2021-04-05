@@ -99,6 +99,9 @@ class Account extends App_Controller
 				$update = $this->user->update($dataAccount, $userId);
 
 				if ($update) {
+					$this->load->driver('cache', ['adapter' => 'file']);
+					$this->cache->delete('session-data-' . $userId);
+
 					flash('success', 'Your account was successfully updated', 'account');
 				} else {
 					flash('danger', 'Update account failed, try again or contact administrator');

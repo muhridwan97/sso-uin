@@ -46,6 +46,9 @@ class Notification extends App_Controller
 
 		$this->notification->read($id, $this->input->get('source'));
 
+		$this->load->driver('cache', ['adapter' => 'file']);
+		$this->cache->delete('unread-' . AuthModel::loginData('id'));
+
 		$redirect = $this->input->get('redirect');
 
 		if (empty($redirect)) {

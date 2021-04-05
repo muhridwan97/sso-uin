@@ -138,8 +138,17 @@ class AuthModel extends App_Model
         if ($CI->session->has_userdata('auth.id')) {
             $id = $CI->session->userdata('auth.id');
         }
-        $result = $CI->db->get_where('prv_users', ['prv_users.id' => $id]);
-        $userData = $result->row_array();
+
+        $CI->load->driver('cache', ['adapter' => 'file']);
+		$cacheKey = 'session-data-' . $id;
+		$userData = get_instance()->cache->get($cacheKey);
+
+		if ($userData === false) {
+			$result = $CI->db->get_where('prv_users', ['prv_users.id' => $id]);
+			$userData = $result->row_array();
+
+			$CI->cache->save($cacheKey, $userData, 60);
+		}
 
         if ($userData == null || count($userData) <= 0) {
             return $default;
