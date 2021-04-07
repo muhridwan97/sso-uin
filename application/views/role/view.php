@@ -88,7 +88,7 @@
                 </div>
 
 				<div class="d-flex justify-content-between mt-3">
-					<a href="javascript:void()" onclick="history.back()" class="btn btn-secondary">Back</a>
+					<a href="javascript:void(0)" onclick="history.back()" class="btn btn-secondary">Back</a>
                     <?php if(AuthorizationModel::isAuthorized(PERMISSION_ROLE_EDIT)): ?>
                         <a href="<?= site_url('manage/role/edit/' . $role['id']) ?>" class="btn btn-primary">
                             Edit Role

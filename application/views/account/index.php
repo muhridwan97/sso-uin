@@ -2,7 +2,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="javascript:void()" onclick="history.back()">
+                <a href="javascript:void(0)" onclick="history.back()">
                     <span class="mdi mdi-arrow-left"></span> Application
                 </a>
             </li>
@@ -49,7 +49,7 @@
                 <p class="form-section-title">Avatar</p>
                 <div class="form-group">
                     <div class="d-flex flex-column flex-sm-row align-items-center">
-                        <div class="rounded mb-2 mb-sm-0" style="height:140px; width: 140px; background: url('<?= base_url(if_empty($user['avatar'], 'assets/dist/img/no-avatar.png', '/uploads/')) ?>') center center / cover"></div>
+                        <div class="rounded mb-2 mb-sm-0" style="height:140px; width: 140px; background: url('<?= asset_url(if_empty($user['avatar'], base_url('assets/dist/img/no-avatar.png'))) ?>') center center / cover"></div>
 
                         <div class="mr-lg-3 ml-sm-4">
                             <label for="avatar">Photo</label>

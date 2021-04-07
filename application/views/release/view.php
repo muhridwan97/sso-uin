@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between mt-3">
-                        <a href="javascript:void()" onclick="history.back()" class="btn btn-secondary">Back</a>
+                        <a href="javascript:void(0)" onclick="history.back()" class="btn btn-secondary">Back</a>
                         <a href="<?= site_url('manage/release/edit/' . $applicationRelease['id']) ?>" class="btn btn-primary">
                             Edit Release
                         </a>
