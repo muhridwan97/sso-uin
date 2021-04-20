@@ -101,8 +101,6 @@ class Password extends App_Controller
 						$passwordExpiredAt = date('Y-m-d H:i:s', strtotime('+' . $passwordExpiredDays . ' day'));
 					}
 
-					$user = $this->user->getBy(['email' => $email], true);
-
                     $this->user->update([
                         'password' => password_hash($newPassword, CRYPT_BLOWFISH),
 						'password_expired_at' => $passwordExpiredAt
@@ -112,6 +110,7 @@ class Password extends App_Controller
 
                     $this->db->trans_complete();
                     if ($this->db->trans_status() === FALSE) {
+						$user = $this->user->getBy(['prv_users.email' => $email], true);
 						$this->load->driver('cache', ['adapter' => 'file']);
 						$this->cache->delete('session-data-' . $user['id']);
 
