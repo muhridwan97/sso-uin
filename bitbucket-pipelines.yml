@@ -8,7 +8,7 @@ pipelines:
           script:
             - ssh -tt $TEST_SSH -p 22 << EOF
             - echo "Deploying to test environment"
-            - cd /var/www/purchasing-demo
+            - cd $TEST_DEPLOY_PATH
             - git pull origin develop
             - php index.php migrate
             - composer install --no-dev --prefer-dist
