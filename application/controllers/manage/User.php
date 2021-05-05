@@ -103,13 +103,9 @@ class User extends App_Controller
 		AuthorizationModel::mustAuthorized(PERMISSION_USER_CREATE);
 
 		$applications = $this->application->getAll();
-		$parentUsers = $this->user->getBy([
-			'prv_users.id!=' => AuthModel::loginData('id', 0),
-			'prv_users.username!=' => 'admin'
-		]);
 		$roles = $this->role->getAll();
 
-		$this->render('user/create', compact('applications', 'parentUsers', 'roles'));
+		$this->render('user/create', compact('applications', 'roles'));
 	}
 
 	/**
@@ -124,9 +120,9 @@ class User extends App_Controller
 			$username = $this->input->post('username');
 			$email = $this->input->post('email');
 			$userType = $this->input->post('user_type');
-			$parent = $this->input->post('parent_user');
 			$status = $this->input->post('status');
 			$password = $this->input->post('password');
+			$passwordNeverExpired = $this->input->post('password_never_expired');
 			$applications = $this->input->post('applications');
 			$defaultApplication = $this->input->post('default_application');
 			$roles = $this->input->post('roles');
@@ -151,7 +147,6 @@ class User extends App_Controller
 			}
 
 			$this->user->create([
-				'id_user' => if_empty($parent, null),
 				'name' => $name,
 				'username' => $username,
 				'email' => $email,
@@ -159,7 +154,8 @@ class User extends App_Controller
 				'user_type' => $userType,
 				'avatar' => $avatar,
 				'password' => password_hash($password, CRYPT_BLOWFISH),
-				'password_expired_at' => $passwordExpiredAt
+				'password_expired_at' => $passwordExpiredAt,
+				'password_never_expired' => !empty($passwordNeverExpired)
 			]);
 			$userId = $this->db->insert_id();
 
@@ -203,10 +199,6 @@ class User extends App_Controller
 		$user = $this->user->getById($id);
 
 		$applications = $this->application->getAll();
-		$parentUsers = $this->user->getBy([
-			'prv_users.id!=' => $id,
-			'prv_users.username!=' => 'admin'
-		]);
 		$defaultApp = '';
 
 		$userApplications = $this->userApplication->getBy(['id_user' => $id]);
@@ -228,7 +220,7 @@ class User extends App_Controller
 		$roles = $this->role->getAll();
 		$userRoles = $this->userRole->getBy(['id_user' => $id]);
 
-		$this->render('user/edit', compact('user', 'applications', 'defaultApp', 'parentUsers', 'roles', 'userRoles'));
+		$this->render('user/edit', compact('user', 'applications', 'defaultApp', 'roles', 'userRoles'));
 	}
 
 	/**
@@ -245,9 +237,9 @@ class User extends App_Controller
 			$username = $this->input->post('username');
 			$email = $this->input->post('email');
 			$userType = $this->input->post('user_type');
-			$parent = $this->input->post('parent_user');
 			$status = $this->input->post('status');
 			$password = $this->input->post('password');
+			$passwordNeverExpired = $this->input->post('password_never_expired');
 			$applications = $this->input->post('applications');
 			$defaultApplication = $this->input->post('default_application');
 			$roles = $this->input->post('roles');
@@ -277,7 +269,6 @@ class User extends App_Controller
 			}
 
 			$this->user->update([
-				'id_user' => if_empty($parent, null),
 				'name' => $name,
 				'username' => $username,
 				'email' => $email,
@@ -285,7 +276,8 @@ class User extends App_Controller
 				'user_type' => $userType,
 				'avatar' => $avatar,
 				'password' => empty($password) ? $user['password'] : password_hash($password, CRYPT_BLOWFISH),
-				'password_expired_at' => empty($password) ? $user['password_expired_at'] : $passwordExpiredAt
+				'password_expired_at' => empty($password) ? $user['password_expired_at'] : $passwordExpiredAt,
+				'password_never_expired' => !empty($passwordNeverExpired)
 			], $id);
 
 			$this->userApplication->delete(['id_user' => $id]);

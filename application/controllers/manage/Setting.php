@@ -30,7 +30,7 @@ class Setting extends App_Controller
 
                 $this->db->trans_start();
 
-                if(key_exists('_method', $settings)) {
+                if (key_exists('_method', $settings)) {
                     unset($settings['_method']);
                 }
 

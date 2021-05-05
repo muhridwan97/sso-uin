@@ -67,21 +67,21 @@ class Login extends App_Controller
                     if ($authenticated === UserModel::STATUS_PENDING || $authenticated === UserModel::STATUS_SUSPENDED) {
                         flash('danger', 'Your account has status <strong>' . $authenticated . '</strong>, please contact our administrator');
                     } else {
-                        if ($authenticated) {
-                        	// check if password expired
+						if ($authenticated) {
+							// check if password expired
 							$passwordExpiredDays = get_setting('password_expiration_days');
-							if($passwordExpiredDays > 0) {
-								$user = AuthModel::loginData();
+							$user = AuthModel::loginData();
+							if ($passwordExpiredDays > 0 && !$user['password_never_expired']) {
 								$dayBeforeExpired = difference_date(date('Y-m-d'), format_date($user['password_expired_at']));
-								if($dayBeforeExpired <= 0) {
+								if ($dayBeforeExpired <= 0) {
 									// force clear session because password expired
 									$this->auth->logout();
 
 									$changePasswordVerification = get_setting('email_verification_after_password_expired_days');
-									if($changePasswordVerification > 0) {
+									if ($changePasswordVerification > 0) {
 										$passwordVerifiedAt = date('Y-m-d', strtotime(format_date($user['password_expired_at']) . ' +' . $changePasswordVerification . ' day'));
 										$dayBeforeVerification = difference_date(date('Y-m-d'), format_date($passwordVerifiedAt));
-										if($dayBeforeVerification <= 0) {
+										if ($dayBeforeVerification <= 0) {
 											// reset password by email verification
 											flash('danger', 'Password expired, must verify email to reset the password', 'auth/password/forgot-password?expired=1&email=' . base64_encode($user['email']));
 										}
@@ -89,7 +89,7 @@ class Login extends App_Controller
 
 									// offer change password
 									$token = $this->userToken->create($user['email'], UserTokenModel::TOKEN_PASSWORD);
-									if($token == false) {
+									if ($token == false) {
 										flash('danger', 'Password expired, create token failed', 'auth/login');
 									}
 									flash('danger', 'Your password expired', 'auth/password/reset/' . $token . '?expired=1');

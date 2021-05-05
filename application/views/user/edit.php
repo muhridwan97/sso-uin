@@ -32,43 +32,31 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" class="form-control" id="email" name="email"
-                                   placeholder="Your email address" maxlength="50"
-                                   value="<?= set_value('email', $user['email']) ?>">
-                            <?= form_error('email') ?>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="parent_user">Parent User</label>
-                            <select class="custom-select" name="parent_user" id="parent_user">
-                                <option value="">-- No parent user --</option>
-                                <?php foreach ($parentUsers as $parentUser): ?>
-                                    <option value="<?= $parentUser['id'] ?>"<?= set_select('parent_user', $parentUser['id'], $parentUser['id'] == $user['id_user']) ?>>
-                                        <?= $parentUser['name'] ?> (<?= $parentUser['email'] ?>)
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <?= form_error('parent_user'); ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="user_type">User Type</label>
-                    <select class="custom-select" name="user_type" id="user_type">
-                        <option value="INTERNAL"<?= set_select('user_type', 'INTERNAL', $user['user_type'] == 'INTERNAL') ?>>
-                            INTERNAL
-                        </option>
-                        <option value="EXTERNAL"<?= set_select('user_type', 'EXTERNAL', $user['user_type'] == 'EXTERNAL') ?>>
-                            EXTERNAL
-                        </option>
-                    </select>
-                    <?= form_error('user_type'); ?>
-                </div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label for="email">Email Address</label>
+							<input type="email" class="form-control" id="email" name="email"
+								   placeholder="Your email address" maxlength="50"
+								   value="<?= set_value('email', $user['email']) ?>">
+							<?= form_error('email') ?>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label for="user_type">User Type</label>
+							<select class="custom-select" name="user_type" id="user_type">
+								<option value="INTERNAL"<?= set_select('user_type', 'INTERNAL', $user['user_type'] == 'INTERNAL') ?>>
+									INTERNAL
+								</option>
+								<option value="EXTERNAL"<?= set_select('user_type', 'EXTERNAL', $user['user_type'] == 'EXTERNAL') ?>>
+									EXTERNAL
+								</option>
+							</select>
+							<?= form_error('user_type'); ?>
+						</div>
+					</div>
+				</div>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -79,8 +67,7 @@
                                 <input type="text" class="form-control file-upload-info" disabled
                                        placeholder="Upload photo" value="<?= $user['avatar'] ?>">
                                 <div class="input-group-append">
-                                    <button class="file-upload-browse btn btn-default btn-simple-upload"
-                                            type="button">
+                                    <button class="file-upload-browse btn btn-default btn-simple-upload" type="button">
                                         Select Photo
                                     </button>
                                 </div>
@@ -128,6 +115,22 @@
                         </div>
                     </div>
                 </div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group border border-danger rounded mb-0 py-2 px-3">
+							<div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" <?= set_checkbox('password_never_expired', 1, $user['password_never_expired'] == 1) ?>
+									   id="password_never_expired" name="password_never_expired" value="1">
+								<label class="custom-control-label" for="password_never_expired">
+									<span class="text-danger">Password Never Expired</span>
+									<small class="text-muted d-block">
+										User never forced to change their password
+									</small>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
 
                 <p class="form-section-title">Role Access</p>
                 <div class="form-group">

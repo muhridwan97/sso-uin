@@ -87,6 +87,14 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="password_never_expired">Password Never Expired</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-plaintext" id="password_never_expired">
+                                    <?= $user['password_never_expired'] ? 'YES' : 'NO' ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-4 col-form-label" for="password_expired_at">Password Expired At</label>
                             <div class="col-sm-8">
                                 <p class="form-control-plaintext" id="password_expired_at">
