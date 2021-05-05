@@ -1,0 +1,21 @@
+image: atlassian/default-image:latest
+
+pipelines:
+  branches:
+    develop:
+      - step:
+          deployment: test
+          script:
+            - ssh -tt $TEST_SSH -p 22 << EOF
+            - echo "Deploying to test environment"
+            - cd /var/www/purchasing-demo
+            - git pull origin develop
+            - php index.php migrate
+            - composer install --no-dev --prefer-dist
+            - npm ci
+            - npm run build
+            - exit $?
+            - EOF
+            - echo "Deploy steps finished"
+          after-script:
+            - echo $BITBUCKET_EXIT_CODE
