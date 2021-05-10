@@ -63,7 +63,11 @@ class MustAuthenticated
         $CI->load->model('UserModel', 'user');
 
         $email = $CI->userToken->verifyToken($rememberToken, UserTokenModel::TOKEN_REMEMBER);
-        $user = $CI->user->getBy(['prv_users.email' => $email], true);
+		if ($email === false) {
+			$user = null;
+		} else {
+			$user = $CI->user->getBy(['prv_users.email' => $email], true);
+		}
         if(empty($user)) {
             redirect($loginUrl);
         } else {
