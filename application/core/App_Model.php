@@ -380,11 +380,27 @@ class App_Model extends CI_Model
     public function delete($id, $softDelete = false)
     {
         if ($softDelete && $this->db->field_exists('is_deleted', $this->table)) {
-            return $this->db->update($this->table, [
+			$update = $this->db->update($this->table, [
                 'is_deleted' => true,
                 'deleted_at' => date('Y-m-d H:i:s'),
                 'deleted_by' => AuthModel::loginData('id')
             ], (is_array($id) ? $id : [$this->id => $id]));
+
+			if ($update) {
+				$this->db->insert('logs', [
+					'event_type' => 'query',
+					'event_access' => str_replace(['-', '_'], ' ', strtoupper(get_class(get_instance()))),
+					'data' => json_encode([
+						'type' => 'command',
+						'method' => 'update',
+						'query' => $this->db->last_query(),
+					]),
+					'created_by' => AuthModel::loginData('id', 0),
+					'created_at' => date('Y-m-d H:i:s')
+				]);
+			}
+
+			return $update;
         }
 		//$deletedQuery = $this->db->get_compiled_delete($this->table, false);
         $delete = $this->db->delete($this->table, (is_array($id) ? $id : [$this->id => $id]));
