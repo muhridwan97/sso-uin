@@ -33,4 +33,10 @@ $hook['post_controller_constructor'] = [
         'filename' => 'middleware/RequestFilter.php',
         'filepath' => 'hooks',
     ],
+	[
+		'class' => 'Logging',
+		'function' => 'logAccess',
+		'filename' => 'middleware/Logging.php',
+		'filepath' => 'hooks',
+	],
 ];
