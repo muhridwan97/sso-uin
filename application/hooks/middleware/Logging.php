@@ -13,7 +13,7 @@ class Logging
      */
     public function logAccess()
     {
-        if (AuthModel::isLoggedIn()) {
+        if (!get_url_param('force_logout') && AuthModel::isLoggedIn()) {
             $CI = get_instance();
             $CI->load->library('user_agent');
 
