@@ -25,6 +25,9 @@ class Logout extends App_Controller
      */
     public function index()
     {
+		$this->load->driver('cache', ['adapter' => 'file']);
+		$this->cache->delete('session-data-' . AuthModel::loginData('id'));
+
         if ($this->auth->logout()) {
             $rememberToken = get_cookie('remember_token');
             if (!empty($rememberToken)) {

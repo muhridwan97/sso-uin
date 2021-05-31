@@ -109,18 +109,16 @@ class Password extends App_Controller
                     $this->userToken->delete($token);
 
                     $this->db->trans_complete();
-                    if ($this->db->trans_status() === FALSE) {
+                    if ($this->db->trans_status()) {
 						$user = $this->user->getBy(['prv_users.email' => $email], true);
 						$this->load->driver('cache', ['adapter' => 'file']);
 						$this->cache->delete('session-data-' . $user['id']);
 
-                        flash('danger', 'Transaction failed, try again or contact our administrator.');
+						$this->mailer->send($email, 'Password Recovered', 'emails/password_recovered', ['user' => $user]);
+
+						flash('success', 'Your password is recovered.', 'auth/login');
                     } else {
-                        $user = $this->user->getBy(['prv_users.email' => $email], true);
-
-                        $this->mailer->send($email, 'Password Recovered', 'emails/password_recovered', ['user' => $user]);
-
-                        flash('success', 'Your password is recovered.', 'auth/login');
+						flash('danger', 'Transaction failed, try again or contact our administrator.');
                     }
                 }
             }
