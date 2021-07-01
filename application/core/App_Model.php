@@ -311,24 +311,20 @@ class App_Model extends CI_Model
 		if ($this->db->field_exists('created_at', $this->table) && !key_exists('created_at', $data)) {
 			$data['created_at'] = date('Y-m-d H:i:s');
 		}
-		// $insertedQuery = $this->db->get_compiled_update($this->table, false);
-		$save = $this->db->insert($this->table, $data);
 
-		if ($save) {
-			$this->db->insert('logs', [
-				'event_type' => 'query',
-				'event_access' => str_replace(['-', '_'], ' ', strtoupper(get_class(get_instance()))),
-				'data' => json_encode([
-					'type' => 'command',
-					'method' => 'insert',
-					'query' => $this->db->last_query(),
-				]),
-				'created_by' => AuthModel::loginData('id', 0),
-				'created_at' => date('Y-m-d H:i:s')
-			]);
-		}
+		$this->db->insert('logs', [
+			'event_type' => 'query',
+			'event_access' => str_replace(['-', '_'], ' ', strtoupper(get_class(get_instance()))),
+			'data' => json_encode([
+				'type' => 'command',
+				'method' => 'insert',
+				'query' => $this->db->set($data)->get_compiled_insert($this->table),
+			]),
+			'created_by' => AuthModel::loginData('id', 0),
+			'created_at' => date('Y-m-d H:i:s')
+		]);
 
-		return $save;
+		return $this->db->insert($this->table, $data);
     }
 
     /**
@@ -350,24 +346,20 @@ class App_Model extends CI_Model
         if ($this->db->field_exists('updated_at', $this->table)) {
             $data['updated_at'] = date('Y-m-d H:i:s');
         }
-        // $updatedQuery = $this->db->get_compiled_update($this->table, false);
-        $update = $this->db->update($this->table, $data, $condition);
 
-		if ($update) {
-			$this->db->insert('logs', [
-				'event_type' => 'query',
-				'event_access' => str_replace(['-', '_'], ' ', strtoupper(get_class(get_instance()))),
-				'data' => json_encode([
-					'type' => 'command',
-					'method' => 'update',
-					'query' => $this->db->last_query(),
-				]),
-				'created_by' => AuthModel::loginData('id', 0),
-				'created_at' => date('Y-m-d H:i:s')
-			]);
-		}
+		$this->db->insert('logs', [
+			'event_type' => 'query',
+			'event_access' => str_replace(['-', '_'], ' ', strtoupper(get_class(get_instance()))),
+			'data' => json_encode([
+				'type' => 'command',
+				'method' => 'update',
+				'query' => $this->db->set($data)->where($condition)->get_compiled_update($this->table),
+			]),
+			'created_by' => AuthModel::loginData('id', 0),
+			'created_at' => date('Y-m-d H:i:s')
+		]);
 
-		return $update;
+		return $this->db->update($this->table, $data, $condition);
     }
 
     /**
@@ -379,47 +371,41 @@ class App_Model extends CI_Model
      */
     public function delete($id, $softDelete = false)
     {
+		$condition = (is_array($id) ? $id : [$this->id => $id]);
         if ($softDelete && $this->db->field_exists('is_deleted', $this->table)) {
-			$update = $this->db->update($this->table, [
-                'is_deleted' => true,
-                'deleted_at' => date('Y-m-d H:i:s'),
-                'deleted_by' => AuthModel::loginData('id')
-            ], (is_array($id) ? $id : [$this->id => $id]));
+			$data = [
+				'is_deleted' => true,
+				'deleted_at' => date('Y-m-d H:i:s'),
+				'deleted_by' => AuthModel::loginData('id')
+			];
 
-			if ($update) {
-				$this->db->insert('logs', [
-					'event_type' => 'query',
-					'event_access' => str_replace(['-', '_'], ' ', strtoupper(get_class(get_instance()))),
-					'data' => json_encode([
-						'type' => 'command',
-						'method' => 'update',
-						'query' => $this->db->last_query(),
-					]),
-					'created_by' => AuthModel::loginData('id', 0),
-					'created_at' => date('Y-m-d H:i:s')
-				]);
-			}
-
-			return $update;
-        }
-		//$deletedQuery = $this->db->get_compiled_delete($this->table, false);
-        $delete = $this->db->delete($this->table, (is_array($id) ? $id : [$this->id => $id]));
-
-		if ($delete) {
 			$this->db->insert('logs', [
 				'event_type' => 'query',
 				'event_access' => str_replace(['-', '_'], ' ', strtoupper(get_class(get_instance()))),
 				'data' => json_encode([
 					'type' => 'command',
-					'method' => 'delete',
-					'query' => $this->db->last_query(),
+					'method' => 'update',
+					'query' => $this->db->set($data)->where($condition)->get_compiled_update($this->table),
 				]),
 				'created_by' => AuthModel::loginData('id', 0),
 				'created_at' => date('Y-m-d H:i:s')
 			]);
-		}
 
-		return $delete;
+			return $this->db->update($this->table, $data, (is_array($id) ? $id : [$this->id => $id]));
+        }
+		$this->db->insert('logs', [
+			'event_type' => 'query',
+			'event_access' => str_replace(['-', '_'], ' ', strtoupper(get_class(get_instance()))),
+			'data' => json_encode([
+				'type' => 'command',
+				'method' => 'delete',
+				'query' => $this->db->where($condition)->get_compiled_delete($this->table),
+			]),
+			'created_by' => AuthModel::loginData('id', 0),
+			'created_at' => date('Y-m-d H:i:s')
+		]);
+
+		return $this->db->delete($this->table, $condition);
     }
 
 }
