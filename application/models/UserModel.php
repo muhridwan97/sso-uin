@@ -4,7 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class UserModel extends App_Model
 {
     protected $table = 'prv_users';
-    protected $filteredMaps = ['user_type' => 'prv_users.user_type'];
 
     const STATUS_PENDING = 'PENDING';
     const STATUS_ACTIVATED = 'ACTIVATED';
@@ -67,8 +66,8 @@ class UserModel extends App_Model
                 $baseQuery->group_end();
             }
 
-            if (key_exists('statuses', $filters) && !empty($filters['statuses'])) {
-                $baseQuery->where_in($this->table . '.status', $filters['statuses']);
+            if (key_exists('status', $filters) && !empty($filters['status'])) {
+                $baseQuery->where_in($this->table . '.status', $filters['status']);
             }
 
             if (key_exists('date_from', $filters) && !empty($filters['date_from'])) {
