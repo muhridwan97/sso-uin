@@ -11,7 +11,7 @@ pipelines:
             - cd $TEST_DEPLOY_PATH
             - git pull origin develop
             - php index.php migrate
-            - composer install --no-dev --prefer-dist
+            - composer install --no-dev --prefer-dist --no-interaction
             - npm ci
             - npm run build
             - exit $?
