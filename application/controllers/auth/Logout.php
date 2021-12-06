@@ -9,6 +9,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Logout extends App_Controller
 {
+	private $logger;
+
     /**
      * Logout constructor.
      */
@@ -18,6 +20,8 @@ class Logout extends App_Controller
         $this->load->model('AuthModel', 'auth');
         $this->load->model('UserModel', 'user');
         $this->load->model('UserTokenModel', 'userToken');
+
+		$this->logger = AppLogger::auth(Logout::class);
     }
 
     /**
@@ -25,8 +29,10 @@ class Logout extends App_Controller
      */
     public function index()
     {
+    	$user = AuthModel::loginData();
+
 		$this->load->driver('cache', ['adapter' => 'file']);
-		$this->cache->delete('session-data-' . AuthModel::loginData('id'));
+		$this->cache->delete('session-data-' . $user['id']);
 
         if ($this->auth->logout()) {
             $rememberToken = get_cookie('remember_token');
@@ -39,6 +45,14 @@ class Logout extends App_Controller
             } else {
                 flash('warning', 'You are logged out');
             }
+
+			// log password link successfully sent
+			$this->logger->info("User is logged out", [
+				'user' => $user,
+				'force_logout' => get_url_param('force_logout', false),
+				'remember_token' => $rememberToken,
+			]);
+
             redirect('auth/login');
         }
         redirect('app');

@@ -12,6 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Login extends App_Controller
 {
     protected $layout = 'layouts/auth';
+    private $logger;
 
     /**
      * Login constructor.
@@ -24,6 +25,8 @@ class Login extends App_Controller
         $this->load->model('UserModel', 'user');
         $this->load->model('UserTokenModel', 'userToken');
         $this->load->model('UserApplicationModel', 'userApplication');
+
+        $this->logger = AppLogger::auth(Login::class);
     }
 
     /**
@@ -60,11 +63,31 @@ class Login extends App_Controller
                         $this->session->set_userdata('auth.throttle_expired', $throttleExpired);
                         $minutesLock = difference_date(date('Y-m-d H:i'), $throttleExpired, '%r%i');
                     }
+
+					// log when too many attempt
+					$this->logger->warning("User is locked, too many attempt", [
+						'user' => compact('username', 'password'),
+						'throttle' => $throttle,
+						'max' => $maxTries,
+						'lock_minutes' => $minutesLock,
+					]);
+
                     flash('danger', 'You attempt to many login, your session is locked for ' . $minutesLock . ' minute(s)');
                 } else {
                     $authenticated = $this->auth->authenticate($username, $password, $remember);
 
                     if ($authenticated === UserModel::STATUS_PENDING || $authenticated === UserModel::STATUS_SUSPENDED) {
+						$throttle++;
+						$this->session->set_userdata('auth.throttle', $throttle);
+
+						// log inactive user
+						$this->logger->notice("User is inactive or pending", [
+							'user' => compact('username', 'password'),
+							'status' => $authenticated,
+							'throttle' => $throttle,
+							'max' => $maxTries,
+						]);
+
                         flash('danger', 'Your account has status <strong>' . $authenticated . '</strong>, please contact our administrator');
                     } else {
 						if ($authenticated) {
@@ -82,6 +105,15 @@ class Login extends App_Controller
 										$passwordVerifiedAt = date('Y-m-d', strtotime(format_date($user['password_expired_at']) . ' +' . $changePasswordVerification . ' day'));
 										$dayBeforeVerification = difference_date(date('Y-m-d'), format_date($passwordVerifiedAt));
 										if ($dayBeforeVerification <= 0) {
+											// log password expired (need verification)
+											$this->logger->warning("User password is expired, need verification", [
+												'user' => $user,
+												'throttle' => $throttle,
+												'need_email_verification' => $changePasswordVerification > 0,
+												'diff_before_verification' => $dayBeforeVerification,
+												'password_should_be_verified_at' => $passwordVerifiedAt,
+											]);
+
 											// reset password by email verification
 											flash('danger', 'Password expired, must verify email to reset the password', 'auth/password/forgot-password?expired=1&email=' . base64_encode($user['email']));
 										}
@@ -89,6 +121,16 @@ class Login extends App_Controller
 
 									// offer change password
 									$token = $this->userToken->create($user['email'], UserTokenModel::TOKEN_PASSWORD);
+
+									// log password expired (ask for reset immediately)
+									$this->logger->notice("User password is expired, change password now", [
+										'user' => $user,
+										'throttle' => $throttle,
+										'token' => $token,
+										'diff_before_verification' => $dayBeforeVerification ?? null,
+										'password_should_be_verified_at' => $passwordVerifiedAt ?? null,
+									]);
+
 									if ($token == false) {
 										flash('danger', 'Password expired, create token failed', 'auth/login');
 									}
@@ -130,6 +172,12 @@ class Login extends App_Controller
                                 ], true);
                                 $defaultApplication = get_setting('default_application');
 
+                                // log login success
+								$this->logger->info("User [{$username}] successfully logged in", [
+									'user' => $user,
+									'intended' => $defaultUserApplication['url'] ?? $defaultApplication ?? $intended
+								]);
+
                                 if (!empty($defaultUserApplication)) {
                                     $defaultApp = $this->application->getById($defaultUserApplication['id_application']);
                                     redirect($defaultApp['url']);
@@ -144,6 +192,12 @@ class Login extends App_Controller
                                 redirect($intended);
                             }
 
+							// log login redirected to unknown url
+							$this->logger->notice("User successfully logged in, but redirected to unknown url", [
+								'user' => $user,
+								'intended' => $intended
+							]);
+
                             flash('danger', 'App ' . $intended . ' is not registered in whitelisted app, proceed with careful.', 'app');
 
                         } else {
@@ -157,6 +211,12 @@ class Login extends App_Controller
 
                             $throttle++;
                             $this->session->set_userdata('auth.throttle', $throttle);
+
+							// log invalid credentials
+							$this->logger->warning("User login failed", [
+								'user' => compact('username', 'password'),
+								'throttle' => $throttle
+							]);
                         }
                     }
                 }

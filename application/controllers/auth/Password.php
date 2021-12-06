@@ -10,6 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Password extends App_Controller
 {
     protected $layout = 'layouts/auth';
+	private $logger;
 
     /**
      * Password constructor.
@@ -20,6 +21,8 @@ class Password extends App_Controller
         $this->load->model('UserModel', 'user');
         $this->load->model('UserTokenModel', 'userToken');
         $this->load->model('modules/Mailer', 'mailer');
+
+		$this->logger = AppLogger::auth(Password::class);
 
         $this->setFilterMethods([
             'forgot_password' => 'GET|POST',
@@ -50,6 +53,12 @@ class Password extends App_Controller
                 $user = $this->user->getBy(['prv_users.email' => $email], true);
 
                 if (!$token || empty($user)) {
+					// log token invalid
+					$this->logger->warning("Reset password token invalid", [
+						'user' => $user,
+						'token' => $token,
+					]);
+
                     flash('danger', 'Failed to create reset password token.');
                 } else {
                     $emailTemplate = 'emails/reset_password';
@@ -60,8 +69,20 @@ class Password extends App_Controller
                     $sendEmail = $this->mailer->send($email, 'Reset Password', $emailTemplate, $emailData);
 
                     if ($sendEmail) {
+						// log password link successfully sent
+						$this->logger->info("Password reset successfully", [
+							'user' => $user,
+							'token' => $token,
+						]);
+
                         flash('success', "We have sent email <strong>{$email}</strong> token to reset your password", 'auth/login');
                     }
+
+					// log password link successfully sent
+					$this->logger->error("Send password reset link failed", [
+						'user' => $user,
+						'token' => $token,
+					]);
 
                     flash('warning', 'Send email token to reset password failed.');
                 }
@@ -90,6 +111,12 @@ class Password extends App_Controller
 
                 $emailToken = $this->userToken->verifyToken($token, UserTokenModel::TOKEN_PASSWORD);
                 if ($email != $emailToken) {
+					// log verify token failed
+					$this->logger->warning("Verify reset password token failed", [
+						'email' => $email,
+						'token' => $token,
+					]);
+
                     flash('danger', 'Token is mismatch with email');
                 } else {
                     $this->db->trans_start();
@@ -110,6 +137,13 @@ class Password extends App_Controller
 
                     $this->db->trans_complete();
                     if ($this->db->trans_status()) {
+						// log password success reset
+						$this->logger->info("Password reset successfully", [
+							'email' => $email,
+							'token' => $token,
+							'password_expired_at' => $passwordExpiredAt,
+						]);
+
 						$user = $this->user->getBy(['prv_users.email' => $email], true);
 						$this->load->driver('cache', ['adapter' => 'file']);
 						$this->cache->delete('session-data-' . $user['id']);
@@ -118,7 +152,13 @@ class Password extends App_Controller
 
 						flash('success', 'Your password is recovered.', 'auth/login');
                     } else {
-						flash('danger', 'Transaction failed, try again or contact our administrator.');
+						// log reset password failed
+						$this->logger->error("Reset password failed", [
+							'email' => $email,
+							'token' => $token,
+						]);
+
+						flash('danger', 'Update password failed, try again or contact our administrator.');
                     }
                 }
             }

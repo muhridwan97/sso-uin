@@ -9,6 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Register extends App_Controller
 {
     protected $layout = 'layouts/auth';
+    private $logger;
 
     /**
      * Register constructor.
@@ -19,6 +20,8 @@ class Register extends App_Controller
 
         $this->load->model('UserModel', 'user');
         $this->load->model('modules/Mailer', 'mailer');
+
+		$this->logger = AppLogger::auth(Register::class);
     }
 
     /**
@@ -45,8 +48,22 @@ class Register extends App_Controller
                 $this->db->trans_complete();
 
                 if ($this->db->trans_status()) {
+					// log user register success
+					$this->logger->info("User is successfully registered", [
+						'name' => $name,
+						'username' => $username,
+						'email' => $email,
+					]);
+
                     flash('success', 'You are successfully registered, please wait for activation or contact our administrator', 'auth/login');
                 } else {
+					// log user register failed
+					$this->logger->info("Register user failed", [
+						'name' => $name,
+						'username' => $username,
+						'email' => $email,
+					]);
+
                     flash('danger', 'Register user failed, try again or contact administrator.');
                 }
             }
