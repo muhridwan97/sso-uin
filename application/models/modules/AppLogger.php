@@ -1,10 +1,8 @@
 <?php
 
-use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Monolog\Processor\HostnameProcessor;
 use Monolog\Processor\WebProcessor;
 
 class AppLogger
@@ -25,6 +23,7 @@ class AppLogger
 		$logger
 			->pushHandler($accessHandler)
 			->pushHandler($errorHandler)
+			->pushHandler(new StreamHandler("php://stdout"))
 			->pushProcessor(new WebProcessor());
 
 		return $logger;

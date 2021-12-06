@@ -7,14 +7,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Automate extends CI_Controller
 {
+	private $logger;
+
 	public function __construct()
 	{
 		parent::__construct();
+		$this->logger = AppLogger::default(Migrate::class);
 
 		if (is_cli()) {
-			echo 'Automate module is initiating...' . PHP_EOL;
+			$this->logger->info("Automate module is initiating");
 		} else {
-			echo "This module is CLI only!" . PHP_EOL;
+			$this->logger->warning("This module is CLI only!");
 			die();
 		}
 
@@ -26,9 +29,12 @@ class Automate extends CI_Controller
 	 * call in terminal: `php index.php automate clean-old-temp 14`
 	 *
 	 * @param int $age in days
+	 * @throws Exception
 	 */
 	public function clean_old_temp($age = 7)
 	{
+		$this->logger->info("Automate:clean_old_temp({$age}) is started");
+
 		$this->load->helper('directory');
 
 		$path = './uploads/temp/';
@@ -37,6 +43,8 @@ class Automate extends CI_Controller
 		$totalOldDirs = 0;
 		$today = new DateTime();
 
+		$this->logger->info("Directory list", $map);
+
 		foreach ($map as $file) {
 			if (is_dir($path . $file)) {
 				$stat = stat($path . $file);
@@ -44,7 +52,7 @@ class Automate extends CI_Controller
 				$dirInterval = $today->diff($dirTimestamp)->format('%R%a');
 				if (intval($dirInterval) <= -$age) {
 					if (@rmdir($path . $file)) {
-						echo 'Directory: ' . ($path . $file) . ' was deleted' . PHP_EOL;
+						$this->logger->warning('Directory: ' . ($path . $file) . ' was deleted');
 						$totalOldDirs++;
 					}
 				}
@@ -55,13 +63,14 @@ class Automate extends CI_Controller
 			if (intval($interval) <= -$age && $file != '.gitkeep') {
 				if (file_exists($path . $file)) {
 					if (@unlink($path . $file)) {
-						echo 'File: ' . ($path . $file) . ' was deleted' . PHP_EOL;
+						$this->logger->warning('File: ' . ($path . $file) . ' was deleted');
 						$totalOldFiles++;
 					}
 				}
 			}
 		}
-		echo $totalOldFiles . ' files and ' . $totalOldDirs . ' directories were deleted (more than ' . $age . ' days old)' . PHP_EOL;
+		$this->logger->info($totalOldFiles . ' files and ' . $totalOldDirs . ' directories were deleted (more than ' . $age . ' days old)');
+		$this->logger->info("Automate:clean_old_temp({$age}) is completed");
 	}
 
 	/**

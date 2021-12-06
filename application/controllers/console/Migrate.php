@@ -3,12 +3,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Migrate extends CI_Controller
 {
+	private $logger;
+
     public function __construct()
     {
         parent::__construct();
+        $this->logger = AppLogger::default(Migrate::class);
+
         if (is_cli()) {
+			$this->logger->info("Migration module is initiating");
             echo 'Migration module is initiating...' . PHP_EOL;
         } else {
+			$this->logger->warning("This module is CLI only!");
             echo "This module is CLI only!" . PHP_EOL;
             die();
         }
@@ -28,6 +34,8 @@ class Migrate extends CI_Controller
         $this->dbforge->create_database($dbName);
 
         $this->db = $this->load->database('default', true);
+
+		$this->logger->info("Migration init database");
     }
 
     /**
@@ -35,10 +43,13 @@ class Migrate extends CI_Controller
      */
     public function index()
     {
+		$this->logger->info('Migration is started');
         $this->load->library('migration');
         if ($this->migration->latest() === FALSE) {
+			$this->logger->error($this->migration->error_string());
             show_error($this->migration->error_string());
         } else {
+			$this->logger->info('Migration is completed');
             echo 'Migration complete.' . PHP_EOL;
         }
     }
@@ -49,13 +60,17 @@ class Migrate extends CI_Controller
      */
     public function to($target_version = null)
     {
+		$this->logger->info('Migration to ' . $target_version . ' is started');
         $this->load->library('migration');
         if (is_null($target_version)) {
+			$this->logger->error('Missing argument version migration');
             echo 'Missing argument version migration.' . PHP_EOL;
         } else {
             if ($this->migration->version($target_version) === FALSE) {
+				$this->logger->error($this->migration->error_string());
                 show_error($this->migration->error_string());
             } else {
+				$this->logger->info('Migration to version ' . $target_version . ' is completed');
                 echo 'Migration to version ' . $target_version . ' complete.' . PHP_EOL;
             }
         }
@@ -66,10 +81,13 @@ class Migrate extends CI_Controller
      */
     public function rollback()
     {
+		$this->logger->info('Migration rollback is started');
         $this->load->library('migration');
         if ($this->migration->version(0) === FALSE) {
+			$this->logger->error($this->migration->error_string());
             show_error($this->migration->error_string());
         } else {
+			$this->logger->info('Rollback database is completed');
             echo 'Rollback database complete.' . PHP_EOL;
         }
     }
@@ -79,8 +97,10 @@ class Migrate extends CI_Controller
      */
     public function reset()
     {
+		$this->logger->info('Migration reset is started');
         $this->rollback();
         $this->index();
+		$this->logger->info('Migration reset is completed');
     }
 
     /**
@@ -88,7 +108,9 @@ class Migrate extends CI_Controller
      */
     public function fresh()
     {
+		$this->logger->info('Migration refresh is started');
         $this->init();
         $this->index();
+		$this->logger->info('Migration refresh is completed');
     }
 }
