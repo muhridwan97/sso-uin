@@ -7,8 +7,19 @@ class App_Model extends CI_Model
     protected $id = 'id';
     protected $filteredFields = ['*'];
     protected $filteredMaps = [];
+    private $loggerDML;
 
-    /**
+	/**
+	 * App_Model constructor.
+	 */
+    public function __construct()
+	{
+		parent::__construct();
+
+		$this->loggerDML = AppLogger::databaseDML(if_empty(get_called_class(), App_Model::class));
+	}
+
+	/**
      * Set field to filtered list.
      *
      * @param $fields
@@ -312,16 +323,24 @@ class App_Model extends CI_Model
 			$data['created_at'] = date('Y-m-d H:i:s');
 		}
 
+		$compiledQuery = $this->db->set($data)->get_compiled_insert($this->table);
 		$this->db->insert('logs', [
 			'event_type' => 'query',
 			'event_access' => str_replace(['-', '_'], ' ', strtoupper(get_class(get_instance()))),
 			'data' => json_encode([
 				'type' => 'command',
 				'method' => 'insert',
-				'query' => $this->db->set($data)->get_compiled_insert($this->table),
+				'query' => $compiledQuery,
 			]),
 			'created_by' => AuthModel::loginData('id', 0),
 			'created_at' => date('Y-m-d H:i:s')
+		]);
+
+		$this->loggerDML->info("Insert {$this->table}", [
+			'data' => $data,
+			'type' => 'command',
+			'method' => 'insert',
+			'query' => $compiledQuery
 		]);
 
 		return $this->db->insert($this->table, $data);
@@ -347,16 +366,24 @@ class App_Model extends CI_Model
             $data['updated_at'] = date('Y-m-d H:i:s');
         }
 
+		$compiledQuery = $this->db->set($data)->where($condition)->get_compiled_update($this->table);
 		$this->db->insert('logs', [
 			'event_type' => 'query',
 			'event_access' => str_replace(['-', '_'], ' ', strtoupper(get_class(get_instance()))),
 			'data' => json_encode([
 				'type' => 'command',
 				'method' => 'update',
-				'query' => $this->db->set($data)->where($condition)->get_compiled_update($this->table),
+				'query' => $compiledQuery,
 			]),
 			'created_by' => AuthModel::loginData('id', 0),
 			'created_at' => date('Y-m-d H:i:s')
+		]);
+
+		$this->loggerDML->info("Update {$this->table}", [
+			'data' => $data,
+			'type' => 'command',
+			'method' => 'update',
+			'query' => $compiledQuery
 		]);
 
 		return $this->db->update($this->table, $data, $condition);
@@ -379,30 +406,47 @@ class App_Model extends CI_Model
 				'deleted_by' => AuthModel::loginData('id')
 			];
 
+			$compiledQuery = $this->db->set($data)->where($condition)->get_compiled_update($this->table);
 			$this->db->insert('logs', [
 				'event_type' => 'query',
 				'event_access' => str_replace(['-', '_'], ' ', strtoupper(get_class(get_instance()))),
 				'data' => json_encode([
 					'type' => 'command',
 					'method' => 'update',
-					'query' => $this->db->set($data)->where($condition)->get_compiled_update($this->table),
+					'query' => $compiledQuery,
 				]),
 				'created_by' => AuthModel::loginData('id', 0),
 				'created_at' => date('Y-m-d H:i:s')
 			]);
 
+			$this->loggerDML->info("Update {$this->table} (soft delete)", [
+				'data' => $data,
+				'type' => 'command',
+				'method' => 'update',
+				'query' => $compiledQuery
+			]);
+
 			return $this->db->update($this->table, $data, (is_array($id) ? $id : [$this->id => $id]));
         }
+
+        $compiledQuery = $this->db->where($condition)->get_compiled_delete($this->table);
 		$this->db->insert('logs', [
 			'event_type' => 'query',
 			'event_access' => str_replace(['-', '_'], ' ', strtoupper(get_class(get_instance()))),
 			'data' => json_encode([
 				'type' => 'command',
 				'method' => 'delete',
-				'query' => $this->db->where($condition)->get_compiled_delete($this->table),
+				'query' => $compiledQuery,
 			]),
 			'created_by' => AuthModel::loginData('id', 0),
 			'created_at' => date('Y-m-d H:i:s')
+		]);
+
+		$this->loggerDML->info("Delete {$this->table}", [
+			'data' => $id,
+			'type' => 'command',
+			'method' => 'delete',
+			'query' => $compiledQuery
 		]);
 
 		return $this->db->delete($this->table, $condition);
