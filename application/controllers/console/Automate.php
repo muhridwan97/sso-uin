@@ -12,7 +12,7 @@ class Automate extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->logger = AppLogger::default(Migrate::class);
+		$this->logger = AppLogger::default(Automate::class);
 
 		if (is_cli()) {
 			$this->logger->info("Automate module is initiating");
@@ -43,7 +43,7 @@ class Automate extends CI_Controller
 		$totalOldDirs = 0;
 		$today = new DateTime();
 
-		$this->logger->info("Directory list", $map);
+		$this->logger->info("Directory list", is_array($map) ? $map : [$map]);
 
 		foreach ($map as $file) {
 			if (is_dir($path . $file)) {
