@@ -17,7 +17,7 @@ class AppLogger
 	{
 		$logger = new Logger(if_empty($name, AppLogger::class));
 
-		$accessHandler = new RotatingFileHandler(APPPATH . "logs/access/app.log");
+		$accessHandler = new RotatingFileHandler(APPPATH . "logs/access/app.log", 0, Logger::DEBUG, true, 0646);
 		$errorHandler = new StreamHandler(APPPATH . "logs/errors/error.log", Logger::ERROR);
 
 		$logger
@@ -39,7 +39,7 @@ class AppLogger
 	{
 		$logger = new Logger(if_empty($name, AppLogger::class));
 
-		$handler = new RotatingFileHandler(APPPATH . "logs/auth/auth.log");
+		$handler = new RotatingFileHandler(APPPATH . "logs/auth/auth.log", 0, Logger::DEBUG, true, 0646);
 
 		$logger
 			->pushHandler($handler)
@@ -58,7 +58,7 @@ class AppLogger
 	{
 		$logger = new Logger(if_empty($name, AppLogger::class));
 
-		$handler = new RotatingFileHandler(APPPATH . "logs/database/dml.log");
+		$handler = new RotatingFileHandler(APPPATH . "logs/database/dml.log", 0, Logger::DEBUG, true, 0646);
 
 		$logger
 			->pushHandler($handler)
@@ -77,7 +77,7 @@ class AppLogger
 	{
 		$logger = new Logger(if_empty($name, AppLogger::class));
 
-		$handler = new RotatingFileHandler(APPPATH . "logs/database/dql.log");
+		$handler = new RotatingFileHandler(APPPATH . "logs/database/dql.log", 0, Logger::DEBUG, true, 0646);
 
 		$logger
 			->pushHandler($handler)
