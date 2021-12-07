@@ -18,7 +18,7 @@ class AppLogger
 		$logger = new Logger(if_empty($name, AppLogger::class));
 
 		$accessHandler = new RotatingFileHandler(APPPATH . "logs/access/app.log", 0, Logger::DEBUG, true, 0646);
-		$errorHandler = new StreamHandler(APPPATH . "logs/errors/error.log", Logger::ERROR);
+		$errorHandler = new RotatingFileHandler(APPPATH . "logs/errors/error.log", 0, Logger::ERROR, true, 0646);
 
 		$logger
 			->pushHandler($accessHandler)
