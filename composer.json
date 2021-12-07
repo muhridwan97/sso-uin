@@ -16,7 +16,8 @@
 		"phpoffice/phpspreadsheet": "^1.4",
       	"ext-json": "*",
 		"aws/aws-sdk-php": "^3.176",
-		"monolog/monolog": "^2.3"
+		"monolog/monolog": "^2.3",
+      	"ext-fileinfo": "*"
     },
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

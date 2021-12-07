@@ -1,10 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use Aws\Result;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
 
-class Uploader extends CI_Model
+/**
+ * Class Uploader
+ * @property S3FileManager $s3FileManager
+ */
+class Uploader extends App_Model
 {
 	const DRIVER_LOCAL = 'local';
 	const DRIVER_S3 = 's3';
@@ -22,6 +27,8 @@ class Uploader extends CI_Model
 	 */
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->driver = env('STORAGE_DRIVER', 'local');
 
 		$this->load->model('modules/S3FileManager', 's3FileManager');
@@ -70,8 +77,8 @@ class Uploader extends CI_Model
 		$maxFileSize = get_if_exist($options, 'size', 3000);
 		$bucket = get_if_exist($options, 'bucket', env('S3_BUCKET'));
 		$key = get_if_exist($options, 'key', (!empty($uploadDir) ? (rtrim($uploadDir, '/') . '/') : '') . $fileName);
-		$acl = get_if_exist($options, 'acl', 'public-read');;
-		$copyLocal = get_if_exist($options, 'copy_local', false);;
+		$acl = get_if_exist($options, 'acl', 'public-read');
+		$copyLocal = get_if_exist($options, 'copy_local', false);
 
 		// prepare file type and result
 		$fileSize = round($_FILES[$input]['size'] / 1024, 2); // convert to KB
@@ -350,11 +357,12 @@ class Uploader extends CI_Model
         return false;
     }
 
-    /**
-     * Delete folder and its content recursively.
-     *
-     * @param $dir
-     */
+	/**
+	 * Delete folder and its content recursively.
+	 *
+	 * @param $dir
+	 * @return Result|bool|void
+	 */
     private function deleteRecursive($dir)
     {
 		if ($this->driver == 's3' && $this->isS3Available()) {
