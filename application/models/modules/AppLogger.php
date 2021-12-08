@@ -11,9 +11,10 @@ class AppLogger
 	 * Get default logger.
 	 *
 	 * @param null $name
+	 * @param bool $includeStdOut
 	 * @return Logger
 	 */
-	public static function default($name = null)
+	public static function default($name = null, $includeStdOut = true)
 	{
 		$logger = new Logger(if_empty($name, AppLogger::class));
 
@@ -23,8 +24,11 @@ class AppLogger
 		$logger
 			->pushHandler($accessHandler)
 			->pushHandler($errorHandler)
-			->pushHandler(new StreamHandler("php://stdout"))
 			->pushProcessor(new WebProcessor());
+
+		if ($includeStdOut) {
+			$logger->pushHandler(new StreamHandler("php://stdout"));
+		}
 
 		return $logger;
 	}
