@@ -23,6 +23,7 @@ class App_Exceptions extends CI_Exceptions
 	{
 		parent::show_error($heading, $message, $template, $status_code);
 
+		$message = "\t".(is_array($message) ? implode("\n\t", $message) : $message);
 		$this->logger->error($message, [
 			'status' => $status_code
 		]);
