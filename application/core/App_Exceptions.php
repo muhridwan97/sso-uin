@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+require_once __DIR__ . '/../helpers/value_helper.php';
+require_once __DIR__ . '/../models/modules/AppLogger.php';
+
 class App_Exceptions extends CI_Exceptions
 {
 	private $logger;
