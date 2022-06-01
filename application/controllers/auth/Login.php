@@ -143,7 +143,6 @@ class Login extends App_Controller
 
                             // decide where application to go after login
                             $intended = urldecode($this->input->get('redirect'));
-
                             // check if redirect url is registered applications
                             $appFound = false;
                             if (!empty($intended)) {
@@ -152,6 +151,7 @@ class Login extends App_Controller
 
                                 $parsedUrl = parse_url($intended);
                                 $basedUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
+                                
                                 foreach ($whitelistedApps as $application) {
                                     $matchBaseUrl = (rtrim($application['url'], '/') == rtrim($basedUrl, '/'));
                                     $partOfUrl = (strpos($intended, $application['url']) !== false);

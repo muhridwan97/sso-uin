@@ -22,7 +22,8 @@
   "license": "ISC",
   "dependencies": {
     "@mdi/font": "^2.6.95",
-    "jquery-validation": "^1.19.1"
+    "jquery-validation": "^1.19.1",
+    "sass": "^1.49.7"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -36,7 +37,6 @@
     "dotenv": "^8.2.0",
     "file-loader": "^1.1.11",
     "mini-css-extract-plugin": "^0.4.5",
-    "node-sass": "^4.12.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.2.0",
