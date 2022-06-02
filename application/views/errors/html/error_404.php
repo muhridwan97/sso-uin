@@ -37,7 +37,7 @@
 
         <ul class="list-inline mb-0">
             <li class="list-inline-item">
-                <a href="http://www.transcon-indonesia.com">Home</a>
+                <a href="http://www.pend-fisika-uin-suka.com">Home</a>
             </li>
             <li class="list-inline-item">
                 <a href="<?= site_url('page/help') ?>">Help</a>
