@@ -10,6 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property UserRoleModel $userRole
  * @property Uploader $uploader
  * @property Exporter $exporter
+ * @property Mailer $mailer
  */
 class User extends App_Controller
 {
@@ -27,6 +28,7 @@ class User extends App_Controller
 		$this->load->model('UserRoleModel', 'userRole');
 		$this->load->model('modules/Uploader', 'uploader');
 		$this->load->model('modules/Exporter', 'exporter');
+		$this->load->model('modules/Mailer', 'mailer');
 	}
 
 	/**
@@ -302,6 +304,19 @@ class User extends App_Controller
 			$this->db->trans_complete();
 
 			if ($this->db->trans_status()) {
+				if($user['status'] != $status){
+					$emailTo = $email;
+					$emailCC = [];
+					$emailData = [
+						'title' => 'Your Account '.$status,
+						'name' => $name,
+						'email' => $email,
+						'content' => "Recently we review your account that was requested before and the result, it's {$status}.",
+					];
+					$emailTitle = 'Status account ' . $name . ' is ' . $status . ' at ' . date('d F Y H:i');
+					$this->mailer->send($emailTo, $emailTitle, 'emails/basic', $emailData, ['cc' => $emailCC]);
+
+				}
 				flash('success', __('entity_updated', ['title' => $name]), 'manage/user');
 			} else {
 				flash('danger', __('entity_error'));

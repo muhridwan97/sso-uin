@@ -5,8 +5,6 @@ class Mailer extends CI_Model
 {
     public function __construct()
     {
-    	parent::__construct();
-
         $this->load->library('email');
     }
 
@@ -37,15 +35,32 @@ class Mailer extends CI_Model
                 $this->email->bcc($options['bcc']);
             }
 
-            if (key_exists('attachment', $options) && !empty($options['attachment'])) {
-                $this->email->attach($options['attachment']);
-            }
-
             if (key_exists('reply_to', $options) && !empty($options['reply_to'])) {
                 $this->email->reply_to($options['reply_to']);
             }
+
+            if (key_exists('attachment', $options) && !empty($options['attachment'])) {
+                if (!is_array($options['attachment'])) {
+                    $options['attachment'] = ['source' => $options['attachment']];
+                }
+                foreach ($options['attachment'] as $attachment) {
+                    $source = get_if_exist($attachment, 'source', $attachment);
+                    $disposition = get_if_exist($attachment, 'disposition', 'attachment');
+                    $fileName = get_if_exist($attachment, 'file_name', null);
+                    $mime = get_if_exist($attachment, 'mime', '');
+                    $this->email->attach($source, $disposition, $fileName, $mime);
+                }
+            }
         }
 
-        return $this->email->send();
+        $send = $this->email->send();
+
+        if (!$send) {
+            log_message('error', 'Send email failed. ' . $this->email->print_debugger(['headers']));
+        }
+
+        $this->email->clear(true);
+
+        return $send;
     }
 }
