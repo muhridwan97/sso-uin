@@ -278,7 +278,7 @@ class User extends App_Controller
 				'user_type' => $userType,
 				'avatar' => $avatar,
 				'password' => empty($password) ? $user['password'] : password_hash($password, CRYPT_BLOWFISH),
-				'password_expired_at' => empty($password) ? $user['password_expired_at'] : $passwordExpiredAt,
+				'password_expired_at' => empty($password) ? (empty($user['password_expired_at'])? $passwordExpiredAt : $user['password_expired_at'] ) : $passwordExpiredAt,
 				'password_never_expired' => !empty($passwordNeverExpired)
 			], $id);
 
