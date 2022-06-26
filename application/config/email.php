@@ -10,6 +10,7 @@ $config['smtp_port'] = env('MAIL_PORT');
 $config['smtp_timeout'] = '7';
 $config['smtp_user'] = env('MAIL_USERNAME');
 $config['smtp_pass'] = env('MAIL_PASSWORD');
+$config['smtp_crypto'] = env('MAIL_ENCRYPTION');
 $config['mailtype'] = 'html';
 $config['validation'] = TRUE;
 $config['newline'] = "\r\n";
